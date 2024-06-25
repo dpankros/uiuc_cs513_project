@@ -1,6 +1,12 @@
 # CS 513 Group Project
 ## Part 1
+    Team ID: ______
+    Team Name: ______
+    David Pankros, Aaron Schlesinger {pankros2, __}@illinois.edu
 
+> The title / header of your Phase-I report should list (i) the Team-ID of your group1 and (ii) for each group member the name and Illinois email address
+> 
+> In addition you can give yourself a (cute) team name for ease of identification
  
 ### Description of Dataset (25 points)
     a. Here you will provide an ER diagram, an ontology, or a detailed database schema (10 points), and
