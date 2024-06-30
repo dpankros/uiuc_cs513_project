@@ -15,7 +15,7 @@
 
 Dish contains information about food dishes, the number of menus where they appeared, a high and low price, and a first and last appearance year.
 
-Menu contains a collection of the following fields:
+`Menu` contains a collection of the following fields:
 
 - sponsors,
 - events,
@@ -34,9 +34,11 @@ Menu contains a collection of the following fields:
 - a menu page count, and
 - the number of dishes on the menu
 
-Several data inconsistencies exist in this collection.  5 menu records indicate a different number of pages than are actually stored in the `MenuPage` table, and 217 Menus also differ in the number of Dishes stored versus the number of dishes referenced in the 'dish_count' column.  In each instance, only the first page number is stored.  Additionally, some "pages" seemingly contain hundreds of dishes, which calls into question whether the `page_number` column is actually used in a semantically consistent way.  The physical description field is really a separate collection of "tags" that describe the menu, and these data would thus be better stored as a separate table. The occasion field is also potentially representative of tags, but the format varies.  Some are semi-colon delimited, some are not delimited, and some are encapsulated in hard-brackets (and limited to 8 characters).
+Several data inconsistencies exist in this collection.  5 menu records indicate a different number of pages than are actually stored in the `MenuPage` table, and 217 Menus also differ in the number of Dishes stored versus the number of dishes referenced in the 'dish_count' column.  In each instance, only the first page number is stored.  Additionally, some "pages" seemingly contain hundreds of dishes, which calls into question whether the `page_number` column is actually used in a semantically consistent way.
 
-Most commonly, occasion and physical description are blank or null.  Some menus are in fact aggregates of multiple menus, such as ids `31054` and `31230`, that include descriptions such as "62 menus bound into 1 volume".
+The `physical_description` column is really a separate collection of "tags" that describe the menu, and these data would thus be better stored as a separate table. The `occasion` column is also potentially representative of some kind of tag, but the format varies.  Some are delimited by semi-colon, some are not delimited, and some are encapsulated in hard-brackets (and seemingly limited to 8 characters).
+
+Most commonly, the occasion and physical description are blank or null.  Some menus are in fact aggregates of multiple menus, such as ids `31054` and `31230`, that include descriptions such as "62 menus bound into 1 volume".
 
 `MenuPage` is a collection of information about individual physical pages for a menu.  It contains a reference to a `menu_id` and a page number. (1202 have no page number, however).  An `image_id` field presumably references an image in another table, but there is no provided table that it references.  (23 rows in `image_id` include non-numeric values).  There are also `full_height` and `full_width` fields that seem to indicate an image size in pixels, though some appear incorrect or are altogether missing (such as id 329).  There is a `uuid` field that stores many distinct values but lacks a consistent format (some are upper case, while most are lower) and there is no indication what it references.  Finally, 5789 MenuPage rows are missing their referenced Menus.
 
