@@ -134,7 +134,7 @@ If we were to build a reference system over the raw data, the many inconsistenci
 
 > S1: Review (and update if necessary) your use case description and dataset description
 
-We will do this iteratively, but this will initially be led by Aaron.
+We expect to discover more features of (and issues with) this dataset, and thus additional use cases, as we proceed with data cleaning (DC). Thus, we'll review and update our use cases and dataset descriptions iteratively and as necessary. This work will initially be done by Aaron.
 
 > S2: Profile D to identify DQ problems: How do you plan to do it? What tools are you going to use?
 
