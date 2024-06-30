@@ -70,7 +70,7 @@ You'd likely be able to use standard data cleaning techniques to produce a datas
 
 >b. “Zero data cleaning” use case U0: data cleaning is not necessary (5 points)
 
-Since these raw data contain at least several inconsistencies we consider to be severe, we believe that they are unsuitable for use in user-facing applications. Further, we don't believe that data mining applications over the raw data would produce reliable results. Thus, we believe that only unsupervised learning applications would be suitable for the raw data. The accuracy of results generated from these applications should not be directly relied upon for critical applications.
+Since these raw data contain at least several inconsistencies we consider to be severe, we believe that they are unsuitable for use in user-facing applications.  Further, we don't believe that data mining applications over the raw data would produce reliable results.  Thus, we believe that only unsupervised learning applications would be suitable for the raw data.  The accuracy of results generated from these applications should not be directly relied upon for critical applications.
 
 >c. “Never enough” use case U2 : data cleaning is not sufficient (5 points)
 
@@ -83,51 +83,52 @@ We believe there are many applications for which even data cleaning would not be
 ### Data Quality Problems (30 points)
 > a. List obvious data quality problems with evidence (examples and/or screenshots) (20 points)
 
-Denormalized schema: not good for data quality.  Likely for a front-end application.
+Generally speaking, the schema for these data is largely denormalized, which reduces or eliminates the opportunity to establish referential integrity in many cases. These reductions in turn can reduce the overall quality of the data. We believe it's important to note, however, that many front-end applications -- particularly their performance -- can benefit from this denormalized arrangement.
 
 1. Dish
 2. Menu
 3. MenuItem
 4. MenuPage
-    No indication of the use for uuid.  Some rows with identical menu_ids and different page numbers have transposed full_height and full_width values indicating that one page is, possibly, rotated.
 
-    Image_id appears like a foreign key, but see the import errors.
-    MenuPage.csv:
-    image_id uses mixed types
+There is no indication of the use for the `uuid` column.  Some rows with identical `menu_id`s and different page numbers have transposed `full_height` and `full_width` values indicating that one page is, possibly, rotated.
 
-    ```text
-    13944:15: conversion failed: "ps_rbk_637" to double (image_id)
-    13945:15: conversion failed: "ps_rbk_657" to double (image_id)
-    13946:15: conversion failed: "ps_rbk_661" to double (image_id)
-    13947:15: conversion failed: "psnypl_rbk_951" to double (image_id)
-    13948:15: conversion failed: "psnypl_rbk_952" to double (image_id)
-    15101:15: conversion failed: "ps_rbk_686" to double (image_id)
-    15102:15: conversion failed: "ps_rbk_687" to double (image_id)
-    16876:15: conversion failed: "psnypl_rbk_925" to double (image_id)
-    16877:15: conversion failed: "psnypl_rbk_926" to double (image_id)
-    16878:15: conversion failed: "psnypl_rbk_927" to double (image_id)
-    16879:15: conversion failed: "psnypl_rbk_928" to double (image_id)
-    27286:15: conversion failed: "psnypl_rbk_988" to double (image_id)
-    28257:15: conversion failed: "psnypl_rbk_1068" to double (image_id)
-    34955:14: conversion failed: "psnypl_rbk_935" to double (image_id)
-    35153:15: conversion failed: "psnypl_rbk_936" to double (image_id)
-    35908:15: conversion failed: "psnypl_rbk_1077" to double (image_id)
-    35909:15: conversion failed: "psnypl_rbk_1078" to double (image_id)
-    35910:15: conversion failed: "psnypl_rbk_1079" to double (image_id)
-    35911:16: conversion failed: "psnypl_rbk_1080" to double (image_id)
-    55577:15: conversion failed: "ps_rbk_657" to double (image_id)
-    57108:15: conversion failed: "ps_rbk_637" to double (image_id)
-    60216:15: conversion failed: "ps_rbk_643" to double (image_id)
-    60217:15: conversion failed: "ps_rbk_644" to double (image_id)
-    ```
+The `image_id` column appears like a foreign key, but more than several errors occur when treating it as such.  This column also uses mixed numeric types.  Most of the fields appear to be representable as `double`s, but when attempting to convert the values in this column, the following conversion errors occur:
+
+```text
+13944:15: conversion failed: "ps_rbk_637" to double (image_id)
+13945:15: conversion failed: "ps_rbk_657" to double (image_id)
+13946:15: conversion failed: "ps_rbk_661" to double (image_id)
+13947:15: conversion failed: "psnypl_rbk_951" to double (image_id)
+13948:15: conversion failed: "psnypl_rbk_952" to double (image_id)
+15101:15: conversion failed: "ps_rbk_686" to double (image_id)
+15102:15: conversion failed: "ps_rbk_687" to double (image_id)
+16876:15: conversion failed: "psnypl_rbk_925" to double (image_id)
+16877:15: conversion failed: "psnypl_rbk_926" to double (image_id)
+16878:15: conversion failed: "psnypl_rbk_927" to double (image_id)
+16879:15: conversion failed: "psnypl_rbk_928" to double (image_id)
+27286:15: conversion failed: "psnypl_rbk_988" to double (image_id)
+28257:15: conversion failed: "psnypl_rbk_1068" to double (image_id)
+34955:14: conversion failed: "psnypl_rbk_935" to double (image_id)
+35153:15: conversion failed: "psnypl_rbk_936" to double (image_id)
+35908:15: conversion failed: "psnypl_rbk_1077" to double (image_id)
+35909:15: conversion failed: "psnypl_rbk_1078" to double (image_id)
+35910:15: conversion failed: "psnypl_rbk_1079" to double (image_id)
+35911:16: conversion failed: "psnypl_rbk_1080" to double (image_id)
+55577:15: conversion failed: "ps_rbk_657" to double (image_id)
+57108:15: conversion failed: "ps_rbk_637" to double (image_id)
+60216:15: conversion failed: "ps_rbk_643" to double (image_id)
+60217:15: conversion failed: "ps_rbk_644" to double (image_id)
+```
 
 >b. Explain why / how data cleaning is necessary to support the main use case U1 (10 points)
 
-We assume the "main use case" from U1 is non-production-critical online systems, such as reference systems. If we were to build a reference system over the raw data, the many inconsistencies and other issues with the data would produce results upon which we could not rely for any reasonable application. We must clean the data to reduce the number and severity of these inconsistencies enough to be able to rely upon at least the majority of the results fetched from the reference system.
+We assume the "main use case" from U1 is non-production-critical online systems (rather than data mining/analytics or unsupervised learning applications), such as reference systems.
+
+If we were to build a reference system over the raw data, the many inconsistencies and other issues with the data would produce results upon which we could not rely for any reasonable application, even if a single result in question were accurate.  We must clean the data to reduce the number and severity of these inconsistencies enough to be able to rely upon at least the majority of the results fetched from the reference system.
 
 ### Initial Plan for Phase-II (15 points)
 
-Below is a possible plan, listing typical data cleaning workflow steps. In your Plan for Phase-II, fill in additional details for the project steps as needed. In particular, include who of your team members will be responsible for which steps, and list the timeline that you are setting yourselves!
+Below is a possible plan, listing typical data cleaning workflow steps.  In your Plan for Phase-II, fill in additional details for the project steps as needed.  In particular, include who of your team members will be responsible for which steps, and list the timeline that you are setting yourselves!
 
 - S1: Review (and update if necessary) your use case description and dataset description
 - S2: Profile D to identify DQ problems: How do you plan to do it? What tools are you going to use?
