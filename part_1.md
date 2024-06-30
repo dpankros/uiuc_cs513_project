@@ -130,10 +130,33 @@ If we were to build a reference system over the raw data, the many inconsistenci
 
 ### Initial Plan for Phase-II (15 points)
 
-Below is a possible plan, listing typical data cleaning workflow steps.  In your Plan for Phase-II, fill in additional details for the project steps as needed.  In particular, include who of your team members will be responsible for which steps, and list the timeline that you are setting yourselves!
+>Below is a possible plan, listing typical data cleaning workflow steps.  In your Plan for Phase-II, fill in additional details for the project steps as needed.  In particular, include who of your team members will be responsible for which steps, and list the timeline that you are setting yourselves!
 
-- S1: Review (and update if necessary) your use case description and dataset description
-- S2: Profile D to identify DQ problems: How do you plan to do it? What tools are you going to use?
-- S3: Perform DC “proper”: How are you going to do it? What tools do you plan to use? Who does what?
-- S4: Data quality checking: is D’ really “cleaner” than D? Develop test examples / demos
-- S5: Document and quantify change (e.g. columns and cells changed, IC violations detected: before vs after, etc.)
+> S1: Review (and update if necessary) your use case description and dataset description
+
+We will do this iteratively, but this will initially be led by Aaron.
+
+> S2: Profile D to identify DQ problems: How do you plan to do it? What tools are you going to use?
+
+We have identified several large DQ problems. We plan to use a combination of SQL (primarily with SQLite), Pandas and OpenRefine to identify further DQ problems in more detail. We believe we currently know enough about the DQ problems in this dataset to proceed with DC, but we will iteratively refer back to our DQ research process as we proceed.
+
+> S3: Perform DC “proper”: How are you going to do it? What tools do you plan to use? Who does what?
+
+We expect to primarily use OpenRefine to do DC.
+
+> S4: Data quality checking: is `D’` really “cleaner” than D? Develop test examples / demos
+
+We actually want to determine two things about a new dataset `D'`:
+
+1. Is it a dataset that still represents `D` accurately?
+2. Is it really cleaner than `D`?
+
+While we plan to use OpenRefine to clean the data, we plan to use the features of a SQL database (primairly SQLite) to test for these two features.
+
+To determine (1), we plan to attempt to normalize the data and enforce a SQL schema. If we can do so with minimal or no errors in the import process, we expect features of the database like referential integrity and strict data typing will ensure the dataset still represents `D` accurately.
+
+We expect these features to also contribute to ensuring (2), but we also aim to develop a suite of database queries -- primarily those that join across more than 2 tables -- and acceptance criteria for the various results of each query.
+
+> S5: Document and quantify change (e.g. columns and cells changed, IC violations detected: before vs after, etc.)
+
+OpenRefine will give detailed provenance for all the cleaning operations we perform, and both the SQL import process and our acceptance-test suite of queries will give us a detailed, standard outline of IC violations etc...
