@@ -244,14 +244,21 @@ unsupervised learning applications), such as reference systems.
 
 If we were to build a reference system over the raw data, the many inconsistencies and other issues with the data would
 produce results upon which we could not rely for any reasonable application, even if a single result in question were
-accurate. We must clean the data to reduce the number and severity of these inconsistencies enough to be able to rely
-upon at least the majority of the results fetched from the reference system.
+accurate. This is particularly true for semantic issues where no straight-forward data manipulation will provide
+reliable data, other than manual human review.  We must clean the data to reduce the number and severity of these 
+inconsistencies enough to be able to rely upon at least the majority of the results fetched from the reference system.
 
 ### Initial Plan for Phase-II (15 points)
 
 > Below is a possible plan, listing typical data cleaning workflow steps. In your Plan for Phase-II, fill in additional
 > details for the project steps as needed. In particular, include who of your team members will be responsible for which
 > steps, and list the timeline that you are setting yourselves!
+
+As we document our steps for Phase II, we will include responsibilities for each part, but please understand that this
+is not the first project that the team members have completed.  They have a history of dividing up tasks in a fair and 
+amicable fashion, without an extensive project plan.  Both team members are comfortable and adept at working with 
+agile methodologies and these have worked well in the past for us.  All task assignments will be subject to change 
+based on our own personal and professional workloads.
 
 > S1: Review (and update if necessary) your use case description and dataset description
 
@@ -261,9 +268,15 @@ This work will initially be done by Aaron.
 
 > S2: Profile D to identify DQ problems: How do you plan to do it? What tools are you going to use?
 
-We have identified several large DQ problems. We plan to use a combination of SQL (primarily with SQLite), Pandas and
-OpenRefine to identify further DQ problems in more detail. We believe we currently know enough about the DQ problems in
-this dataset to proceed with DC, but we will iteratively refer back to our DQ research process as we proceed.
+We have already identified several large DQ problems. We plan to use a combination of SQL (primarily with SQLite), Pandas and
+OpenRefine to identify further DQ problems in more detail and, likely, to provide more nuance to the known problems. We 
+believe we currently know enough about the DQ problems in this dataset to proceed with DC, but we will iteratively refer 
+back to our DQ research process as we proceed.  This will likely be a combined effort between Aaron and Dave.
+
+One internal suggestion was to script all the data cleaning using python and refine-client.  This idea was discounted
+when it was observed that the last update to that library was over 10 years ago, and it barely supports python 3. In 
+fact, trying to run it using python 3 results in syntax errors from the library.  Thus, any further attempts to script
+data cleaning with python have been abandoned.
 
 > S3: Perform DC “proper”: How are you going to do it? What tools do you plan to use? Who does what?
 
@@ -276,12 +289,13 @@ We actually want to determine two things about a new dataset `D'`:
 1. Is it a dataset that still represents `D` accurately?
 2. Is it really cleaner than `D`?
 
-While we plan to use OpenRefine to clean the data, we plan to use the features of a SQL database (primairly SQLite) to
+While we plan to use OpenRefine to clean the data, we plan to use the features of a SQL database (primarily SQLite) to
 test for these two features.
 
-To determine (1), we plan to attempt to normalize the data and enforce a SQL schema. If we can do so with minimal or no
-errors in the import process, we expect features of the database like referential integrity and strict data typing will
-ensure the dataset still represents `D` accurately.
+To determine (1), we plan to attempt to normalize the data and enforce a SQL schema.  We can use views to represent a 
+version of the data matching the original dataset. If we can do so with minimal or no errors in the import process, we 
+expect features of the database like referential integrity and strict data typing will ensure the dataset still 
+represents `D` accurately.
 
 We expect these features to also contribute to ensuring (2), but we also aim to develop a suite of database queries --
 primarily those that join across more than 2 tables -- and acceptance criteria for the various results of each query.
@@ -289,10 +303,10 @@ primarily those that join across more than 2 tables -- and acceptance criteria f
 Example test cases:
 
 - For tables from the original dataset that purport to include the number of pages, dishes, etc (the "Original Number"),
-  can a query be constructed for the cleaned dataset that returns the same value as the Original Number.
+  is the Original Number accurate?  If so, can a query be constructed for the cleaned dataset that returns the same value as the Original Number.
 - Are all foreign key violations resolved? (i.e. For all cases, are there primary keys in the foreign table
   corresponding to the foreign key?)
--
+- 
 
 > S5: Document and quantify change (e.g. columns and cells changed, IC violations detected: before vs after, etc.)
 
