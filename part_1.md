@@ -2,7 +2,8 @@
 ## Part 1
     Team ID: ______
     Team Name: ______
-    David Pankros, Aaron Schlesinger {pankros2, __}@illinois.edu
+    Aaron Schlesinger and David Pankros 
+    {aschle2, pankros2}@illinois.edu
 
 > The title / header of your Phase-I report should list (i) the Team-ID of your group1 and (ii) for each group member the name and Illinois email address
 > 
@@ -156,6 +157,11 @@ While we plan to use OpenRefine to clean the data, we plan to use the features o
 To determine (1), we plan to attempt to normalize the data and enforce a SQL schema. If we can do so with minimal or no errors in the import process, we expect features of the database like referential integrity and strict data typing will ensure the dataset still represents `D` accurately.
 
 We expect these features to also contribute to ensuring (2), but we also aim to develop a suite of database queries -- primarily those that join across more than 2 tables -- and acceptance criteria for the various results of each query.
+
+Example test cases:
+- For tables from the original dataset that purport to include the number of pages, dishes, etc (the "Original Number"), can a query be constructed for the cleaned dataset that returns the same value as the Original Number.
+- Are all foreign key violations resolved? (i.e. For all cases, are there primary keys in the foreign table corresponding to the foreign key?)
+-
 
 > S5: Document and quantify change (e.g. columns and cells changed, IC violations detected: before vs after, etc.)
 
