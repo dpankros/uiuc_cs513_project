@@ -205,6 +205,7 @@ menu or if it is simply erroneous.
 The `image_id` column appears to be a foreign key to an unprovided collection of images, but many errors occur when 
 treating it as such because while predominantly integers are present, values such as 'psnypl_rbk_936' are also contained 
 in that column. 
+
 `full_height` and `full_width` likely are the width in pixels of the referenced image.  One would expect the pages of a 
 menu to have the same proportions, but Some rows with identical `menu_id`s and different page numbers have transposed 
 full_height` and `full_width` values indicating that one (or more) page(s) is/are, possibly, rotated.
