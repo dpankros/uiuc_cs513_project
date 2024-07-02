@@ -321,12 +321,23 @@ The schema for this table is as follows:
 
 This table has the following quality issues:
 
-- The `price` column appears to have a similar purpose as other collections, but like in those other collections, it does not indicate a currency and it's values vary wildly from 0 to 190,000
+- The `price` column appears to have a similar purpose as other collections, but like in those other collections, it does not indicate a currency and it's values vary wildly from 0 to 190,000, and include empty values.
+  - Row IDs with empty `price` columns include the following: `15`, `31`, `48`, and more
+  - Row IDs with the value `0` in the `price` column include the following: `13009`, `24903`, and `31144`
+  - Row IDs with values above `100,000` in the `price` column, along with their values include the following:
+    - `485274`: `110000.0`
+    - `485279`: `180000.0`
+    - `485280`: `180000.0`
+    - `485281`:	`160000.0`
 - The `high_price` column is a bigger mystery in this table. In many rows, its value is completely missing, and when it's present, we can currently only guess its purpose.
-- The `dish_id` column contains 241 nulls or blank values.  Like `high_price`, we can currently only guess its purpose.
-- The `created_at` and `updated_at` columns seem to be fairly-standard database creation/update timestamps and have no observable issues. 
-- The `xpos` and `ypos` columns have semantic issues in that it is impossible to understand their use without more information. They appear to represent coordinates, but we can only guess to what. Similar to other tables with these columns, we also can only guess whether they represent a center point, a corner, or something else. We also are unclear why there is no width and height to define a bounding box?
-
+  - `1240821` rows in the `MenuItem` have missing `high_price` values, while the remaining `91905` rows do not. Non-blank `high_price` values are in the range `[0, 7800.0]`.
+- The `dish_id` column contains 241 blank values.  Like `high_price`, we can currently only guess its purpose.
+  - Row IDs in which `dish_id` are blank include the following: `19171`, `22322`, `31566`, and more
+- The `created_at` and `updated_at` columns seem to be fairly-standard database creation/update timestamps and have no observable issues.
+- The `xpos` and `ypos` columns have semantic issues making it impossible to understand their use without more information. These issues include the following:
+  - These columns appear to represent coordinates, but we can only guess to what
+  - Similar to other tables with these columns, we also can only guess whether they represent a center point, a corner, or something else
+  - Finally, we also are unclear why there is no width and height to define a bounding box
 
 ### Supporting use case U1
 
