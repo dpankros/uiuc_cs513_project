@@ -135,9 +135,9 @@ The `MenuItem` table is a collection of what must be assumed to be individual bl
 
 - A `price` column indicating the price of the dish on the menu,
 - A `high_price` column which is presumably the highest price among a collection of MenuItems, but the domain of such a set is unclear,
-- A `dish_id` columns referencing a dish in the `Dish` table (multiple menu items may reference the same dish for comparison purposes),
-- A `created_at` columns indicating when a menu item was created, and an `updated_at` column indicating when it was updated (or, more accurately, when the database entry was created and updated),
-- `xpos` and `ypos` columns, presumably representing the location relative to the overall width and height of the dish on the menu
+- A `dish_id` column referencing a dish in the `Dish` table (multiple menu items may reference the same dish for comparison purposes),
+- A `created_at` column indicating when a menu item was created, and an `updated_at` column indicating when it was updated (or, more accurately, when the database entry was created and updated),
+- `xpos` and `ypos` column, presumably representing the location relative to the overall width and height of the dish on the menu
 - All `xpos` values are in the domain `[0,1)` and `ypos` values are in the domain `[0,1]`. This domain was verified using SQL query `SELECT min(xpos), max(xpos), min(ypos), max(ypos) FROM MenuItem;`)  
 
 A few additional notes about these columns:
