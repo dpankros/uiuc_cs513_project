@@ -178,11 +178,11 @@ We believe there are many applications for which even data cleaning would not be
 
 ### Data Quality Problems (30 points)
 
-> a. List obvious data quality problems with evidence (examples and/or screenshots) (20 points)
+Generally speaking, the schema for these data is largely denormalized, which reduces or eliminates the opportunity to establish referential integrity in many cases. In cases where a table appears to have a column _intended to be_ a foreign key, not all values in that column are valid (i.e. do not reference a valid row in the target table, or appear to reference a table that was not provided).
 
-Generally speaking, the schema for these data is largely denormalized, which reduces or eliminates the opportunity to establish referential integrity in many cases. These reductions or limitations can in turn can reduce the overall quality of the data.
+These reductions or limitations can in turn can reduce the overall quality of the data.
 
-We believe it's important to note, however, that many front-end applications can benefit from this denormalized arrangement, particularly their performance.
+We believe it's important to note, however, that many front-end applications could benefit from this denormalized arrangement, particularly their performance.
 
 We detail specific data quality problems for each table below.
 
