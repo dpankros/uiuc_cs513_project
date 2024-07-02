@@ -357,22 +357,29 @@ Both team members are comfortable and adept at working with agile methodologies 
 
 #### Step 1: Review (and update if necessary) your use case description and dataset description
 
-We expect to discover more features of (and issues with) this dataset, and thus additional use cases, as we proceed with data cleaning (DC). Thus, we'll review and update our use cases and dataset descriptions iteratively and as necessary. This work will initially be done by Aaron.
+We expect to discover more features of (and issues with) this dataset, and thus additional use cases, as we proceed with data cleaning (DC).  Thus, we'll review and update our use cases and dataset descriptions iteratively and as necessary.  This work will initially be done by Aaron.
+
+For example, as we proceed with our DC work, we expect we may gain more context as to what, exactly, the various `xpos` and `ypos` values represent in the `MenuItem` table. If this happens, we will update our dataset description accordingly.
 
 #### Step 2: Profile D to identify DQ problems: How do you plan to do it? What tools are you going to use?
 
-We have already identified several large DQ problems. We plan to use a combination of SQL (primarily with SQLite), Pandas and OpenRefine to identify further DQ problems in more detail and, likely, to provide more nuance to the known problems.
+We believe we currently know enough about the DQ problems in this dataset to proceed with DC, but we'll refer back to our DQ research process as we proceed.  To start the DC process, we plan to use OpenRefine to isolate and fix the known "low hanging fruit" like the heterogenous tag delimiter syntax in the applicable tables (discussed above). Tasks like these can be done relatively easily using OpenRefine's basic filtering features.
 
-We believe we currently know enough about the DQ problems in this dataset to proceed with DC, but we will iteratively refer back to our DQ research process as we proceed.  This will likely be a combined effort between Aaron and Dave.
+After we tackle low-hanging fruit, we plan to use a combination of SQL (primarily SQLite), OpenRefine's more complex features like facets, and Pandas to do more complex data cleaning operations.  Such operations might include normalizing the various `*_price` columns discussed above, attempting to "fix" `xpos` and `ypos` coordinate values (if possible), or filtering foreign key constraints.
 
+As we proceed with our profiling process, we plan to feed our discoveries back into step 1 to update our dataset description.
+
+As this work has significant overlap with step 1, it will likely be a combined effort between Aaron and Dave.
 
 #### Step 3: Perform DC “proper”: How are you going to do it? What tools do you plan to use? Who does what?
 
-We expect to primarily use OpenRefine to do DC.  We already have a good idea of the domain of values stored in each column.  From there we can assign a suitable type to each.  For values that are text, we can further designate a canonical capitalization format, a canonical delimiter, and convert the values to those.  Once values are standardized, they can be separated and clustered into groups of like tags.  
+This step has some overlap with step 2 since our profiling process will likely involve some DC work.  In other words, as we identify issues with our data, we'll likely be able to more easily fix them.
 
-One internal suggestion was to script all the data cleaning using python and refine-client.  This idea was discounted when it was observed that the last update to that library was over 10 years ago, and it barely supports python 3.  In fact, trying to run it using python 3 results in syntax errors from the library.  Thus, any further attempts to script data cleaning with the official python library have been abandoned.  
+In more detail, we expect to primarily use OpenRefine to do DC.  We already have a good idea of the domain of values stored in each column.  From there we can assign a suitable type to each.  For values that are text, for example, we can further designate a canonical capitalization format, a canonical delimiter, and convert the values to those.  Once values are standardized, they can be separated and clustered into groups of like tags.
 
-In light of that Dave has undertaken to create a new client library as a proof of concept and good progress has already been made. Dave will likely continue this work, but creating a repeatable cleaning workflow allows either member of the team to contribute and change the cleaning process.  This allows for better collaboration.
+We have already tried to script all the data cleaning using OpenRefine's API and the Python [`refine-client`](https://pypi.org/project/refine-client/).  This idea was discounted when it was observed that the last update to that library was over 10 years ago, and it barely supports python 3.  In fact, trying to run it using python 3 results in syntax errors from the library.  Thus, any further attempts to script data cleaning with the official python library have been abandoned.  
+
+In light of that, Dave has undertaken to create a new client library as a proof of concept and good progress has already been made. Dave will likely continue this work, but creating a repeatable cleaning workflow allows either member of the team to contribute and change the cleaning process.  This functionality would thus allow for better collaboration and we anticipate that, like in step 2, this work will be a combined effort between Aaron and Dave.
 
 #### Step 4: Data quality checking: is `D’` really “cleaner” than D? Develop test examples / demos
 
@@ -393,6 +400,10 @@ Example test cases:
   - If so, can a query be constructed for the cleaned dataset that returns the same value as the Original Number?
 - Are all foreign key violations resolved? (i.e. For all cases, are there primary keys in the foreign table corresponding to the foreign key?)
 
+As we begin to make meaningful progress on cleaning, we plan to discuss amongst ourselves who will take on the work to develop these test cases.
+
 #### Step 5: Document and quantify change (e.g. columns and cells changed, IC violations detected: before vs after, etc.)
 
 If we continue with the Python implementation, we will have executable documentation of provenance through that workflow and the associated OpenRefine cleaning operations we perform, and both the SQL import process and our acceptance-test suite of queries will give us a detailed, standard outline of IC violations etc...
+
+If we do not continue with the Python implementation, we plan to still export the standard OpenRefine-provided provenance data and the full suite of SQL queries we ran to perform all steps.
