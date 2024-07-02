@@ -365,7 +365,7 @@ For example, as we proceed with our DC work, we expect we may gain more context 
 
 We believe we currently know enough about the DQ problems in this dataset to proceed with DC, but we'll refer back to our DQ research process as we proceed.  To start the DC process, we plan to use OpenRefine to isolate and fix the known "low hanging fruit" like the heterogenous tag delimiter syntax in the applicable tables (discussed above). Tasks like these can be done relatively easily using OpenRefine's basic filtering features.
 
-After we tackle low-hanging fruit, we plan to use a combination of SQL (primarily SQLite), OpenRefine's more complex features like facets, and Pandas to do more complex data cleaning operations.  Such operations might include normalizing the various `*_price` columns discussed above, attempting to "fix" `xpos` and `ypos` coordinate values (if possible), or filtering foreign key constraints.
+After we tackle low-hanging fruit, we plan to use a combination of SQL (primarily SQLite), OpenRefine's more complex features like facets and clustering, and Pandas to do more complex data cleaning operations.  Such operations might include normalizing the various `*_price` columns discussed above, attempting to "fix" `xpos` and `ypos` coordinate values (if possible), or filtering foreign key constraints.
 
 As we proceed with our profiling process, we plan to feed our discoveries back into step 1 to update our dataset description.
 
