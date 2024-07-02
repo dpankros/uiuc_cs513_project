@@ -184,7 +184,7 @@ These reductions or limitations can in turn can reduce the overall quality of th
 
 We believe it's important to note, however, that many front-end applications could benefit from this denormalized arrangement, particularly their performance.
 
-We detail specific data quality problems for each table below.
+We detail specific data quality problems, including examples, for each table below.
 
 #### `Dish`
 
@@ -207,11 +207,17 @@ The schema for this table is as follows:
 
 This table has several data quality problems, including the following:
 
-- The `description` column is wholly unused.
-- The `menus_appeared` column contains values from 0 to 7800.  The fact that rows in this collection indicate there are dishes that don't appear in any menu strongly suggests that those rows are incorrect.  This inconsistency calls into question the accuracy of all the data stored in `menus_appeared`.
-- The `times_appeared` column similarly contains errors that call into question the accuracy of the data stored therein.  Obviously, negative numbers have no value and are erroneous.
-- The `first_appeared` and `last_appeared` columns contain years and unless the dataset is documenting menus from the time Christ's birth, not to mention almost one-thousand years into the future, there are obvious quality problems present.
-- The `lowest_price` and `highest_price` columns presumably contain currency values, but no units are referenced by the table, calling into question the usability of the column and whether it is consistent with the currency in Menu and how this column would resolve values expressed in different currencies.
+- The `description` column is wholly unused -- its values are all missing.
+- The `menus_appeared` column contains values from 0 to 7800.  We assume this column indicates the number of menus in which the applicable dish appears, and many rows (i.e. IDs 88446, 132992, 164029, etc...) have `0` in this column, indicating there are 0 menus in which the dish appeared.
+  - The fact that rows in this collection indicate there are dishes that don't appear in any menu strongly suggests that those rows are incorrect.  This inconsistency calls into question the accuracy of all the data stored in this column.
+- The `times_appeared` column contains negative numbers, which likely have no meaning in this context, calling into question the accuracy of data in this column. Examples of rows with negative numbers include IDs `445236`, `457504`, `510718`, and `223497`.
+- The `first_appeared` and `last_appeared` columns seem to represent the year at which the `Dish` first and last appeared on a `Menu`. Several `Dish`es contain `0` in one or both of these columns, and several others contain values into the future. Examples of both cases are shown below. The former case indicates a `Dish` first or last appeared on a `Menu` over 2000 years ago, and the latter case indicates a `Dish` that will appear on a `Menu` in the future. Both cases are obviously incorrect.
+  - Several `Dish`es contain `0` in one or both of these columns, including IDs `340`, `2005`, and `2056`.
+  - Further, several `Dishes` contain values in the future, including IDs `415521`, `415523`, `415525`, and `415526`
+- The `lowest_price` and `highest_price` columns presumably contain currency values, but some values are missing, and no units are referenced by the table. Values in these columns have several issues, calling into question the usability of both of these columns:
+  - Many rows are missing values for one or both of these columns, including `Dish`es with IDs `34`, `39`, and `60`
+  - Other rows have `0` for one or both of these columns, including `Dish`es with IDs `933`, `934`, and `936`
+  - No currency is listed for any values in either of these columns, calling into question both the usability of these values as-is, and how this column would resolve values expressed in different currencies.
 
 #### `Menu`
 
