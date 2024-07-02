@@ -247,12 +247,27 @@ The schema for this table is as follows:
 | Menu     | page_count           | int      | 0          | [1,75]                |
 | Menu     | dish_count           | int      | 0          | [0,4100]              |
 
-This table contains several significant data quality problems that call into question the integrity and accuracy of these data. These include:
+This table contains several significant data quality problems that call into question the integrity and accuracy of these data. These problems include:
 
-- In the Menu collection the `name`, `occasion` and `location_type` columns are frequently blank or null. Some menus are in fact aggregates of multiple menus, such as ids `31054` and `31230`, that include descriptions such as "62 menus bound into 1 volume". Such semantic inconsistencies will be difficult to remove from the data by automated methods.
-- As mentioned previously, The `physical_description` and `occasion` columns are really separate collections of "tags" that describe the menu. Formats of these columns vary: some are not delimited, some are delimited, and some are encapsulated in hard-brackets (and seemingly limited to 8 characters).
-- Further, 5 menu rows indicate a different number of pages than are actually stored in the referenced `MenuPage` table, and 217 Menus also differ in the number of Dishes stored versus the number of dishes referenced in the `dish_count` column. In each instance, only the first page number is stored.
-- Finally, some "pages" seemingly contain hundreds of dishes, which calls into question whether the `page_number` column is actually used in a semantically consistent way.
+- The `name`, `occasion` and `location_type` columns are frequently blank or null, including in row IDs `12463`, `12465`, and `12468`. Further, some menus appear to be aggregates of multiple menus, such as in row IDs `31054` and `31230`.  These aggregate representations include descriptions such as `"62 menus bound into 1 volume"`. Such semantic inconsistencies will be difficult to remove from the data by automated methods.
+- As mentioned previously, The `physical_description` and `occasion` columns are really separate collections of "tags" that describe the menu. Formats of these columns vary: some are blank, some are non-empty but not delimited, some are non-empty but delimited, and some are non-empty and encapsulated in hard-brackets (and seemingly limited to 8 characters). Some examples of these inconsistencies are listed below:
+  - Row ID `12465`: `occassion` is empty
+  - Row ID `12836`: `occassion` is non-empty and non-delimited (`COMPLIMENTARY/TESTIMONIAL`)
+  - Row ID `31575`: `physical_description` is non-empty and delimited (`30x22.5cm folded; 30x45cm open`)
+  - Row ID `13926`: `occassion` is non-empty and encapsulated in brackets (`[COMPLIMENTARY TO COMMODORE C. WE. BLISS]`)
+- 5 `Menu` rows indicate a different number of pages than are actually stored in the referenced `MenuPage` table. These rows have IDs `26577`, `26739`, `32086`, `32663`, and `33648`.
+  - Assuming all of the CSV files are loaded into SQLite, the following query can be used to fetch all 5 rows adhering to these criteria:
+  
+    ```sql
+    select M.id, count(MP.id), M.page_count from Menu M left join main.MenuPage MP on M.id = MP.menu_id group by M.id having count(MP.id) <> M.page_count;
+    ```
+
+- 217 `Menu` rows differ in the number of `Dish`es stored versus the number of `Dish`es referenced in the `dish_count` column. Rows with these inconsistencies include IDs `12474`, `12498`, `12611`, and more. In each of these instances, only the first page number is stored.
+  - Assuming all of the CSV files are loaded into SQLite, the following query can be used to fetch all 217 rows adhering to these criteria:
+
+    ```sql
+    select M.id, MP.page_number, M.page_count, count(D.id) as 'Dishes in DB', M.dish_count from Menu M left join main.MenuPage MP on M.id = MP.menu_id left join main.MenuItem MI on MP.id = MI.menu_page_id left join main.Dish D on MI.dish_id = D.id group by M.id having count(D.id) <> M.dish_count order by M.id asc, MP.page_number asc;
+    ```
 
 #### `MenuPage`
 
@@ -271,6 +286,7 @@ The schema for this table is as follows:
 This table contains the following data quality issues:
 
 - The `page_number` column contains blank values.  It is unknown if a blank should be considered the first page, such as in a one-page menu or if it is simply erroneous.
+- Some `Menu`s seemingly contain hundreds of dishes, which calls into question whether the `page_number` column is actually used in a semantically consistent way.
 - The `image_id` column appears to be a foreign key to an unprovided table of images or references to images, but many errors occur when treating it as such because while predominantly integers are present, 23 outlier values such as `psnypl_rbk_936`, which are nonsensical, also appear in that column.
 - The `full_height` and `full_width` columns likely represent the width in pixels of the referenced image.  One would expect the pages of a menu to have the same proportions, but Some rows with identical `menu_id`s and different page numbers have transposed `full_height` and `full_width` values indicating that one (or more) page(s) is/are, possibly, rotated.
 - There is no indication of the use for the `uuid` column and the column name provides no clues.  Their format generally indicates they are valid UUIDs, and a quick "spot check" indicates many of them are parseable as such, but we haven't yet tried to parse all values.
