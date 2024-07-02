@@ -286,11 +286,21 @@ The schema for this table is as follows:
 This table contains the following data quality issues:
 
 - The `page_number` column contains blank values.  It is unknown if a blank should be considered the first page, such as in a one-page menu or if it is simply erroneous.
+  - Row IDs with empty `page_number` values include `44543`, `44544`, and `44545`
 - Some `Menu`s seemingly contain hundreds of dishes, which calls into question whether the `page_number` column is actually used in a semantically consistent way.
-- The `image_id` column appears to be a foreign key to an unprovided table of images or references to images, but many errors occur when treating it as such because while predominantly integers are present, 23 outlier values such as `psnypl_rbk_936`, which are nonsensical, also appear in that column.
+  - For example, there are `176` `MenuItem` rows that belong to the `MenuPage` with ID `168`
+- The `image_id` column appears to be a foreign key to an unprovided table of images or references to images, but many errors occur when treating it as such because while predominantly integers are present, 23 outlier values such as `psnypl_rbk_936` (in row ID `45598`), which are nonsensical, also appear in that column.
 - The `full_height` and `full_width` columns likely represent the width in pixels of the referenced image.  One would expect the pages of a menu to have the same proportions, but Some rows with identical `menu_id`s and different page numbers have transposed `full_height` and `full_width` values indicating that one (or more) page(s) is/are, possibly, rotated.
+  - Row IDs `119` and `120` hold an example of this transposition
 - There is no indication of the use for the `uuid` column and the column name provides no clues.  Their format generally indicates they are valid UUIDs, and a quick "spot check" indicates many of them are parseable as such, but we haven't yet tried to parse all values.
-- 5789 rows in the `MenuPage` table are missing their referenced Menus. 
+- 5789 rows in the `MenuPage` table are missing their referenced `Menu`s.
+  - Row IDs with missing `Menu`s include `119`, `120`, `952`, `1022`, and more. Assuming all CSVs are loaded into SQLite, the following query can be used to return all rows adhering to these criteria:
+  
+    ```sql
+    select * from MenuPage MP
+    left outer join main.Menu M on M.id = MP.menu_id
+    where M.id is NULL;
+    ```
 
 #### `MenuItem`
 
