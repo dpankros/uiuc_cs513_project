@@ -155,26 +155,27 @@ A few additional notes about these columns:
 
 You'd likely be able to use standard data cleaning techniques to produce a dataset suitable for at least the following applications:
 
-- Non-production-critical online applications like reference systems
-- Data mining applications like analytics systems concerning the New York City restaurant industry
-- Unsupervised machine learning applications, which would likely be most valuable for pattern recognition and possible
-  generative AI use cases
+- Non-production-critical online applications like reference systems that allow experienced, trained users to search for and view menus and dishes.  Such a system could be used by researchers, historians, or other professionals who need to efficiently access the data in a structured format
+- Data mining applications like analytics systems concerning the New York City restaurant industry.  Data mining applications and reference systems like those mentioned above might share some common functionality.
+- Unsupervised machine learning applications, which would likely be most valuable for pattern recognition and possible generative AI use cases.  These machine learning applications might share some common functionality with data mining applications.
 
 #### Use case U0 - “Zero data cleaning”
 
-Since these raw data contain at least several inconsistencies we consider to be severe, we believe they are unsuitable for use in user-facing applications. Further, we don't believe that data mining applications over the raw data would produce reliable results. 
+Since these raw data contain at least several inconsistencies we consider to be severe, we believe they are unsuitable for use in most user-facing applications. Further, we don't believe that data mining applications over the raw data would produce reliable results.
 
-Thus, we believe that only unsupervised learning applications would be suitable for the raw data. The accuracy of results generated from these applications should not be directly relied upon for critical applications, however.
+We believe that only some unsupervised learning applications would be suitable for the raw, un-cleaned data.  The accuracy of results generated from these applications should not be directly relied upon for critical applications, however.  For example, an unsupervised learning application that can identify menu item trends, clusters, or relative pricing over time could be appropriate, but an application that directly used those results to forecast revenue for an active restaurant business would likely not be appropriate.
 
-There may also be semantically consistent subsets of the data that may be able to be cleaned and used.  For example, data after a certain date may be consistent and therefore usable whereas earlier data is sufficiently inconsistent that it would require manual cleaning that is highly error-prone. This can be determined after further study of the data is completed.
+There may also be semantically consistent subsets of the data that may be able to be cleaned and used.  For example, only menu data after a certain date or belonging to a certain geographical region may be consistent and therefore usable whereas other data is inconsistent and would require highly error-prone manual cleaning.  We expect to be able to determine if such subsets exist as we proceed with data cleaning.
 
 #### Use case U2 - "Never Enough"
 
 We believe there are many applications for which even data cleaning would not be sufficient, including the following:
 
-- Any application involving knowing true prices because the currency is very sparse. We can guess, but never know, that the prices are in comparable units.
-- Any application for which data accuracy and consistency is critical. We anticipate these applications will primarily be user-facing
-- Automated systems in which the results of the automation are used to ensure safety, drive revenue, or other critical purposes.
+- Any application that involves knowing true prices. Our pricing information is semantically incomplete so we can guess but never know whether prices are in comparable units.
+- Any application that requires knowing the exact location of a dish on a menu page.  The `xpos` and `ypos` columns, discussed below, are not well-defined and would require additional information to be useful.
+- Any application that relies on strong referential integrity, like lookup or reference systems that rely on foreign keys.  Our data has missing foreign keys, foreign keys referencing non-existent rows, and even foreign keys that reference non-existent tables.
+
+Generally speaking, any application for which data accuracy and consistency is critical, especially applications used to ensure safety, drive revenue, or perform other critical tasks, should not be built on top of these data. We anticipate many, but not all, of these applications will primarily be user-facing.
 
 ### Data Quality Problems (30 points)
 
@@ -350,10 +351,9 @@ We must clean the data to reduce the number and severity of these inconsistencie
 
 ### Initial Plan for Phase-II (15 points)
 
-As we document our steps for Phase II, we will include responsibilities for each part, but please understand that this team has completed significant projects in the past. All its members have a proven track record history of dividing up tasks in a fair and 
-amicable fashion, without an extensive project plan.
+As we document our steps for Phase II, we will include responsibilities for each part, but please understand that this team has completed significant projects in the past. All its members have a proven track record of successfully dividing up tasks in a fair and amicable fashion, without an extensive prior project plan.
 
-Both team members are comfortable and adept at working with agile methodologies and have previously found success in doing so.  All task assignments will be subject to change based on our own personal and professional workloads.
+Further, both team members are comfortable with and have been successful working with agile methodologies.  All task assignments will be subject to change based on what we discover as we proceed through each step, our development of the Python client (discussed below in steps 3 and 5), and our own personal and professional workloads.
 
 #### Step 1: Review (and update if necessary) your use case description and dataset description
 
@@ -407,3 +407,5 @@ As we begin to make meaningful progress on cleaning, we plan to discuss amongst 
 If we continue with the Python implementation, we will have executable documentation of provenance through that workflow and the associated OpenRefine cleaning operations we perform, and both the SQL import process and our acceptance-test suite of queries will give us a detailed, standard outline of IC violations etc...
 
 If we do not continue with the Python implementation, we plan to still export the standard OpenRefine-provided provenance data and the full suite of SQL queries we ran to perform all steps.
+
+Regardless of direction, we expect the work to complete this step will be largely done for us as we complete DC. Any remaining work will be split between Dave and Aaron.
