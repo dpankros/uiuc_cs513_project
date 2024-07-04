@@ -17,6 +17,7 @@ Aaron Schlesinger and David Pankros
 
 Overall, the dataset appears to be data captured from digitized menus which was subsequently structured into the menu, pages, menu items in pages and then the dishes on the pages.  Each will be described in more detail, below.
 
+
 #### ER Diagram
 
 ~~~mermaid
@@ -81,14 +82,15 @@ Overall, the dataset appears to be data captured from digitized menus which was 
 
 ~~~
 
+
 #### `Dish`
 
-The `Dish` table contains information about food dishes, the number of menus in which they appear, a high and low price for each dish, and a first and last appearance year. Thus, "Bread" could appear as a dish and it may be referenced by several Menus as MenuItems. 
+The `Dish` table contains information about food dishes, the number of menus in which they appear, a high and low price for each `Dish`, and a first and last appearance year. Thus, "Bread" could appear as a row in `Dish` and it may be referenced by several `Menus` as `MenuItems`. 
 
 
 #### `Menu`
 
-The `Menu` table is relatively more complex and contains a collection of the following columns:
+Conceptually, `Menu` represents one physical menu that is provided to a guest at a restaurant or an event. The `Menu` table is relatively more complex and contains a collection of the following columns:
 
 - sponsors,
 - events,
@@ -105,21 +107,12 @@ The `Menu` table is relatively more complex and contains a collection of the fol
 - a currency symbol (used when currency is designated),
 - a status field (presumably for an internal workflow),
 - a menu page count, and
-- the number of dishes on the menu
-
-Additional notes about select columns in this table:
-
-- The `physical_description` column is really a separate collection of "tags" that describe the menu, and these data would thus be better stored as a separate table
-- The `occasion` column is also potentially representative of some kind of tag,
-but the format varies. Some values are delimited by semi-colon, some are not delimited, and some are encapsulated in hard-brackets (and seemingly limited to 8 characters).
-
-Conceptually, Menu represents one physical menu that is provided to a guest at a restaurant or an event.
-
+- the number of dishes on the `Menu` row
 
 #### `MenuPage`
 
 
-The `MenuPage` table is a collection of information about individual physical pages for a menu. It contains a reference to a `menu_id` and a page number. 
+The `MenuPage` table is a collection of information about individual physical pages for a `Menu`. It contains a reference to a `menu_id` and a `page_number`. 
 
 The `image_id` column presumably references an image in another table, but there is no provided table that it references. 
 
@@ -131,21 +124,13 @@ There is a `uuid` field that stores many distinct values but lacks a consistent 
 #### `MenuItem`
 
 
-The `MenuItem` table is a collection of what must be assumed to be individual blocks of text that map to dishes that appear on a menu page.  `MenuItem`s include the following columns:
+The `MenuItem` table is a collection of what must be assumed to be individual blocks of text that map to `Dish`es that appear on a `MenuPage`.  `MenuItem`s include the following columns:
 
-- A `price` column indicating the price of the dish on the menu,
-- A `high_price` column which is presumably the highest price among a collection of MenuItems, but the domain of such a set is unclear,
-- A `dish_id` column referencing a dish in the `Dish` table (multiple menu items may reference the same dish for comparison purposes),
-- A `created_at` column indicating when a menu item was created, and an `updated_at` column indicating when it was updated (or, more accurately, when the database entry was created and updated),
-- `xpos` and `ypos` column, presumably representing the location relative to the overall width and height of the dish on the menu
-- All `xpos` values are in the domain `[0,1)` and `ypos` values are in the domain `[0,1]`. This domain was verified using SQL query `SELECT min(xpos), max(xpos), min(ypos), max(ypos) FROM MenuItem;`)  
-
-A few additional notes about these columns:
-
-- The `xpos` and `ypos` columns do not indicate the location of the origin (i.e. is `(0,0)` the top-left or bottom left of the page, for example?), nor do they indicate whether the position is the center of the block or whether it is a corner of a block.
-- The `price` column does not indicate units. You could presumably join `MenuItem` to `MenuPage` and then to `Menu` to (sometimes) discern the price _and_ the currency of the price.
-- 35 `MenuItem`s are missing their referenced `MenuPage`, via the `menu_page_id` column
-- 244 `MenuItem`s are missing their referenced `Dish`, via the `dish_id` column
+- A `price` column indicating the price of the `Dish` on the `Menu`.
+- A `high_price` column which is presumably the highest price among a collection of `MenuItems`, but the domain of such a set is unclear.
+- A `dish_id` column referencing a row in the `Dish` table (multiple `MenuItem` rows may reference the same `Dish` row for comparison purposes).
+- A `created_at` column indicating when a `MenuItem` row was created, and an `updated_at` column indicating when it was updated (or, more accurately, when the database row was created and updated).
+- `xpos` and `ypos` column, presumably representing the location relative to the overall width and height of the `Dish` on the `MenuPage`. All `xpos` values are in the domain `[0,1)` and `ypos` values are in the domain `[0,1]`. This domain was verified using SQL query `SELECT min(xpos), max(xpos), min(ypos), max(ypos) FROM MenuItem;`).
 
 
 ### Use Cases (30 points)
@@ -155,24 +140,24 @@ A few additional notes about these columns:
 
 You'd likely be able to use standard data cleaning techniques to produce a dataset suitable for at least the following applications:
 
-- Non-production-critical online applications like reference systems that allow experienced, trained users to search for and view menus and dishes.  Such a system could be used by researchers, historians, or other professionals who need to efficiently access the data in a structured format
+- Non-production-critical online applications like reference systems that allow experienced, trained users to search for and view `Menu`s and `Dish`es.  Such a system could be used by researchers, historians, or other professionals who need to efficiently access the data in a structured format.
 - Data mining applications like analytics systems concerning the New York City restaurant industry.  Data mining applications and reference systems like those mentioned above might share some common functionality.
 - Unsupervised machine learning applications, which would likely be most valuable for pattern recognition and possible generative AI use cases.  These machine learning applications might share some common functionality with data mining applications.
+- There may also be semantically consistent subsets of the data that may be able to be cleaned and used for some applications beyond those mentioned above.  For example, a subset of `Menu` data after a certain date or belonging to a certain geographical region may be consistent, and therefore usable, whereas other data that is inconsistent would require highly error-prone manual cleaning.  We expect to be able to determine if such subsets exist as we proceed with data cleaning.
 
 #### Use case U0 - “Zero data cleaning”
 
 Since these raw data contain at least several inconsistencies we consider to be severe, we believe they are unsuitable for use in most user-facing applications. Further, we don't believe that data mining applications over the raw data would produce reliable results.
 
-We believe that only some unsupervised learning applications would be suitable for the raw, un-cleaned data.  The accuracy of results generated from these applications should not be directly relied upon for critical applications, however.  For example, an unsupervised learning application that can identify menu item trends, clusters, or relative pricing over time could be appropriate, but an application that directly used those results to forecast revenue for an active restaurant business would likely not be appropriate.
+We believe that only some unsupervised learning applications would be suitable for the raw, un-cleaned data.  The accuracy of results generated from these applications should not be directly relied upon for critical applications, however.  For example, an unsupervised learning application that can identify `MenuItem` trends, clusters, or relative pricing over time could be appropriate, but an application that directly used those results to forecast revenue for an active restaurant business would likely not be appropriate.
 
-There may also be semantically consistent subsets of the data that may be able to be cleaned and used.  For example, only menu data after a certain date or belonging to a certain geographical region may be consistent and therefore usable whereas other data is inconsistent and would require highly error-prone manual cleaning.  We expect to be able to determine if such subsets exist as we proceed with data cleaning.
 
 #### Use case U2 - "Never Enough"
 
 We believe there are many applications for which even data cleaning would not be sufficient, including the following:
 
-- Any application that involves knowing true prices. Our pricing information is semantically incomplete so we can guess but never know whether prices are in comparable units.
-- Any application that requires knowing the exact location of a dish on a menu page.  The `xpos` and `ypos` columns, discussed below, are not well-defined and would require additional information to be useful.
+- Any application that involves knowing true prices. Our pricing information is semantically incomplete so we can *guess* but never *know* whether prices are in comparable units.
+- Any application that requires knowing the exact location of a `Dis`h on a `MenuPage`.  The `xpos` and `ypos` columns, discussed elsewhere in this document, are not well-defined and would require additional information to be useful.
 - Any application that relies on strong referential integrity, like lookup or reference systems that rely on foreign keys.  Our data has missing foreign keys, foreign keys referencing non-existent rows, and even foreign keys that reference non-existent tables.
 
 Generally speaking, any application for which data accuracy and consistency is critical, especially applications used to ensure safety, drive revenue, or perform other critical tasks, should not be built on top of these data. We anticipate many, but not all, of these applications will primarily be user-facing.
@@ -183,13 +168,13 @@ Generally speaking, the schema for these data is largely denormalized, which red
 
 These reductions or limitations can in turn can reduce the overall quality of the data.
 
-We believe it's important to note, however, that many front-end applications could benefit from this denormalized arrangement, particularly their performance.
+We believe it's important to note, however, that many front-end applications could benefit from this denormalized arrangement, particularly for performance reasons performance (i.e. a denormalized, read-only view of the data).
 
 We detail specific data quality problems, including examples, for each table below.
 
 #### `Dish`
 
-The schema for this table is as follows:
+The schema and supplementary information for this table is as follows:
 
 
 | Table    | Column               | Type     | Null Count | Domain                |
@@ -209,20 +194,19 @@ The schema for this table is as follows:
 This table has several data quality problems, including the following:
 
 - The `description` column is wholly unused -- its values are all missing.
-- The `menus_appeared` column contains values from 0 to 7800.  We assume this column indicates the number of menus in which the applicable dish appears, and many rows (including rows with IDs `88446`, `132992`, `164029`, and more) have `0` in this column, indicating there are 0 menus in which the dish appeared.
-  - The fact that rows in this collection indicate there are dishes that don't appear in any menu strongly suggests that those rows are incorrect.  This inconsistency calls into question the accuracy of all the data stored in this column.
+- The `menus_appeared` column contains values from 0 to 7800.  We assume this column indicates the number of `Menu` rows in which the applicable `Dish` appears, and many rows (including rows with IDs `88446`, `132992`, `164029`, and more) have `0` in this column, indicating there are 0 menus in which the `Dish` appeared. The fact that rows in this collection indicate there are dishes that don't appear in any `Menu` strongly suggests that those rows are incorrect.  This inconsistency calls into question the accuracy of all the data stored in this column.
 - The `times_appeared` column contains negative numbers, which likely have no meaning in this context, calling into question the accuracy of data in this column. Examples of rows with negative numbers include IDs `445236`, `457504`, `510718`, and `223497`.
 - The `first_appeared` and `last_appeared` columns seem to represent the year at which the `Dish` first and last appeared on a `Menu`. Several `Dish`es contain `0` in one or both of these columns, and several others contain values into the future. Examples of both cases are shown below. The former case indicates a `Dish` first or last appeared on a `Menu` over 2000 years ago, and the latter case indicates a `Dish` that will appear on a `Menu` in the future. Both cases are obviously incorrect.
-  - Several `Dish`es contain `0` in one or both of these columns, including IDs `340`, `2005`, and `2056`.
-  - Further, several `Dishes` contain values in the future, including IDs `415521`, `415523`, `415525`, and `415526`
+  - Several `Dish`es contain `0` in one or both of these columns, including IDs `340`, `2005`, and `2056`; and
+  - Further, several `Dishes` contain values in the future, including IDs `415521`, `415523`, `415525`, and `415526`.
 - The `lowest_price` and `highest_price` columns presumably contain currency values, but some values are missing, and no units are referenced by the table. Values in these columns have several issues, calling into question the usability of both of these columns:
-  - Many rows are missing values for one or both of these columns, including `Dish`es with IDs `34`, `39`, and `60`
-  - Other rows have `0` for one or both of these columns, including `Dish`es with IDs `933`, `934`, and `936`
+  - Many rows are missing values for one or both of these columns, including `Dish`es with IDs `34`, `39`, and `60`;
+  - Other rows have `0` for one or both of these columns, including `Dish`es with IDs `933`, `934`, and `936`; and
   - No currency is listed for any values in either of these columns, calling into question both the usability of these values as-is, and how this column would resolve values expressed in different currencies.
 
 #### `Menu`
 
-The schema for this table is as follows:
+The schema and supplementary information for this table is as follows:
 
 
 | Table    | Column               | Type     | Null Count | Domain                |
@@ -251,11 +235,11 @@ The schema for this table is as follows:
 This table contains several significant data quality problems that call into question the integrity and accuracy of these data. These problems include:
 
 - The `name`, `occasion` and `location_type` columns are frequently blank or null, including in row IDs `12463`, `12465`, and `12468`. Further, some menus appear to be aggregates of multiple menus, such as in row IDs `31054` and `31230`.  These aggregate representations include descriptions such as `"62 menus bound into 1 volume"`. Such semantic inconsistencies will be difficult to remove from the data by automated methods.
-- As mentioned previously, The `physical_description` and `occasion` columns are really separate collections of "tags" that describe the menu. Formats of these columns vary: some are blank, some are non-empty but not delimited, some are non-empty but delimited, and some are non-empty and encapsulated in hard-brackets (and seemingly limited to 8 characters). Some examples of these inconsistencies are listed below:
-  - Row ID `12465`: `occassion` is empty
-  - Row ID `12836`: `occassion` is non-empty and non-delimited (`COMPLIMENTARY/TESTIMONIAL`)
-  - Row ID `31575`: `physical_description` is non-empty and delimited (`30x22.5cm folded; 30x45cm open`)
-  - Row ID `13926`: `occassion` is non-empty and encapsulated in brackets (`[COMPLIMENTARY TO COMMODORE C. WE. BLISS]`)
+- The `physical_description` and `occasion` columns are really separate collections of "tags" that describe the `Menu`, and these data would thus be better stored as a separate table. Formats of these columns vary: some are blank, some are non-empty but not delimited, some are non-empty but delimited, and some are non-empty and encapsulated in hard-brackets (and seemingly limited to 8 characters). Some examples of these inconsistencies are listed below:
+  - Row ID `12465`: `occasion` is empty;
+  - Row ID `12836`: `occasion` is non-empty and non-delimited (`COMPLIMENTARY/TESTIMONIAL`);
+  - Row ID `31575`: `physical_description` is non-empty and delimited (`30x22.5cm folded; 30x45cm open`); and
+  - Row ID `13926`: `occasion` is non-empty and encapsulated in brackets (`[COMPLIMENTARY TO COMMODORE C. WE. BLISS]`).
 - 5 `Menu` rows indicate a different number of pages than are actually stored in the referenced `MenuPage` table. These rows have IDs `26577`, `26739`, `32086`, `32663`, and `33648`.
   - Assuming all of the CSV files are loaded into SQLite, the following query can be used to fetch all 5 rows adhering to these criteria:
   
@@ -272,7 +256,7 @@ This table contains several significant data quality problems that call into que
 
 #### `MenuPage`
 
-The schema for this table is as follows:
+The schema and supplementary information for this table is as follows:
 
 | Table    | Column               | Type     | Null Count | Domain                |
 |----------|----------------------|----------|------------|-----------------------|
@@ -286,16 +270,12 @@ The schema for this table is as follows:
 
 This table contains the following data quality issues:
 
-- The `page_number` column contains blank values.  It is unknown if a blank should be considered the first page, such as in a one-page menu or if it is simply erroneous.
-  - Row IDs with empty `page_number` values include `44543`, `44544`, and `44545`
-- Some `Menu`s seemingly contain hundreds of dishes, which calls into question whether the `page_number` column is actually used in a semantically consistent way.
-  - For example, there are `176` `MenuItem` rows that belong to the `MenuPage` with ID `168`
+- The `page_number` column contains blank values.  It is unknown if a blank should be considered the first page, such as in a one-page menu or if it is simply erroneous. Row IDs with empty `page_number` values include `44543`, `44544`, and `44545`.
+- Some `Menu`s seemingly contain hundreds of dishes, because Menus are not used in a semantically consistent way.  That is, some Menus are individual menus and others are collections.  For those that are collections, `page_number` may reference the `page_number` within the collection of menus, even though each physical menu within the collection is only one page, for example. For example, there are `176` `MenuItem` rows that belong to the `MenuPage` with ID `168`.
 - The `image_id` column appears to be a foreign key to an unprovided table of images or references to images, but many errors occur when treating it as such because while predominantly integers are present, 23 outlier values such as `psnypl_rbk_936` (in row ID `45598`), which are nonsensical, also appear in that column.
-- The `full_height` and `full_width` columns likely represent the width in pixels of the referenced image.  One would expect the pages of a menu to have the same proportions, but Some rows with identical `menu_id`s and different page numbers have transposed `full_height` and `full_width` values indicating that one (or more) page(s) is/are, possibly, rotated.
-  - Row IDs `119` and `120` hold an example of this transposition
+- The `full_height` and `full_width` columns likely represent the width in pixels of the referenced image.  One would expect the pages of a `Menu` to have the same proportions, but some rows with identical `menu_id`s and different `page_number`s have transposed `full_height` and `full_width` values indicating that one (or more) page(s) is/are, possibly, rotated. Row IDs `119` and `120` hold an example of this transposition.
 - There is no indication of the use for the `uuid` column and the column name provides no clues.  Their format generally indicates they are valid UUIDs, and a quick "spot check" indicates many of them are parseable as such, but we haven't yet tried to parse all values.
-- 5789 rows in the `MenuPage` table are missing their referenced `Menu`s.
-  - Row IDs with missing `Menu`s include `119`, `120`, `952`, `1022`, and more. Assuming all CSVs are loaded into SQLite, the following query can be used to return all rows adhering to these criteria:
+- 5789 rows in the `MenuPage` table are missing their referenced `Menu`s. Row IDs with missing `Menu`s include `119`, `120`, `952`, `1022`, and more. Assuming all CSVs are loaded into SQLite, the following query can be used to return all rows adhering to these criteria:
   
     ```sql
     select * from MenuPage MP
@@ -305,7 +285,7 @@ This table contains the following data quality issues:
 
 #### `MenuItem`
 
-The schema for this table is as follows:
+The schema and supplementary information for this table is as follows:
 
 
 | Table    | Column               | Type     | Null Count | Domain                |
@@ -323,8 +303,9 @@ The schema for this table is as follows:
 This table has the following quality issues:
 
 - The `price` column appears to have a similar purpose as other collections, but like in those other collections, it does not indicate a currency and it's values vary wildly from 0 to 190,000, and include empty values.
-  - Row IDs with empty `price` columns include the following: `15`, `31`, `48`, and more
-  - Row IDs with the value `0` in the `price` column include the following: `13009`, `24903`, and `31144`
+  - Because the `price` column does not indicate units, you could presumably join `MenuItem` to `MenuPage` and then to `Menu` to (sometimes) discern the price _and_ the currency of the price.
+  - Row IDs with empty `price` columns include the following: `15`, `31`, `48`, and more.
+  - Row IDs with the value `0` in the `price` column include the following: `13009`, `24903`, and `31144`.
   - Row IDs with values above `100,000` in the `price` column, along with their values include the following:
     - `485274`: `110000.0`
     - `485279`: `180000.0`
@@ -332,13 +313,14 @@ This table has the following quality issues:
     - `485281`:	`160000.0`
 - The `high_price` column is a bigger mystery in this table. In many rows, its value is completely missing, and when it's present, we can currently only guess its purpose.
   - `1240821` rows in the `MenuItem` have missing `high_price` values, while the remaining `91905` rows do not. Non-blank `high_price` values are in the range `[0, 7800.0]`.
-- The `dish_id` column contains 241 blank values.  Like `high_price`, we can currently only guess its purpose.
-  - Row IDs in which `dish_id` are blank include the following: `19171`, `22322`, `31566`, and more
+- The `dish_id` column contains 241 blank values.  Row IDs in which `dish_id` are blank include the following: `19171`, `22322`, `31566`, and more.
 - The `created_at` and `updated_at` columns seem to be fairly-standard database creation/update timestamps and have no observable issues.
 - The `xpos` and `ypos` columns have semantic issues making it impossible to understand their use without more information. These issues include the following:
-  - These columns appear to represent coordinates, but we can only guess to what
-  - Similar to other tables with these columns, we also can only guess whether they represent a center point, a corner, or something else
-  - Finally, we also are unclear why there is no width and height to define a bounding box
+  - These columns appear to represent coordinates, but we can only guess to what;
+  - There is no indication whether the origin they represent is a center point, a corner, or something else; and
+  - Finally, we also are unclear why there is no width and height to define a bounding box.
+- 35 `MenuItem`s are missing their referenced `MenuPage`, via the `menu_page_id` column.
+- 244 `MenuItem`s are missing their referenced `Dish`, via the `dish_id` column.
 
 ### Supporting use case U1
 
