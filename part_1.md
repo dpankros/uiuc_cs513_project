@@ -157,7 +157,7 @@ We believe that only some unsupervised learning applications would be suitable f
 We believe there are many applications for which even data cleaning would not be sufficient, including the following:
 
 - Any application that involves knowing true prices. Our pricing information is semantically incomplete so we can *guess* but never *know* whether prices are in comparable units.
-- Any application that requires knowing the exact location of a `Dis`h on a `MenuPage`.  The `xpos` and `ypos` columns, discussed elsewhere in this document, are not well-defined and would require additional information to be useful.
+- Any application that requires knowing the exact location of a `Dish` on a `MenuPage`.  The `xpos` and `ypos` columns, discussed elsewhere in this document, are not well-defined and would require additional information to be useful.
 - Any application that relies on strong referential integrity, like lookup or reference systems that rely on foreign keys.  Our data has missing foreign keys, foreign keys referencing non-existent rows, and even foreign keys that reference non-existent tables.
 
 Generally speaking, any application for which data accuracy and consistency is critical, especially applications used to ensure safety, drive revenue, or perform other critical tasks, should not be built on top of these data. We anticipate many, but not all, of these applications will primarily be user-facing.
