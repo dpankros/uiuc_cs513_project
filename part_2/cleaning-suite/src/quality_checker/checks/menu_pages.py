@@ -1,10 +1,9 @@
 import sqlite3
-from tabulate import tabulate
 from quality_checker.db import run_query
 from quality_checker.models.menu_page import menu_page_factory
+from quality_checker.checks import CheckResult
 
-
-def check_menu_pages(conn: sqlite3.Connection) -> str:
+def check_menu_pages(conn: sqlite3.Connection) -> CheckResult:
     query = """
     select * from MenuPage MP
     left outer join main.Menu M on M.id = MP.menu_id
@@ -21,10 +20,7 @@ def check_menu_pages(conn: sqlite3.Connection) -> str:
         query="select MP.id from MenuPage MP",
         row_factory=lambda cursor, row: row[0],
     )
-    headers = ["IC violation", "Number of violations"]
-    data = [
+    return [
         ("Duplicate UUIDs", len(total_menus) - len(distinct_uuids)),
-        ("Menu.id <> MenuPage.menu_id", len(broken_foreign_keys)),
+        ("Menu.id <> MenuPage.menu_id FK violations", len(broken_foreign_keys)),
     ]
-
-    return tabulate(tabular_data=data, headers=headers, tablefmt="grid")

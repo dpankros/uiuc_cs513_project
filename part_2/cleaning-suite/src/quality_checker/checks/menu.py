@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 import sqlite3
-from tabulate import tabulate
 from quality_checker.models.menu import create_menu_factory, Menu
 from quality_checker.db import run_query
+from quality_checker.checks import CheckResult
 
 
 @dataclass
@@ -11,7 +11,7 @@ class CheckMenusResult:
     differing_num_dishes: list[Menu]
 
 
-def check_menus(conn: sqlite3.Connection) -> str:
+def check_menus(conn: sqlite3.Connection) -> CheckResult:
     metrics = [
         (
             "Menu.page_count <> MenuPage.menu_id FK violations",
@@ -40,15 +40,7 @@ def check_menus(conn: sqlite3.Connection) -> str:
             create_menu_factory(strict=False),
         ),
     ]
-    data = [
+    return [
         (descr, len(run_query(conn, query=query, row_factory=factory)))
         for (descr, query, factory) in metrics
     ]
-
-    return tabulate(
-        tabular_data=data,
-        headers=["Metric", "Value"],
-        tablefmt="grid",
-    )
-
-    return ""

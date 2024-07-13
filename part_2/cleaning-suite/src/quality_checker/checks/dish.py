@@ -1,10 +1,10 @@
 import sqlite3
 from quality_checker.db import run_query
 from quality_checker.models.dish import dish_factory
-from tabulate import tabulate
+from quality_checker.checks import CheckResult
 
 
-def check_dish(conn: sqlite3.Connection) -> str:
+def check_dish(conn: sqlite3.Connection) -> CheckResult:
     metrics = [
         (
             "Dish.times_appeared < 0",
@@ -31,9 +31,7 @@ def check_dish(conn: sqlite3.Connection) -> str:
             "select * from Dish as D where D.highest_price is NULL",
         ),
     ]
-    data = [
+    return [
         (name, len(run_query(conn, query=query, row_factory=dish_factory)))
         for (name, query) in metrics
     ]
-
-    return tabulate(tabular_data=data, headers=["Metric", "value"], tablefmt="grid")

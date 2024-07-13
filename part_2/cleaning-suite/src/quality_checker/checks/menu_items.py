@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 import sqlite3
-from tabulate import tabulate
 from quality_checker.db import run_query
 from quality_checker.models.menu_item import MenuItem, menu_item_factory
+from quality_checker.checks import CheckResult
 
 
 @dataclass
@@ -11,14 +11,12 @@ class MenuItemMissingPieces:
     with_missing_dish: list[MenuItem]
 
 
-def check_menu_items(conn: sqlite3.Connection) -> str:
+def check_menu_items(conn: sqlite3.Connection) -> CheckResult:
     items = _missing_menuitem_data(conn)
-    counts = [
-        ("MenuItem -> Dish", len(items.with_missing_dish)),
-        ("MenuItem -> Page", len(items.with_missing_page)),
+    return [
+        ("MenuItem -> Dish FK violations", len(items.with_missing_dish)),
+        ("MenuItem -> Page FK violations", len(items.with_missing_page)),
     ]
-    headers = ["relation with broken foreign keys", "number broken"]
-    return tabulate(tabular_data=counts, headers=headers, tablefmt="grid")
 
 
 def _missing_menuitem_data(conn: sqlite3.Connection) -> MenuItemMissingPieces:
