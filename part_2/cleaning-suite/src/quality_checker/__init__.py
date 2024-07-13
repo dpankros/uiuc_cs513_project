@@ -5,6 +5,7 @@ from functools import cache
 
 from quality_checker.checks.menu_item_domain import check_menu_item_xpos_ypos_domain
 from quality_checker.checks.menu import check_menus
+from quality_checker.checks.dish import check_dish
 from quality_checker.checks.menu_pages import check_menu_pages
 from quality_checker.checks import Check
 from quality_checker.checks.table_counts import check_table_counts
@@ -18,8 +19,8 @@ CHECK_TYPE_TO_IMPL: dict[str, Check] = {
         check_menu_items,
     ),
     "menu_items_position_domain": (
-         "Listing the domain of the xpos and ypos columns in the MenuItems table",
-         check_menu_item_xpos_ypos_domain,
+        "Listing the domain of the xpos and ypos columns in the MenuItems table",
+        check_menu_item_xpos_ypos_domain,
     ),
     "menu_pages": (
         "Listing the numbers of broken foreign key relations in the MenuPages table",
@@ -29,13 +30,19 @@ CHECK_TYPE_TO_IMPL: dict[str, Check] = {
         "Listing integrity constraint violations in the Menu table",
         check_menus,
     ),
+    "dish": (
+        "Listing quality metrics for the Dish table",
+        check_dish,
+    ),
 }
 
 
 DB_PATH = "../../data.sqlite"
+
+
 @cache
 def _get_conn():
-        return sqlite3.Connection(DB_PATH)
+    return sqlite3.Connection(DB_PATH)
 
 
 @click.command()
