@@ -30,8 +30,6 @@ class MenuPage:
     status: str
     page_count: int
     dish_count: int
-    
-    
 
 
 def menu_page_factory(cursor: sqlite3.Cursor, row: sqlite3.Row) -> MenuPage:

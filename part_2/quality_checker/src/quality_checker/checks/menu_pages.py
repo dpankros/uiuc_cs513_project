@@ -13,8 +13,4 @@ def check_menu_pages(conn: sqlite3.Connection) -> str:
     results = run_query(conn, query=query, row_factory=menu_page_factory)
     headers = ["relation with broken foreign keys", "number broken"]
     data = [("Menu", len(results))]
-    return tabulate(
-        tabular_data=data,
-        headers=headers,
-        tablefmt="grid"
-    )
+    return tabulate(tabular_data=data, headers=headers, tablefmt="grid")

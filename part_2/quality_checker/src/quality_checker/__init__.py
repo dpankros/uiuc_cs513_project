@@ -2,6 +2,7 @@ import sqlite3
 import click
 import io
 
+from quality_checker.checks.menu import check_menus
 from quality_checker.checks.menu_pages import check_menu_pages
 from quality_checker.checks import Check
 from quality_checker.checks.table_counts import check_table_counts
@@ -28,6 +29,10 @@ CHECK_TYPE_TO_IMPL: dict[str, Check] = {
     "menu_pages": (
         "Listing the numbers of broken foreign key relations in the MenuPages table",
         check_menu_pages,
+    ),
+    "menu": (
+        "Listing integrity constraint violations in the Menu table",
+        check_menus,
     ),
 }
 
