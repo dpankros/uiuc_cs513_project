@@ -53,8 +53,10 @@ class CheckEntry:
     description: str
     data: CheckResult
 
+_all_check_types = ["all"] + list(CHECK_TYPE_TO_IMPL.keys())
+
 @click.command()
-@click.option("--check-type", default="all", help="The type of check to run")
+@click.option("--check-type", default="all", help=f"The type of check to run {_all_check_types}")
 @click.option("--format", default="table", help="The format in which to output metrics results [table, json]")
 def main(check_type: str, format: Literal["table", "json"]) -> int:
     if check_type == "all":
