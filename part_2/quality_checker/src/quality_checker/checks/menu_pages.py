@@ -24,9 +24,7 @@ def check_menu_pages(conn: sqlite3.Connection) -> str:
     headers = ["IC violation", "Number of violations"]
     data = [
         ("Duplicate UUIDs", len(total_menus) - len(distinct_uuids)),
-        ("Menu.id <> MenuPage.menu_id", len(broken_foreign_keys))
+        ("Menu.id <> MenuPage.menu_id", len(broken_foreign_keys)),
     ]
 
     return tabulate(tabular_data=data, headers=headers, tablefmt="grid")
-
-    
