@@ -3,6 +3,7 @@ import click
 import io
 from functools import cache
 
+from quality_checker.checks.menu_item_domain import check_menu_item_xpos_ypos_domain
 from quality_checker.checks.menu import check_menus
 from quality_checker.checks.menu_pages import check_menu_pages
 from quality_checker.checks import Check
@@ -15,6 +16,10 @@ CHECK_TYPE_TO_IMPL: dict[str, Check] = {
     "menu_items": (
         "Listing the numbers of broken foreign key relations in the MenuItems table",
         check_menu_items,
+    ),
+    "menu_items_position_domain": (
+         "Listing the domain of the xpos and ypos columns in the MenuItems table",
+         check_menu_item_xpos_ypos_domain,
     ),
     "menu_pages": (
         "Listing the numbers of broken foreign key relations in the MenuPages table",
