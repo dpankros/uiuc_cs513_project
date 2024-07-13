@@ -2,6 +2,7 @@ import sqlite3
 import click
 import io
 
+from quality_checker.checks.menu_pages import check_menu_pages
 from quality_checker.checks import Check
 from quality_checker.checks.table_counts import check_table_counts
 from quality_checker.checks.menu_items import check_menu_items
@@ -9,7 +10,7 @@ from quality_checker.checks.menu_items import check_menu_items
 
 def check_all(conn: sqlite3.Connection) -> str:
     with io.StringIO() as str_io:
-        checks_to_run = ["table_counts", "menu_items"]
+        checks_to_run = ["table_counts", "menu_items", "menu_pages"]
         for check_name in checks_to_run:
             title, checker = CHECK_TYPE_TO_IMPL[check_name]
             res = checker(conn)
@@ -21,8 +22,12 @@ CHECK_TYPE_TO_IMPL: dict[str, Check] = {
     "all": ("Run all checks", check_all),
     "table_counts": ("Listing the number of rows in each table", check_table_counts),
     "menu_items": (
-        "Listing the number of broken foreign key relations in the MenuItems table",
+        "Listing the numbers of broken foreign key relations in the MenuItems table",
         check_menu_items,
+    ),
+    "menu_pages": (
+        "Listing the numbers of broken foreign key relations in the MenuPages table",
+        check_menu_pages,
     ),
 }
 

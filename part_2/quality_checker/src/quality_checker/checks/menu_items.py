@@ -17,7 +17,7 @@ def check_menu_items(conn: sqlite3.Connection) -> str:
         ("MenuItem -> Dish", len(items.with_missing_dish)),
         ("MenuItem -> Page", len(items.with_missing_page)),
     ]
-    headers = ["what type of relation is missing", "number missing"]
+    headers = ["relation with broken foreign keys", "number broken"]
     return tabulate(tabular_data=counts, headers=headers, tablefmt="grid")
 
 
