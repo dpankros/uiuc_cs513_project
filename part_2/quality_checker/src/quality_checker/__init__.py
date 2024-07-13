@@ -11,7 +11,7 @@ from quality_checker.checks.menu_items import check_menu_items
 
 def check_all(conn: sqlite3.Connection) -> str:
     with io.StringIO() as str_io:
-        checks_to_run = ["table_counts", "menu_items", "menu_pages"]
+        checks_to_run = ["table_counts", "menu_items", "menu_pages", "menu"]
         for check_name in checks_to_run:
             title, checker = CHECK_TYPE_TO_IMPL[check_name]
             res = checker(conn)
@@ -41,7 +41,7 @@ DB_PATH = "../../data.sqlite"
 
 
 @click.command()
-@click.option("--check-type", default="table_counts", help="The type of check to run")
+@click.option("--check-type", default="all", help="The type of check to run")
 def main(check_type: str) -> int:
     if check_type not in CHECK_TYPE_TO_IMPL:
         print(f"unknown check type {check_type}")

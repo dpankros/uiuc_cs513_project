@@ -19,5 +19,5 @@ rye sync
 Finally, whenever you want to run your code, run:
 
 ```shell
-rye run quality-checker --check-type table_counts
+rye run quality-checker
 ```
