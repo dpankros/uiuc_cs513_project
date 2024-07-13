@@ -1,0 +1,6 @@
+{
+    "editor.wordWrap": "off",
+    "flake8.path": [
+        "--max-line-length=100"
+    ]
+}
