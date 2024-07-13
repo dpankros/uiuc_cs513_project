@@ -25,6 +25,7 @@ class Menu:
     status: str | None = None
     page_count: int | None = None
     dish_count: int | None = None
+    occasion: str | None = None
 
 
 def create_menu_factory(

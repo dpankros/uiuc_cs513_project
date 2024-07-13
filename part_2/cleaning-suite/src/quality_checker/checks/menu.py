@@ -12,40 +12,42 @@ class CheckMenusResult:
 
 
 def check_menus(conn: sqlite3.Connection) -> str:
-    page_count_differs_from_menu_page = run_query(
-        conn,
-        query="""
-        select M.id, count(MP.id), M.page_count from Menu M
-        left join main.MenuPage MP on M.id = MP.menu_id
-        group by M.id having count(MP.id) <> M.page_count;
-        """,
-        row_factory=create_menu_factory(strict=False),
-    )
-
-    dish_count_differs_from_num_dishes_in_menu_pages = run_query(
-        conn,
-        query="""
-        select M.id, MP.page_number, M.page_count, count(D.id) as 'Dishes in DB', M.dish_count from Menu M
-        left join main.MenuPage MP on M.id = MP.menu_id
-        left join main.MenuItem MI on MP.id = MI.menu_page_id
-        left join main.Dish D on MI.dish_id = D.id
-        group by M.id having count(D.id) <> M.dish_count
-        order by M.id asc, MP.page_number asc;
-        """,
-        row_factory=create_menu_factory(strict=False),
-    )
-
-    data = [
-        ("Menu.page_count <> MenuPage.menu_id", len(page_count_differs_from_menu_page)),
+    metrics = [
         (
-            "Menu.dish_count <> MenuItem.menu_page_id <> MenuPage.menu_id",
-            len(dish_count_differs_from_num_dishes_in_menu_pages),
+            "Menu.page_count <> MenuPage.menu_id FK violations",
+            """
+            select M.id, count(MP.id), M.page_count from Menu M
+            left join main.MenuPage MP on M.id = MP.menu_id
+            group by M.id having count(MP.id) <> M.page_count;
+            """,
+            create_menu_factory(strict=False),
         ),
+        (
+            "Menu.dish_count <> MenuItem.menu_page_id <> MenuPage.menu_id FK violations",
+            """
+            select M.id, MP.page_number, M.page_count, count(D.id) as 'Dishes in DB', M.dish_count from Menu M
+            left join main.MenuPage MP on M.id = MP.menu_id
+            left join main.MenuItem MI on MP.id = MI.menu_page_id
+            left join main.Dish D on MI.dish_id = D.id
+            group by M.id having count(D.id) <> M.dish_count
+            order by M.id asc, MP.page_number asc;
+            """,
+            create_menu_factory(strict=False),
+        ),
+        (
+            "Menu.name is NULL",
+            "select * from Menu as M where M.name is NULL",
+            create_menu_factory(strict=False),
+        ),
+    ]
+    data = [
+        (descr, len(run_query(conn, query=query, row_factory=factory)))
+        for (descr, query, factory) in metrics
     ]
 
     return tabulate(
         tabular_data=data,
-        headers=["Integrity constraint", "Number of violations"],
+        headers=["Metric", "Value"],
         tablefmt="grid",
     )
 
