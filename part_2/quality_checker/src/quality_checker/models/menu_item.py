@@ -27,7 +27,7 @@ class MenuItem:
     last_appeared: int | None = None
     lowest_price: int | None = None
     highest_price: int | None = None
-    
+
 
 def menu_item_factory(cursor: sqlite3.Cursor, row: sqlite3.Row) -> MenuItem:
     fields = [column[0] for column in cursor.description]
