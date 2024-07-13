@@ -86,7 +86,7 @@ def _generate_output(
             with io.StringIO() as str_io:
                 for check_entry in entries:
                     table_str = tabulate_check_formatter(check_entry.data)
-                    str_io.write(f"{check_entry.check_name}: {check_entry.description}\n{table_str}")
+                    str_io.write(f"{check_entry.check_name}: {check_entry.description}\n{table_str}\n\n")
                 return str_io.getvalue()
         case "json":
             json_dict = {
