@@ -99,4 +99,3 @@ def _generate_output(
                 for entry in entries
             }
             return json.dumps(json_dict)
-            
