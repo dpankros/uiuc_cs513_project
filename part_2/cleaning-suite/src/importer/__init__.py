@@ -2,8 +2,9 @@ import time
 import asyncio
 import aiosqlite
 from os.path import join
-from importer.menu import import_menus
-from importer.dish import import_dishes
+from checker.models.dish import create_dish_table, dish_factory, insert_dish
+from checker.models.menu import create_menu_factory, create_menu_table, insert_menu
+from importer.do_import import do_import
 import click
 
 _DATA_PREFIX = join("..", "..", "data")
@@ -39,3 +40,21 @@ async def run(db_file: str) -> int:
             await importer(filename, conn)
 
     return 0
+
+async def import_menus(filename: str, conn: aiosqlite.Connection) -> int:
+    return await do_import(
+        filename,
+        conn=conn,
+        row_factory=create_menu_factory(strict=False),
+        table_creator=create_menu_table,
+        inserter=insert_menu,
+    )
+
+async def import_dishes(filename: str, conn: aiosqlite.Connection) -> int:
+    return await do_import(
+        filename,
+        conn=conn,
+        row_factory=dish_factory,
+        table_creator=create_dish_table,
+        inserter=insert_dish,
+    )
