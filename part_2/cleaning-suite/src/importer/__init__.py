@@ -5,6 +5,7 @@ from os.path import join
 from checker.models.dish import create_dish_table, dish_factory, insert_dish
 from checker.models.menu import create_menu_factory, create_menu_table, insert_menu
 from checker.models.menu_item import create_menu_item_table, insert_menu_item, menu_item_factory
+from checker.models.menu_page import create_menu_page_factory, create_menu_page_table, insert_menu_page
 from importer.do_import import do_import
 import click
 
@@ -67,4 +68,13 @@ async def import_menu_items(filename: str, conn: aiosqlite.Connection) -> int:
         row_factory=menu_item_factory,
         table_creator=create_menu_item_table,
         inserter=insert_menu_item,
+    )
+
+async def import_menu_pages(filename: str, conn: aiosqlite.Connection) -> int:
+    return await do_import(
+        filename,
+        conn=conn,
+        row_factory=create_menu_page_factory(strict=False),
+        table_creator=create_menu_page_table,
+        inserter=insert_menu_page,
     )

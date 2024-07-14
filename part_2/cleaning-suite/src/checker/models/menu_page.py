@@ -1,7 +1,8 @@
 from dataclasses import dataclass, fields
+import aiosqlite
 from typing import Any
 from checker.db import RowFactory
-from checker.models import Model
+from checker.models import Model, insert_entry
 
 
 @dataclass
@@ -26,3 +27,24 @@ def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
         return MenuPage(**filtered_data)
 
     return strict_factory if strict else lenient_factory
+
+_TABLE_NAME="MenuPage"
+
+async def create_menu_page_table(conn: aiosqlite.Connection) -> None:
+    query = f"""
+    CREATE TABLE "{_TABLE_NAME}"
+    (
+        id          integer constraint MenuPage_pk primary key,
+        menu_id     integer constraint MenuPage_Menu_id_fk references Menu,
+        page_number integer,
+        image_id    double,
+        full_height integer,
+        full_width  integer,
+        uuid        text
+    )
+    """
+    await conn.execute(query)
+    await conn.commit()
+
+async def insert_menu_page(conn: aiosqlite.Connection, menu_page: MenuPage):
+    await insert_entry(_TABLE_NAME, conn, menu_page)
