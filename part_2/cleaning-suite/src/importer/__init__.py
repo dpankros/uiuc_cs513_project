@@ -22,7 +22,7 @@ _DEFAULT_DB_FILE = join("..", "..", "imports", f"data-import.{time.time()}.sqlit
     help="The DB file to which to import CSV data (defaults to a timestamped DB file)",
 )
 def main(db_file: str) -> int:
-    asyncio.run(run(db_file))
+    return asyncio.run(run(db_file))
 
 
 async def run(db_file: str) -> int:
