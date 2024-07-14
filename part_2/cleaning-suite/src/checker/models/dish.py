@@ -20,7 +20,9 @@ class Dish(Model):
 def dish_factory(row_dict: dict[str, Any]) -> Dish:
     return Dish(**row_dict)
 
+
 _TABLE_NAME = "Dish"
+
 
 async def create_dish_table(conn: aiosqlite.Connection):
     query = f"""
@@ -39,6 +41,7 @@ async def create_dish_table(conn: aiosqlite.Connection):
     """
     await conn.execute(query)
     await conn.commit()
+
 
 async def insert_dish(conn: aiosqlite.Connection, dish: Dish) -> None:
     await insert_entry(_TABLE_NAME, conn, dish)

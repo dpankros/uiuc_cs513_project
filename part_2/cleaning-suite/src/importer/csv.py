@@ -1,6 +1,7 @@
 from checker.db import RowFactory
 import csv
 
+
 def read_csv[T](filename: str, *, row_factory: RowFactory[T]) -> list[T]:
     print(f"loading from {filename}")
     with open(filename, "r") as f:

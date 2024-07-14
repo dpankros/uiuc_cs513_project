@@ -42,7 +42,9 @@ def create_menu_factory(*, strict: bool) -> RowFactory[Menu]:
 
     return strict_factory if strict else lenient_factory
 
+
 _TABLE_NAME = "Menu"
+
 
 async def create_menu_table(conn: aiosqlite.Connection) -> None:
     query = f"""
@@ -72,6 +74,7 @@ async def create_menu_table(conn: aiosqlite.Connection) -> None:
     """
     await conn.execute(query)
     await conn.commit()
+
 
 async def insert_menu(conn: aiosqlite.Connection, menu: Menu) -> None:
     await insert_entry(_TABLE_NAME, conn, menu)

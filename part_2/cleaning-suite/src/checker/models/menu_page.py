@@ -14,8 +14,8 @@ class MenuPage(Model):
     full_width: int
     uuid: str
 
-def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
 
+def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
     def strict_factory(row_dict: dict[str | Any, Any]) -> MenuPage:
         return MenuPage(**row_dict)
 
@@ -26,4 +26,3 @@ def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
         return MenuPage(**filtered_data)
 
     return strict_factory if strict else lenient_factory
-

@@ -1,6 +1,5 @@
 import time
 import asyncio
-from typing import Awaitable
 import aiosqlite
 from os.path import join
 from importer.menu import import_menus
@@ -15,12 +14,16 @@ _MENU_PAGE = join(_DATA_PREFIX, "MenuPage.csv")
 
 _DEFAULT_DB_FILE = join("..", "..", "imports", f"data-import.{time.time()}.sqlite")
 
+
 @click.command()
 @click.option(
-    "--db-file", default=_DEFAULT_DB_FILE, help="The DB file to which to import CSV data (defaults to a timestamped DB file)"
+    "--db-file",
+    default=_DEFAULT_DB_FILE,
+    help="The DB file to which to import CSV data (defaults to a timestamped DB file)",
 )
 def main(db_file: str) -> int:
     asyncio.run(run(db_file))
+
 
 async def run(db_file: str) -> int:
     loaders = {
@@ -36,4 +39,3 @@ async def run(db_file: str) -> int:
             await importer(filename, conn)
 
     return 0
-
