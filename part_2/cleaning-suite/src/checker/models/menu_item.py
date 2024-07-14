@@ -1,9 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Any
+from checker.models import Model
 
 
 @dataclass
-class MenuItem:
+class MenuItem(Model):
     id: str
     menu_page_id: str
     price: int

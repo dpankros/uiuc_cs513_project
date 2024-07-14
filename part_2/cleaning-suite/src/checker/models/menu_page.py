@@ -1,10 +1,11 @@
 from dataclasses import dataclass, fields
 from typing import Any
 from checker.db import RowFactory
+from checker.models import Model
 
 
 @dataclass
-class MenuPage:
+class MenuPage(Model):
     id: str
     menu_id: int
     page_number: int

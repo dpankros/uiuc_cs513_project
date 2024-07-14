@@ -1,11 +1,12 @@
 from checker.db import RowFactory
 from dataclasses import dataclass, fields
 from typing import Any
-import sqlite3
+import aiosqlite
+from checker.models import Model, insert_entry
 
 
 @dataclass
-class Menu:
+class Menu(Model):
     id: str
     name: str | None = None
     sponsor: str | None = None
@@ -43,7 +44,7 @@ def create_menu_factory(*, strict: bool) -> RowFactory[Menu]:
 
 _TABLE_NAME = "Menu"
 
-def create_menu_table(conn: sqlite3.Connection) -> None:
+async def create_menu_table(conn: aiosqlite.Connection) -> None:
     query = f"""
     CREATE TABLE "{_TABLE_NAME}"
     (
@@ -69,16 +70,8 @@ def create_menu_table(conn: sqlite3.Connection) -> None:
         dish_count           text
     )
     """
-    conn.execute(query)
-    conn.commit()
+    await conn.execute(query)
+    await conn.commit()
 
-def insert_menu(conn: sqlite3.Connection, menu: Menu) -> None:
-    columns = [field.name for field in fields(menu)]
-    values = [getattr(menu, field) for field in columns]
-    
-    # Create the INSERT statement
-    sql = f"INSERT INTO {_TABLE_NAME} ({', '.join(columns)}) VALUES ({', '.join(['?' for _ in columns])})"
-    
-    # Execute the statement
-    conn.execute(sql, values)
-    conn.commit()
+async def insert_menu(conn: aiosqlite.Connection, menu: Menu) -> None:
+    await insert_entry(_TABLE_NAME, conn, menu)
