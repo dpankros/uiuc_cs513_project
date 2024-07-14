@@ -1,7 +1,7 @@
 import sqlite3
 from typing import Any
-from quality_checker.db import run_query
-from quality_checker.checks import CheckResult
+from checker.db import run_query
+from checker.checks import CheckResult
 
 
 def check_table_counts(conn: sqlite3.Connection) -> CheckResult:

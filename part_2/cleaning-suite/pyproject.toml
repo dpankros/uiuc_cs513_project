@@ -11,7 +11,7 @@ readme = "README.md"
 requires-python = ">= 3.12"
 
 [project.scripts]
-"quality-checker" = "quality_checker:main"
+"checker" = "checker:main"
 "importer" = "importer:main"
 
 [build-system]
@@ -26,4 +26,4 @@ dev-dependencies = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/quality_checker", "src/cleaner"]
+packages = ["src/checker", "src/importer"]

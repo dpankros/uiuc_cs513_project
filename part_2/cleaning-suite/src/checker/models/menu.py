@@ -1,4 +1,4 @@
-from quality_checker.db import RowFactory
+from checker.db import RowFactory
 from dataclasses import dataclass, fields
 from typing import Any
 
@@ -7,6 +7,7 @@ from typing import Any
 class Menu:
     id: str
     name: str | None = None
+    description: str | None = None
     sponsor: str | None = None
     event: str | None = None
     venue: str | None = None

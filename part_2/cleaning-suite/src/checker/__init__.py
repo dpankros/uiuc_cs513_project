@@ -6,13 +6,13 @@ import click
 import io
 from functools import cache
 
-from quality_checker.checks.menu_item_domain import check_menu_item_xpos_ypos_domain
-from quality_checker.checks.menu import check_menus
-from quality_checker.checks.dish import check_dish
-from quality_checker.checks.menu_pages import check_menu_pages
-from quality_checker.checks import Check, CheckResult, tabulate_check_formatter
-from quality_checker.checks.table_counts import check_table_counts
-from quality_checker.checks.menu_items import check_menu_items
+from checker.checks.menu_item_domain import check_menu_item_xpos_ypos_domain
+from checker.checks.menu import check_menus
+from checker.checks.dish import check_dish
+from checker.checks.menu_pages import check_menu_pages
+from checker.checks import Check, CheckResult, tabulate_check_formatter
+from checker.checks.table_counts import check_table_counts
+from checker.checks.menu_items import check_menu_items
 
 
 CHECK_TYPE_TO_IMPL: dict[str, Check] = {

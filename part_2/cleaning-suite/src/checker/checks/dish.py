@@ -1,7 +1,7 @@
 import sqlite3
-from quality_checker.db import run_query
-from quality_checker.models.dish import dish_factory
-from quality_checker.checks import CheckResult
+from checker.db import run_query
+from checker.models.dish import dish_factory
+from checker.checks import CheckResult
 
 
 def check_dish(conn: sqlite3.Connection) -> CheckResult:

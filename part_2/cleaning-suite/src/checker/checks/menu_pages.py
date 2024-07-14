@@ -1,7 +1,7 @@
 import sqlite3
-from quality_checker.db import run_query
-from quality_checker.models.menu_page import menu_page_factory
-from quality_checker.checks import CheckResult
+from checker.db import run_query
+from checker.models.menu_page import menu_page_factory
+from checker.checks import CheckResult
 
 
 def check_menu_pages(conn: sqlite3.Connection) -> CheckResult:

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 import sqlite3
-from quality_checker.db import run_query
-from quality_checker.models.menu_item import MenuItem, menu_item_factory
-from quality_checker.checks import CheckResult
+from checker.db import run_query
+from checker.models.menu_item import MenuItem, menu_item_factory
+from checker.checks import CheckResult
 
 
 @dataclass

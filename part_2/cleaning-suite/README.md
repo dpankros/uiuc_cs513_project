@@ -1,6 +1,6 @@
-# quality-checker
+# CS 513 Group Project, Data importer and checker
 
-This is a data quality checker. It's meant to be used in the context of the CS 513 Group Project, Part 2. It's a simple Python script that reads in a CSV file and checks for data quality issues. It's meant to be used as a starting point for data quality checking, and can be extended to include more checks as needed.
+This is a data importer and quality checker. It's meant to be used in the context of the CS 513 Group Project, Part 2. It's a set of Python programs that read in a CSV file to a sqlite database and check for data quality issues. They are meant to compose a suite used for data quality cleaning, checking and validation.
 
 ## Usage
 
@@ -19,5 +19,8 @@ rye sync
 Finally, whenever you want to run your code, run:
 
 ```shell
-rye run quality-checker
+# to import from CSV to sqlite, and do some basic cleaning along the way
+$ rye run importer 
+# to validate the data in the sqlite database
+$ rye run checker
 ```
