@@ -4,6 +4,7 @@ import aiosqlite
 from os.path import join
 from checker.models.dish import create_dish_table, dish_factory, insert_dish
 from checker.models.menu import create_menu_factory, create_menu_table, insert_menu
+from checker.models.menu_item import create_menu_item_table, insert_menu_item, menu_item_factory
 from importer.do_import import do_import
 import click
 
@@ -30,7 +31,7 @@ async def run(db_file: str) -> int:
     loaders = {
         "dish": (_DISH, import_dishes),
         "menu": (_MENU, import_menus),
-        # "menu_item": (_MENU_ITEM: import_menu_items),
+        "menu_item": (_MENU_ITEM, import_menu_items),
         # "menu_page": (_MENU_PAGE, import_menu_pages),
     }
     print(f"creating new SQLite file {db_file}")
@@ -57,4 +58,13 @@ async def import_dishes(filename: str, conn: aiosqlite.Connection) -> int:
         row_factory=dish_factory,
         table_creator=create_dish_table,
         inserter=insert_dish,
+    )
+
+async def import_menu_items(filename: str, conn: aiosqlite.Connection) -> int:
+    return await do_import(
+        filename,
+        conn=conn,
+        row_factory=menu_item_factory,
+        table_creator=create_menu_item_table,
+        inserter=insert_menu_item,
     )

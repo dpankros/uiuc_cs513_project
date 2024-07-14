@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any
-from checker.models import Model
+import aiosqlite
+from checker.models import Model, insert_entry
 
 
 @dataclass
@@ -32,3 +33,26 @@ class MenuItem(Model):
 
 def menu_item_factory(row_dict: dict[str | Any, Any]) -> MenuItem:
     return MenuItem(**row_dict)
+
+_TABLE_NAME="MenuItem"
+
+async def create_menu_item_table(conn: aiosqlite.Connection) -> None:
+    query = f"""
+    CREATE TABLE "{_TABLE_NAME}"
+    (
+        id           integer constraint MenuItem_pk primary key,
+        menu_page_id integer constraint MenuItem_MenuPage_id_fk references MenuPage,
+        price        real,
+        high_price   real,
+        dish_id      integer constraint MenuItem_Dish_id_fk references Dish,
+        created_at   text,
+        updated_at   text,
+        xpos         real,
+        ypos         text
+    )
+    """
+    await conn.execute(query)
+    await conn.commit()
+
+async def insert_menu_item(conn: aiosqlite.Connection, menu_item: MenuItem):
+    await insert_entry(_TABLE_NAME, conn, menu_item)
