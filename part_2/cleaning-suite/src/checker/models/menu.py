@@ -7,7 +7,6 @@ from typing import Any
 class Menu:
     id: str
     name: str | None = None
-    description: str | None = None
     sponsor: str | None = None
     event: str | None = None
     venue: str | None = None

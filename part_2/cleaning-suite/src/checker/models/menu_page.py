@@ -1,5 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from typing import Any
+from checker.db import RowFactory
 
 
 @dataclass
@@ -11,26 +12,18 @@ class MenuPage:
     full_height: int
     full_width: int
     uuid: str
-    name: str
-    sponsor: str
-    event: str
-    venue: str
-    place: str
-    physical_description: str
-    occasion: str
-    notes: str
-    call_number: str
-    keywords: list[str]
-    language: str
-    date: str
-    location: str
-    location_type: str
-    currency: str
-    currency_symbol: str
-    status: str
-    page_count: int
-    dish_count: int
+    name: str | None
 
+def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
 
-def menu_page_factory(row_dict: dict[str | Any, Any]) -> MenuPage:
-    return MenuPage(**row_dict)
+    def strict_factory(row_dict: dict[str | Any, Any]) -> MenuPage:
+        return MenuPage(**row_dict)
+
+    def lenient_factory(row_dict: dict[str | Any, Any]):
+        dataclass_fields = {f.name for f in fields(MenuPage)}
+        row_data = {column: value for column, value in row_dict.items()}
+        filtered_data = {k: v for k, v in row_data.items() if k in dataclass_fields}
+        return MenuPage(**filtered_data)
+
+    return strict_factory if strict else lenient_factory
+
