@@ -5,7 +5,9 @@ from quality_checker.checks import CheckResult
 
 
 def check_menu_item_xpos_ypos_domain(conn: sqlite3.Connection) -> CheckResult:
-    def domain_factory(row_dict: dict[str | Any, Any]) -> tuple[float, float, float, float]:
+    def domain_factory(
+        row_dict: dict[str | Any, Any],
+    ) -> tuple[float, float, float, float]:
         row_data = list(row_dict.values())
         return (
             float(row_data[0]),
