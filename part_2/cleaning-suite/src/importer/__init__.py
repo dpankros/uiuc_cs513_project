@@ -13,9 +13,11 @@ _MENU = join(_DATA_PREFIX, "Menu.csv")
 _MENU_ITEM = join(_DATA_PREFIX, "MenuItem.csv")
 _MENU_PAGE = join(_DATA_PREFIX, "MenuPage.csv")
 
+_DEFAULT_DB_FILE = join("..", "..", "imports", f"data-import.{time.time()}.sqlite")
+
 @click.command()
 @click.option(
-    "--db-file", default=f"data-import.{time.time()}.sqlite", help="The DB file to which to import CSV data (defaults to a timestamped DB file)"
+    "--db-file", default=_DEFAULT_DB_FILE, help="The DB file to which to import CSV data (defaults to a timestamped DB file)"
 )
 def main(db_file: str) -> int:
     asyncio.run(run(db_file))
