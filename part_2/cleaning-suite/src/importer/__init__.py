@@ -1,5 +1,6 @@
 import time
 import asyncio
+from typing import Awaitable, Callable
 import aiosqlite
 from os.path import join
 from checker.models.dish import create_dish_table, dish_factory, insert_dish
@@ -33,13 +34,27 @@ async def run(db_file: str) -> int:
         "dish": (_DISH, import_dishes),
         "menu": (_MENU, import_menus),
         "menu_item": (_MENU_ITEM, import_menu_items),
-        # "menu_page": (_MENU_PAGE, import_menu_pages),
+        "menu_page": (_MENU_PAGE, import_menu_pages),
     }
     print(f"creating new SQLite file {db_file}")
+    coros: list[Awaitable[tuple[str, int]]] = []
     async with aiosqlite.connect(db_file) as conn:
         for entity_name, (filename, importer) in loaders.items():
-            print(f"-----{entity_name}-----")
-            await importer(filename, conn)
+            print(f"scheduling {entity_name} importer")
+
+            async def exec(
+                entity_name: str,
+                filename: str,
+                importer: Callable[[str, aiosqlite.Connection], Awaitable[int]]
+            ) -> tuple[str, int]:
+                ret = await importer(filename, conn)
+                return entity_name, ret
+
+            coros.append(exec(entity_name, filename, importer))
+    
+        for coro in asyncio.as_completed(coros):
+            entity_name, num = await coro
+            print(f"imported {num} {entity_name}'s from CSV into SQLite")
 
     return 0
 
