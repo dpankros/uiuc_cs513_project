@@ -12,7 +12,6 @@ class MenuPage:
     full_height: int
     full_width: int
     uuid: str
-    name: str | None
 
 def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
 
