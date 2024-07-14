@@ -47,17 +47,26 @@ DB_PATH = "../../data.sqlite"
 def _get_conn():
     return sqlite3.Connection(DB_PATH)
 
+
 @dataclass
 class CheckEntry:
     check_name: str
     description: str
     data: CheckResult
 
+
 _all_check_types = ["all"] + list(CHECK_TYPE_TO_IMPL.keys())
 
+
 @click.command()
-@click.option("--check-type", default="all", help=f"The type of check to run {_all_check_types}")
-@click.option("--format", default="table", help="The format in which to output metrics results [table, json]")
+@click.option(
+    "--check-type", default="all", help=f"The type of check to run {_all_check_types}"
+)
+@click.option(
+    "--format",
+    default="table",
+    help="The format in which to output metrics results [table, json]",
+)
 def main(check_type: str, format: Literal["table", "json"]) -> int:
     if check_type == "all":
         checks_to_run = CHECK_TYPE_TO_IMPL.keys()
@@ -65,37 +74,41 @@ def main(check_type: str, format: Literal["table", "json"]) -> int:
         for check_name in checks_to_run:
             descr, checker = CHECK_TYPE_TO_IMPL[check_name]
             data = checker(_get_conn())
-            results.append(CheckEntry(check_name=check_name, description=descr, data=data))
-        
+            results.append(
+                CheckEntry(check_name=check_name, description=descr, data=data)
+            )
+
         print(_generate_output(entries=results, format=format))
     elif check_type not in CHECK_TYPE_TO_IMPL:
         print(f"unknown check type {check_type}")
     else:
         descr, checker = CHECK_TYPE_TO_IMPL[check_type]
-        result = CheckEntry(check_name=check_type, description=descr, data=checker(_get_conn()))
+        result = CheckEntry(
+            check_name=check_type, description=descr, data=checker(_get_conn())
+        )
         print(
             _generate_output(entries=[result], format=format),
         )
     return 0
 
+
 def _generate_output(
-        *,
-        entries: list[CheckEntry],
-        format: Literal["table", "json"],
+    *,
+    entries: list[CheckEntry],
+    format: Literal["table", "json"],
 ) -> str:
     match format:
         case "table":
             with io.StringIO() as str_io:
                 for check_entry in entries:
                     table_str = tabulate_check_formatter(check_entry.data)
-                    str_io.write(f"{check_entry.check_name}: {check_entry.description}\n{table_str}\n\n")
+                    str_io.write(
+                        f"{check_entry.check_name}: {check_entry.description}\n{table_str}\n\n"
+                    )
                 return str_io.getvalue()
         case "json":
             json_dict = {
-                entry.check_name: {
-                    "description": entry.description,
-                    "data": entry.data
-                }
+                entry.check_name: {"description": entry.description, "data": entry.data}
                 for entry in entries
             }
             return json.dumps(json_dict)

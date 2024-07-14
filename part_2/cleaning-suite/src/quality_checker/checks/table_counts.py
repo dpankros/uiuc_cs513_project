@@ -2,12 +2,11 @@ import sqlite3
 from quality_checker.db import run_query
 from quality_checker.checks import CheckResult
 
+
 def check_table_counts(conn: sqlite3.Connection) -> CheckResult:
     counts = _get_table_counts(conn)
-    return [
-        (table_name, count)
-        for (table_name, count) in counts
-    ]
+    return [(table_name, count) for (table_name, count) in counts]
+
 
 def _get_table_counts(conn: sqlite3.Connection) -> list[tuple[str, int]]:
     query = """

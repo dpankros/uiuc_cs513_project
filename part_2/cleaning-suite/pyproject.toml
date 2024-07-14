@@ -12,7 +12,7 @@ requires-python = ">= 3.12"
 
 [project.scripts]
 "quality-checker" = "quality_checker:main"
-"cleaner" = "cleaner:main"
+"importer" = "importer:main"
 
 [build-system]
 requires = ["hatchling"]
