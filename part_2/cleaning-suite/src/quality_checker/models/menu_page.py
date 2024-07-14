@@ -1,5 +1,6 @@
 import sqlite3
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -32,6 +33,5 @@ class MenuPage:
     dish_count: int
 
 
-def menu_page_factory(cursor: sqlite3.Cursor, row: sqlite3.Row) -> MenuPage:
-    fields = [column[0] for column in cursor.description]
-    return MenuPage(**{k: v for k, v in zip(fields, row)})
+def menu_page_factory(row_dict: dict[str | Any, Any]) -> MenuPage:
+    return MenuPage(**row_dict)

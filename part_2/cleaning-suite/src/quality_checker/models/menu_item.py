@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-import sqlite3
+from typing import Any
 
 
 @dataclass
@@ -29,6 +29,5 @@ class MenuItem:
     highest_price: int | None = None
 
 
-def menu_item_factory(cursor: sqlite3.Cursor, row: sqlite3.Row) -> MenuItem:
-    fields = [column[0] for column in cursor.description]
-    return MenuItem(**{k: v for k, v in zip(fields, row)})
+def menu_item_factory(row_dict: dict[str | Any, Any]) -> MenuItem:
+    return MenuItem(**row_dict)

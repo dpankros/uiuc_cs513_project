@@ -1,4 +1,5 @@
 import sqlite3
+from typing import Any
 from quality_checker.db import run_query
 from quality_checker.checks import CheckResult
 
@@ -20,9 +21,9 @@ def _get_table_counts(conn: sqlite3.Connection) -> list[tuple[str, int]]:
     """
 
     def table_counts_factory(
-        cursor: sqlite3.Cursor,
-        row: sqlite3.Row,
+        row_dict: dict[str, Any],
     ) -> tuple[str, int]:
-        return row[0], row[1]
+        row_data = list(row_dict.values())
+        return row_data[0], row_data[1]
 
     return run_query(conn, query=query, row_factory=table_counts_factory)

@@ -1,13 +1,18 @@
 import sqlite3
+from typing import Any
 from quality_checker.db import run_query
 from quality_checker.checks import CheckResult
 
 
 def check_menu_item_xpos_ypos_domain(conn: sqlite3.Connection) -> CheckResult:
-    def domain_factory(
-        cursor: sqlite3.Cursor, row: sqlite3.Row
-    ) -> tuple[float, float, float, float]:
-        return float(row[0]), float(row[1]), float(row[2]), float(row[3])
+    def domain_factory(row_dict: dict[str | Any, Any]) -> tuple[float, float, float, float]:
+        row_data = list(row_dict.values())
+        return (
+            float(row_data[0]),
+            float(row_data[1]),
+            float(row_data[2]),
+            float(row_data[3]),
+        )
 
     query = "select min(xpos), max(xpos), min(ypos), max(ypos) from MenuItem;"
     results = run_query(

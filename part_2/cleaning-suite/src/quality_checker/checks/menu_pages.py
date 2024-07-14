@@ -14,12 +14,12 @@ def check_menu_pages(conn: sqlite3.Connection) -> CheckResult:
     distinct_uuids = run_query(
         conn,
         query="select distinct uuid from MenuPage order by uuid asc;",
-        row_factory=lambda cursor, row: row[0],
+        row_factory=lambda row_dict: list(row_dict.values())[0],
     )
     total_menus = run_query(
         conn,
         query="select MP.id from MenuPage MP",
-        row_factory=lambda cursor, row: row[0],
+        row_factory=lambda row_dict: list(row_dict.values())[0],
     )
     return [
         ("Duplicate UUIDs", len(total_menus) - len(distinct_uuids)),

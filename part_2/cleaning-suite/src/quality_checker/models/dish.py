@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import sqlite3
+from typing import Any
 
 
 @dataclass
@@ -15,6 +16,5 @@ class Dish:
     highest_price: float
 
 
-def dish_factory(cursor: sqlite3.Cursor, row: sqlite3.Row) -> Dish:
-    fields = [column[0] for column in cursor.description]
-    return Dish(**{k: v for k, v in zip(fields, row)})
+def dish_factory(row_dict: dict[str, Any]) -> Dish:
+    return Dish(**row_dict)
