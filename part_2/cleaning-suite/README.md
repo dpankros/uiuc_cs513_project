@@ -20,6 +20,9 @@ Finally, whenever you want to run your code, run:
 
 ```shell
 # to import from CSV to sqlite, and do some basic cleaning along the way
+#
+# NOTE: this takes multiple minutes to run to completion, thanks to Python's
+# single-threaded nature.
 $ rye run importer 
 # to validate the data in the sqlite database
 $ rye run checker
