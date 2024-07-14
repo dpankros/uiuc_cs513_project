@@ -27,3 +27,15 @@ $ rye run importer
 # to validate the data in the sqlite database
 $ rye run checker
 ```
+
+### The importer
+
+The importer reads all the CSV files in the [`../../data`](../../data) directory and imports them into a sqlite database. It also does some basic cleaning along the way, such as removing rows with missing values.
+
+Its output is a timestamped sqlite file in the [`../../imports`](../../imports) directory.
+
+Because this script crunches through a lot of data, it takes a while to run!
+
+### The checker
+
+After all values have been imported into SQLite, the checker does more advanced cleaning on the data, including referential integrity checks and so on.
