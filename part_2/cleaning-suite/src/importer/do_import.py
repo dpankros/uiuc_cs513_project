@@ -4,6 +4,7 @@ from typing import Awaitable, Callable
 from checker.db import RowFactory
 from importer.csv import read_csv
 
+
 async def do_import[T](
     filename: str,
     *,

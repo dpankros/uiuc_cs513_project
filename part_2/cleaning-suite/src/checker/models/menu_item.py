@@ -34,7 +34,9 @@ class MenuItem(Model):
 def menu_item_factory(row_dict: dict[str | Any, Any]) -> MenuItem:
     return MenuItem(**row_dict)
 
-_TABLE_NAME="MenuItem"
+
+_TABLE_NAME = "MenuItem"
+
 
 async def create_menu_item_table(conn: aiosqlite.Connection) -> None:
     query = f"""
@@ -53,6 +55,7 @@ async def create_menu_item_table(conn: aiosqlite.Connection) -> None:
     """
     await conn.execute(query)
     await conn.commit()
+
 
 async def insert_menu_item(conn: aiosqlite.Connection, menu_item: MenuItem):
     await insert_entry(_TABLE_NAME, conn, menu_item)

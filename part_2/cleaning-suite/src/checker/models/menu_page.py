@@ -28,7 +28,9 @@ def create_menu_page_factory(*, strict: bool = True) -> RowFactory[MenuPage]:
 
     return strict_factory if strict else lenient_factory
 
-_TABLE_NAME="MenuPage"
+
+_TABLE_NAME = "MenuPage"
+
 
 async def create_menu_page_table(conn: aiosqlite.Connection) -> None:
     query = f"""
@@ -45,6 +47,7 @@ async def create_menu_page_table(conn: aiosqlite.Connection) -> None:
     """
     await conn.execute(query)
     await conn.commit()
+
 
 async def insert_menu_page(conn: aiosqlite.Connection, menu_page: MenuPage):
     await insert_entry(_TABLE_NAME, conn, menu_page)

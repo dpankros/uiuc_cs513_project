@@ -45,6 +45,7 @@ def create_menu_factory(*, strict: bool) -> RowFactory[Menu]:
 
 _TABLE_NAME = "Menu"
 
+
 async def create_menu_table(conn: aiosqlite.Connection) -> None:
     query = f"""
     CREATE TABLE "{_TABLE_NAME}"
