@@ -62,10 +62,11 @@ class MenuImportOperation(OpenRefineOperation):
             'replace("foreign", "for")',
             'replace("steamship", "steam")',
             'replace("other (private party)", "other")', #what do we want here??
+            # TODO: There are a bunch of "other" types that aren't currently handled
             'replace("(?)", " ")',
             'replace("?", " ")',
 
-
+            'replace(/;$/, "")',  # remove extra hanging delimiters
             'replace(/\\s*;\\s*/,"; ")',  # normalize delimiter spaces
             'replace(/\\s+/," ")',  # all spaces are at most 1
             'trim()'
