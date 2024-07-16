@@ -4,7 +4,7 @@ import urllib.parse
 import json
 import io
 import functools
-from project import Project
+from .project import Project
 
 class Server:
     def __init__(self, url: str = "http://localhost:3333"):
