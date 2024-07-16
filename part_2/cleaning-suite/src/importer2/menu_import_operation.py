@@ -14,9 +14,65 @@ class MenuImportOperation(OpenRefineOperation):
 
         server = self.server
 
-        # # this is using a shortened version of the Dish.csv created using `cat Dish.csv| head -n 1000 > Dish_sm.csv`
-        # project = server.create_project_from_file(source_filename, 'Dish')
-        #
+        project = server.create_project_from_file(source_filename, 'Menu')
+
+
+        name_op = [
+            {
+                "op": "core/column-addition",
+                "engineConfig": {
+                    "facets": [],
+                    "mode": "row-based"
+                },
+                "baseColumnName": "name",
+                "expression": 'grel:value.trim().toLowercase().replace(/[\\[\\]]/, "")',
+                "onError": "set-to-blank",
+                "newColumnName": "norm_name",
+                "columnInsertIndex": 2,
+                "description": "Standardize delimiters and remove hard backets"
+            }
+
+        ]
+        project.apply_operations(name_op)
+
+        # event_replace_ops = [
+        #     [",", ";"],
+        #     [/;$/, ""]
+        # ]
+
+        event_expression = '.'.join([
+            'value',
+            'trim()',
+            'toLowercase()',
+            'replace(",", ";")', # change all comma delimiters to semicolon  BUT SEE 24787
+            'replace(/;$/, "")', # remove extra hanging delimiters
+            'replace(/\\(\\?(.+)\\?\\)/,"$1")', # change (something) to something
+            'replace(/\\[\\(\\](.+)[\\]\\)]\\)/,"$1")', # change ^(something)$ OR ^[something]$ to something
+            'replace(/([0-9]?[0-9]);([0-9][0-9])/, "$1:$2")', # change 3;00 to 3:00 (normalize times)
+            'replace(/[\\[\\]]/, "")', # remove hard brackets
+            'replace(/\\?$/,"")',  # change foo? to foo  (and all instances of just "?")
+            'replace(/\\?;/,"")',  # change something?; something to something; something
+            'replace(/^\'/,"")',  # change 'something to something
+            'trim()'
+        ])
+        event_op = [
+            {
+                "op": "core/column-addition",
+                "engineConfig": {
+                    "facets": [],
+                    "mode": "row-based"
+                },
+                "baseColumnName": "event",
+                "expression": f'grel:{event_expression}',
+                "onError": "set-to-blank",
+                "newColumnName": "norm_event",
+                "columnInsertIndex": 5,
+                "description": "Standardize delimiters and remove hard backets"
+            }
+
+        ]
+        project.apply_operations(event_op)
+
         # op = [
         #     {
         #         "op": "core/column-addition",
@@ -27,7 +83,7 @@ class MenuImportOperation(OpenRefineOperation):
         #         "baseColumnName": "name",
         #         "expression": 'grel:value.trim().toLowercase().replace(\" & \",\" and \").replace(/[\\;\\:\\.\\,\\>\\<\\/\\?\\[\\]\\{\\}\\(\\)\\*\\&\\^\\%\\$\\#\\@\\!\\-\\+\\=\\_]/, \"\")',
         #         "onError": "set-to-blank",
-        #         "newColumnName": "norm_name",
+        #         "newColumnName": "norm_event",
         #         "columnInsertIndex": 2,
         #         "description": "Create column norm_name"
         #     }
@@ -35,9 +91,10 @@ class MenuImportOperation(OpenRefineOperation):
         # ]
         # # create the norm_name column
         # project.apply_operations(op)
-        #
-        # # cluster on 'norm_name'
-        # project.cluster_column('norm_name')
-        #
-        #
-        # project.export_rows(dest_filename)
+
+        # cluster on 'norm_name'
+        project.cluster_column('name')
+        project.cluster_column('sponsor')
+
+
+        project.export_rows(dest_filename)

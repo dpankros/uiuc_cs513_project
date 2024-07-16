@@ -144,9 +144,10 @@ class Project:
         # print(f"Cluster Data: {cluster_data}")
         for cluster_list in cluster_data:
             # print(f"Cluster List: {cluster_list}")
-            to_value = cluster_list[0]['v']
+            to_value = functools.reduce(lambda result, v: v if v['c'] > result['c'] else result, cluster_list, {'c': 0, 'v': ''})['v']
             from_values = [value['v'] for value in cluster_list]
-            mass_edit_data.append({'from': from_values, 'to': to_value})
+            if len(to_value) > 0:
+                mass_edit_data.append({'from': from_values, 'to': to_value})
 
         r = self.mass_edit(column, edits=mass_edit_data)
         if not r['code'] == 'ok':
