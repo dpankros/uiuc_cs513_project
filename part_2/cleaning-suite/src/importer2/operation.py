@@ -43,3 +43,53 @@ class OpenRefineOperation(BaseOperation):
 
         if self.dest_filename:
             project.export_rows_to_file(self.dest_filename)
+
+    # @staticmethod
+    # def op(orig_column: str, grel_exp: str = None, operation: str=None, new_column: str = None, index: int = None) -> {}:
+    #     op = None
+    #     expression = None
+    #     onError = None
+    #     description = None
+    #
+    #     if operation is None:
+    #         if orig_column is not None and new_column is not None and grel_exp is not None:
+    #             op = "core/column-addition"
+    #             grel_exp = f'grel:{grep_exp}'
+    #             description = f"Create column {new_column} from grel modification of {orig_column}"
+    #
+    #         if new_column is not None and new_column is None and grel_exp is not None:
+    #             op = "core/text-transform"
+    #             description = f"Update column {new_column} with grel modification"
+    #
+    #         if new_column is not None and new_column is None and grel_exp is not None:
+    #             op = "core/column-rename"
+    #             description = f"Rename column {new_column} to {new_column}"
+    #
+    # op = {
+    #         "op": op,
+    #         "engineConfig": {
+    #             "facets": [],
+    #             "mode": "row-based"
+    #         },
+    #         "baseColumnName": orig_column,
+    #         # "expression": f'grel:{grep_exp}',
+    #         "onError": "set-to-blank",
+    #         # "newColumnName": new_column,
+    #         # "columnInsertIndex": index,
+    #         "description": description
+    #     }
+    #
+    # if expression is not None:
+    #     op['expression'] = grel_exp
+    # if newColumnName is not None:
+    #     op['newColumnName'] = new_column
+    # if index is not None:
+    #     op['columnInsertIndex'] = index
+    #
+    # return op
+    #
+    # @staticmethod
+    # def new_column_op(orig_column: str, grel_exp: str, operation=None, new_column: str = None, index: int = None) -> [
+    #     {}]:
+    #     return OpenRefineOperation.op(orig_column, grel_exp, operation="core/column-addition", new_column=new_column,
+    #                                   index=index)

@@ -10,8 +10,8 @@ class DishImportOperation(OpenRefineOperation):
         server_url = self.config['server_url']
         sql_engine = self.config['sql_engine']
 
-        assert(source_filename, "source_filename is required")
-        assert(dest_filename, "dest_filename is required")
+        assert source_filename, "source_filename is required"
+        assert dest_filename, "dest_filename is required"
 
         server = self.server
 

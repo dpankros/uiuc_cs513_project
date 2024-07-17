@@ -1,8 +1,13 @@
 from operation import OpenRefineOperation
 from openrefine import Server, Project
+from openrefine.operations import ColumnAdditionOp, OnErrorTypes
 
 
 class MenuImportOperation(OpenRefineOperation):
+    NO_HANGING_DELIMITER = 'replace(/;\\s*$/, "")'
+    NO_DOUBLE_SPACES = 'replace(/\\s+/, " ")'
+    SPACED_DELIMITERS = 'replace(/;/, "; ")'
+
     def run(self):
         super().run()
         source_filename = self.config['source_filename']
@@ -10,35 +15,12 @@ class MenuImportOperation(OpenRefineOperation):
         server_url = self.config['server_url']
         sql_engine = self.config['sql_engine']
 
-        assert(source_filename, "source_filename is required")
-        assert(dest_filename is not None or sql_engine is not None, "dest_filename or a sql_engine is required")
+        assert source_filename, "source_filename is required"
+        assert dest_filename is not None or sql_engine is not None, "dest_filename or a sql_engine is required"
 
         server = self.server
 
         project = server.create_project_from_file(source_filename, 'Menu')
-
-        name_op = [
-            {
-                "op": "core/column-addition",
-                "engineConfig": {
-                    "facets": [],
-                    "mode": "row-based"
-                },
-                "baseColumnName": "name",
-                "expression": 'grel:value.trim().toLowercase().replace(/[\\[\\]]/, "")',
-                "onError": "set-to-blank",
-                "newColumnName": "norm_name",
-                "columnInsertIndex": 2,
-                "description": "Standardize delimiters and remove hard backets"
-            }
-
-        ]
-        project.apply_operations(name_op)
-
-        # event_replace_ops = [
-        #     [",", ";"],
-        #     [/;$/, ""]
-        # ]
 
         venue_expression = '.'.join([
             'value',
@@ -95,39 +77,21 @@ class MenuImportOperation(OpenRefineOperation):
             'replace(/\\s+/," ")',  # all spaces are at most 1
             'trim()'
         ])
-        venue_op = [
-            {
-                "op": "core/column-addition",
-                "engineConfig": {
-                    "facets": [],
-                    "mode": "row-based"
-                },
-                "baseColumnName": "venue",
-                "expression": f'grel:{venue_expression}',
-                "onError": "set-to-blank",
-                "newColumnName": "norm_venue",
-                "columnInsertIndex": 6,
-                "description": "Standardize delimiters and remove hard backets"
-            }
-
-        ]
-        project.apply_operations(venue_op)
-
         event_expression = '.'.join([
             'value',
             'trim()',
             'toLowercase()',
-            'replace(",", ";")', # change all comma delimiters to semicolon  BUT SEE 24787, 13546, 13975
-            'replace(" & ", "; ")', # change all foo & bar to foo; bar
-            'replace(" and ", "; ")', # change all foo & bar to foo; bar 14159
-            'replace(" and/or ", "; ")', # change all foo and/or bar to foo; bar 13553
-            'replace("/", "; ")', # change all breakfast/supper/lunch to breakfast; supper; lunch
-            'replace("(?)", "")', # remove (?) 14076, 14078
-            'replace(/;$/, "")', # remove extra hanging delimiters
-            'replace(/\\(\\?(.+)\\?\\)/,"$1")', # change (something) to something
-            'replace(/\\[\\(\\](.+)[\\]\\)]\\)/," $1 ")', # change ^(something)$ OR ^[something]$ to something
-            'replace(/([0-9]?[0-9]);([0-9][0-9])/, "$1:$2")', # change 3;00 to 3:00 (normalize times)
-            'replace(/[\\[\\]]/, " ")', # remove hard brackets
+            'replace(",", ";")',  # change all comma delimiters to semicolon  BUT SEE 24787, 13546, 13975
+            'replace(" & ", "; ")',  # change all foo & bar to foo; bar
+            'replace(" and ", "; ")',  # change all foo & bar to foo; bar 14159
+            'replace(" and/or ", "; ")',  # change all foo and/or bar to foo; bar 13553
+            'replace("/", "; ")',  # change all breakfast/supper/lunch to breakfast; supper; lunch
+            'replace("(?)", "")',  # remove (?) 14076, 14078
+            'replace(/;$/, "")',  # remove extra hanging delimiters
+            'replace(/\\(\\?(.+)\\?\\)/,"$1")',  # change (something) to something
+            'replace(/\\[\\(\\](.+)[\\]\\)]\\)/," $1 ")',  # change ^(something)$ OR ^[something]$ to something
+            'replace(/([0-9]?[0-9]);([0-9][0-9])/, "$1:$2")',  # change 3;00 to 3:00 (normalize times)
+            'replace(/[\\[\\]]/, " ")',  # remove hard brackets
             'replace(/\\?\\s*$/,"")',  # change foo? to foo  (and all instances of just "?") 14408
             'replace(/\\?;/,"")',  # change something?; something to something; something
             'replace(/^\'/,"")',  # change 'something to something
@@ -135,45 +99,60 @@ class MenuImportOperation(OpenRefineOperation):
             'replace(/\\s+/," ")',  # all spaces are at most 1
             'trim()'
         ])
-        event_op = [
-            {
-                "op": "core/column-addition",
-                "engineConfig": {
-                    "facets": [],
-                    "mode": "row-based"
-                },
-                "baseColumnName": "event",
-                "expression": f'grel:{event_expression}',
-                "onError": "set-to-blank",
-                "newColumnName": "norm_event",
-                "columnInsertIndex": 5,
-                "description": "Standardize delimiters and remove hard backets"
-            }
+        sponsor_expression = '.'.join([
+            'value',
+            'trim()',
+            'toTitlecase()'
+        ])
+        place_expression = '.'.join([
+            'value',
+            'trim()',
+            'toLowercase()',
+            'replace(/"\\s*([\\w,.-]+\\s*)"/, "\\"$1\\"")',
+            # remove spaces at the beginning of a quoted string e.g. 12527 vs 12528
+            'replace(/[\\[\\(]/, ", ")',  # 12490
+            'replace(/[\\]\\)]/, "")',  # 12490
+            'replace(",", ", ")',
+            'replace(/\\?\\s*$/, "")',  # e.g. 12518, 12490
+            self.NO_HANGING_DELIMITER,  # remove extra hanging delimiters
+            'replace(/\\s+,/,",")',  # remove spaces before commas
+            'replace(/,+/,",")',  # remove reduntant commas e.g. 12474
+            'replace(/^\\s*,\\s*/,"")',  # remove starting commas e.g. 12490, 12578
+            self.NO_DOUBLE_SPACES,  # all spaces are at most 1
+            'trim()',
+            'toTitlecase()'
+        ])
+        physical_description_expression = '.'.join([
+            'value',
+            'trim()',
+            'toLowercase()',
+            'replace(/([\\d]+(\\.[\\d]{1,2})?)\\s+x\\s+([\\d]+(\\.[\\d]{1,2})?)/, "$1x$3")',  # e.g. 23965
+            self.SPACED_DELIMITERS,
+            self.NO_DOUBLE_SPACES,  # all spaces are at most 1
+            self.NO_HANGING_DELIMITER,  # remove extra hanging delimiters
+            'replace(/ ill(;|$)/, " illus$1")',
+            'trim()'
+        ])
 
-        ]
-        project.apply_operations(event_op)
+        project.apply_operations([
+            ColumnAdditionOp(base_column_name='physical_description', new_column_name='norm_physical_description',
+                             column_insert_index=7,
+                             expression=physical_description_expression).value(),
+            ColumnAdditionOp(base_column_name='place', new_column_name='norm_place', column_insert_index=6,
+                             expression=place_expression).value(),
+            ColumnAdditionOp(base_column_name='venue', new_column_name='norm_venue', column_insert_index=5,
+                             expression=venue_expression).value(),
+            ColumnAdditionOp(base_column_name='event', new_column_name='norm_event', column_insert_index=4,
+                             expression=event_expression).value(),
+            ColumnAdditionOp(base_column_name='sponsor', new_column_name='norm_sponsor', column_insert_index=3,
+                             expression=sponsor_expression).value(),
+            ColumnAdditionOp(base_column_name='name', new_column_name='norm_name', column_insert_index=2,
+                             expression='value.trim().toLowercase().replace(/[\\[\\]]/, "")').value(),
 
-        # op = [
-        #     {
-        #         "op": "core/column-addition",
-        #         "engineConfig": {
-        #             "facets": [],
-        #             "mode": "row-based"
-        #         },
-        #         "baseColumnName": "name",
-        #         "expression": 'grel:value.trim().toLowercase().replace(\" & \",\" and \").replace(/[\\;\\:\\.\\,\\>\\<\\/\\?\\[\\]\\{\\}\\(\\)\\*\\&\\^\\%\\$\\#\\@\\!\\-\\+\\=\\_]/, \"\")',
-        #         "onError": "set-to-blank",
-        #         "newColumnName": "norm_event",
-        #         "columnInsertIndex": 2,
-        #         "description": "Create column norm_name"
-        #     }
-        #
-        # ]
-        # # create the norm_name column
-        # project.apply_operations(op)
+        ])
 
-        # cluster on 'norm_name'
-        project.cluster_column('name')
-        project.cluster_column('sponsor')
+        # temporarilty removed for speed
+        # project.cluster_column('name')
+        # project.cluster_column('sponsor')
 
         self.export(project)

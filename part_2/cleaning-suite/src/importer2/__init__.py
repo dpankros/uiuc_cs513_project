@@ -15,7 +15,7 @@ if __name__ == '__main__':
         # DishImportOperation({
         #     **base_config,
         #     'source_filename': '../../../../data/Dish.csv',
-        #     'dest_filename': '../../../../Dish_conv.csv'
+        #     'dest_filename': '../../../../Dish_conv.csv',
         #     'sql_table': 'dish',
         #     'sql_if_exists': 'replace'
         # }),
