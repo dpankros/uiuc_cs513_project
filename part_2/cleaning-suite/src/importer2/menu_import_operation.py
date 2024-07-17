@@ -1,12 +1,24 @@
 from operation import OpenRefineOperation
 from openrefine import Server, Project
-from openrefine.operations import ColumnAdditionOp, OnErrorTypes
+from openrefine.operations import ColumnAdditionOp, ColumnRemovalOp, OnErrorTypes, TextTransformOp
 
 
 class MenuImportOperation(OpenRefineOperation):
+    USE_SEMI_DELIMITERS = 'replace(",", ";")'
     NO_HANGING_DELIMITER = 'replace(/;\\s*$/, "")'
     NO_DOUBLE_SPACES = 'replace(/\\s+/, " ")'
-    SPACED_DELIMITERS = 'replace(/;/, "; ")'
+    SPACED_DELIMITERS = 'replace(/\\s*;\\s*/,"; ")' #'replace(/;/, "; ")'
+    SPACE_AFTER_COMMA = 'replace(",", ", ")'
+    OPEN_BRACKETS_TO_COMMA = 'replace(/[\\[\\(\\{]/, ", ")'
+    NO_OPEN_BRACKETS = 'replace(/[\\[\\(\\{]/, " ")'
+    NO_SPACE_BEFORE_COMMAS = 'replace(/\\s+,/,",")'
+    NO_CLOSE_BRACKETS = 'replace(/[\\]\\)\\}]/, "")'
+    NO_STARTING_COMMAS = 'replace(/^\\s*,+\\s*/,"")'
+    NO_ENDING_COMMAS = 'replace(/\\,+\\s*$/, "")'
+    NO_ENDING_QUESTIONS = 'replace(/\\?+\\s*$/, "")'
+    NO_MULTI_COMMAS = 'replace(/,+/,",")'
+    NO_QUESTION_MARKS = 'replace("?", " ")'
+    NO_PAREN_QUESTION_PAREN = 'replace("(?)", " ")'
 
     def run(self):
         super().run()
@@ -26,7 +38,7 @@ class MenuImportOperation(OpenRefineOperation):
             'value',
             'trim()',
             'toLowercase()',
-            'replace(",", ";")',
+            self.USE_SEMI_DELIMITERS,
             'replace("commercial", "com")',
             'replace("railroad", "rail")',
             'replace("social", "soc")',
@@ -69,12 +81,11 @@ class MenuImportOperation(OpenRefineOperation):
             'replace(/other - .*club.*/, "club")',  # should this be soc?
             'replace(/other - .*trade.*/, "com")',
             'replace("other - private club", "club")',
-            'replace("(?)", " ")',
-            'replace("?", " ")',
-
-            'replace(/;$/, "")',  # remove extra hanging delimiters
-            'replace(/\\s*;\\s*/,"; ")',  # normalize delimiter spaces
-            'replace(/\\s+/," ")',  # all spaces are at most 1
+            self.NO_PAREN_QUESTION_PAREN,
+            self.NO_QUESTION_MARKS,
+            self.NO_HANGING_DELIMITER,
+            self.SPACED_DELIMITERS,  # normalize delimiter spaces
+            self.NO_DOUBLE_SPACES,  # all spaces are at most 1
             'trim()'
         ])
         event_expression = '.'.join([
@@ -110,14 +121,15 @@ class MenuImportOperation(OpenRefineOperation):
             'toLowercase()',
             'replace(/"\\s*([\\w,.-]+\\s*)"/, "\\"$1\\"")',
             # remove spaces at the beginning of a quoted string e.g. 12527 vs 12528
-            'replace(/[\\[\\(]/, ", ")',  # 12490
-            'replace(/[\\]\\)]/, "")',  # 12490
-            'replace(",", ", ")',
-            'replace(/\\?\\s*$/, "")',  # e.g. 12518, 12490
+            self.OPEN_BRACKETS_TO_COMMA,  # 12490
+            self.NO_CLOSE_BRACKETS,  # 12490
+            self.SPACE_AFTER_COMMA,
+            self.NO_ENDING_QUESTIONS,  # e.g. 12518, 12490
+            self.NO_ENDING_COMMAS,
             self.NO_HANGING_DELIMITER,  # remove extra hanging delimiters
-            'replace(/\\s+,/,",")',  # remove spaces before commas
-            'replace(/,+/,",")',  # remove reduntant commas e.g. 12474
-            'replace(/^\\s*,\\s*/,"")',  # remove starting commas e.g. 12490, 12578
+            self.NO_SPACE_BEFORE_COMMAS,  # remove spaces before commas
+            self.NO_MULTI_COMMAS,  # remove reduntant commas e.g. 12474
+            self.NO_STARTING_COMMAS,  # remove starting commas e.g. 12490, 12578
             self.NO_DOUBLE_SPACES,  # all spaces are at most 1
             'trim()',
             'toTitlecase()'
@@ -127,14 +139,54 @@ class MenuImportOperation(OpenRefineOperation):
             'trim()',
             'toLowercase()',
             'replace(/([\\d]+(\\.[\\d]{1,2})?)\\s+x\\s+([\\d]+(\\.[\\d]{1,2})?)/, "$1x$3")',  # e.g. 23965
-            self.SPACED_DELIMITERS,
+            self.USE_SEMI_DELIMITERS,
             self.NO_DOUBLE_SPACES,  # all spaces are at most 1
             self.NO_HANGING_DELIMITER,  # remove extra hanging delimiters
             'replace(/ ill(;|$)/, " illus$1")',
             'trim()'
         ])
 
+        # TODO: There are a lot of special cases here.  Look at:
+        #```sql
+        # select norm_occasion, count(norm_occasion) as count from menu group by norm_occasion order by norm_occasion asc;
+        #```
+        occasion_expression = '.'.join([
+            'value',
+            'trim()',
+            'toLowercase()',
+            # self.USE_SEMI_DELIMITERS,
+            'replace("[", "(")',
+            'replace("]", ")")',
+            'replace(/other\\s+\\((.+)\\)/, "$1")',
+            'replace(/other\\s*,(.+)/, "$1")',
+            'replace("other - soc", "soc")',
+            'replace("other - social", "soc")',
+            'replace("other - daily menu", "daily")',
+            'replace("other - daily", "daily")',
+            'replace("other - anniversary", "anniversary")',
+            'replace("other - anniv", "anniversary")',
+            'replace("0ther ", "")',
+            'replace(/(ann|aniv|anniv|anniversaryersary)(\\W|$)/, "anniversary$2")',
+            self.NO_PAREN_QUESTION_PAREN,
+            self.NO_OPEN_BRACKETS,
+            self.NO_CLOSE_BRACKETS,
+            self.SPACED_DELIMITERS,
+            self.NO_DOUBLE_SPACES,  # all spaces are at most 1
+            self.NO_HANGING_DELIMITER,  # remove extra hanging delimiters
+            self.NO_ENDING_COMMAS,
+            self.NO_ENDING_QUESTIONS,
+            self.NO_STARTING_COMMAS,
+            'trim()'
+        ])
+
         project.apply_operations([
+
+            # note that these can be changed to TextTransformationOp to modify IN-PLACE by changing base_column_name to
+            # column_name and removing new_column_name and column_insert_index
+
+            ColumnAdditionOp(base_column_name='occasion', new_column_name='norm_occasion',
+                             column_insert_index=8,
+                             expression=occasion_expression).value(),
             ColumnAdditionOp(base_column_name='physical_description', new_column_name='norm_physical_description',
                              column_insert_index=7,
                              expression=physical_description_expression).value(),
@@ -149,10 +201,14 @@ class MenuImportOperation(OpenRefineOperation):
             ColumnAdditionOp(base_column_name='name', new_column_name='norm_name', column_insert_index=2,
                              expression='value.trim().toLowercase().replace(/[\\[\\]]/, "")').value(),
 
+            ColumnRemovalOp(column_name='keywords').value(),
+            ColumnRemovalOp(column_name='language').value(),
+            ColumnRemovalOp(column_name='location_type').value(),
         ])
 
         # temporarilty removed for speed
         # project.cluster_column('name')
         # project.cluster_column('sponsor')
+        project.cluster_column('norm_occasion')
 
         self.export(project)

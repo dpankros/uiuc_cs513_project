@@ -4,21 +4,20 @@ class OnErrorTypes(Enum):
     STORE_ERROR = "store-error"
     SET_TO_BLANK = "set-to-blank"
 
+class Config(dict):
+    def __getattr__(self, item):
+        return self[item]
+
 class BaseOperation:
-    def __init__(self, base_column_name=None, description=None, on_error: OnErrorTypes = OnErrorTypes.SET_TO_BLANK):
-        self.base_column_name = base_column_name
-        self.description = description
-        self.on_error = on_error
+    def __init__(self, **kwargs):
+        self.config = Config(kwargs)
 
     def value(self) -> dict:
-        return {
-            # "op": ?????,
-            "engineConfig": {
-                "facets": [],
-                "mode": "row-based"
-            },
-            "baseColumnName": self.base_column_name,
-            "onError": self.on_error.value,
-            "description": self.description
-        }
+        return {}
+
+    def to_json(self):
+        return self.value
+
+    def __getattr__(self, item):
+        return self.config[item] if item in self.config else None
 
