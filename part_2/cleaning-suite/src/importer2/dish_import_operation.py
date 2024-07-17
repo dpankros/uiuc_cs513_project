@@ -8,6 +8,7 @@ class DishImportOperation(OpenRefineOperation):
         source_filename = self.config['source_filename']
         dest_filename = self.config['dest_filename']
         server_url = self.config['server_url']
+        sql_engine = self.config['sql_engine']
 
         assert(source_filename, "source_filename is required")
         assert(dest_filename, "dest_filename is required")
@@ -39,5 +40,5 @@ class DishImportOperation(OpenRefineOperation):
         # cluster on 'norm_name'
         project.cluster_column('norm_name')
 
+        self.export(project)
 
-        project.export_rows(dest_filename)

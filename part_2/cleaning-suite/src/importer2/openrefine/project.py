@@ -4,6 +4,8 @@ import urllib.parse
 import json
 import io
 import functools
+import pandas as pd
+from io import StringIO
 
 
 class Project:
@@ -121,7 +123,12 @@ class Project:
             }
         ).json()
 
-    def export_rows(self, filename='data.csv', format="csv"):
+    def export_rows(self, format="csv"):
+        """
+        Exports the project data to a string in the specified format
+        :param format: csv or tsv (or anything that the export-rows operation of openrefine accepts)
+        :return: the exported string
+        """
         content = self.server.post(
             'command/core/export-rows',
             query={
@@ -132,9 +139,39 @@ class Project:
                 "engine": json.dumps({"facets": [], "mode": "row-based"})
             }
         ).text
+
+        return content
+
+    def export_rows_to_file(self, filename='data.csv', format="csv"):
+        """
+        Write the project data to a file
+        :param filename: the name/path of the file
+        :param format: a format, such as csv or tsv
+        :return: self for chaining
+        """
+        content = self.export_rows(format)
         with open(filename, 'w') as file:
             file.write(content)
-        return content
+        return self
+
+    def to_df(self):
+        """
+        Export the data in the project to a pandas dataframe
+        :return:
+        """
+        dio = StringIO(self.export_rows('csv'))
+        return pd.read_csv(dio)
+
+    def to_sql(self, sql_engine, table_name='new_table', if_exists='fail'):
+        """
+        Export the data in the project to a sqlite database
+        :param sql_engine: a sqlalchemy engine i.e. `create_engine('sqlite:///my_sqlite.db')`
+        :param table_name: the name of the table to export to within the database
+        :return: self for chaining
+        """
+        df = self.to_df()
+        df.to_sql(table_name, con=sql_engine, index=False, if_exists=if_exists)
+        return self
 
     def cluster_column(self, column: str):
         # [ [{ v: "str VALUE", "c": int count? }, { v: "str VALUE", "c": int count? }, ...], ... ]
@@ -144,7 +181,9 @@ class Project:
         # print(f"Cluster Data: {cluster_data}")
         for cluster_list in cluster_data:
             # print(f"Cluster List: {cluster_list}")
-            to_value = functools.reduce(lambda result, v: v if v['c'] > result['c'] else result, cluster_list, {'c': 0, 'v': ''})['v']
+            to_value = \
+            functools.reduce(lambda result, v: v if v['c'] > result['c'] else result, cluster_list, {'c': 0, 'v': ''})[
+                'v']
             from_values = [value['v'] for value in cluster_list]
             if len(to_value) > 0:
                 mass_edit_data.append({'from': from_values, 'to': to_value})
@@ -155,4 +194,3 @@ class Project:
             raise Exception(f"Cluster failed: {r['message']}")
 
         return self
-

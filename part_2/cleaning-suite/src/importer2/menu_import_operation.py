@@ -8,14 +8,14 @@ class MenuImportOperation(OpenRefineOperation):
         source_filename = self.config['source_filename']
         dest_filename = self.config['dest_filename']
         server_url = self.config['server_url']
+        sql_engine = self.config['sql_engine']
 
         assert(source_filename, "source_filename is required")
-        assert(dest_filename, "dest_filename is required")
+        assert(dest_filename is not None or sql_engine is not None, "dest_filename or a sql_engine is required")
 
         server = self.server
 
         project = server.create_project_from_file(source_filename, 'Menu')
-
 
         name_op = [
             {
@@ -61,8 +61,32 @@ class MenuImportOperation(OpenRefineOperation):
             'replace("restaurant", "rest")',
             'replace("foreign", "for")',
             'replace("steamship", "steam")',
-            'replace("other (private party)", "other")', #what do we want here??
-            # TODO: There are a bunch of "other" types that aren't currently handled
+            # TODO : I've taken a stab at calssifying the straggler "other" types, but a few remain (11 rows in total)
+            # some could probable be converted into the above groups or made into their own
+            # e.g.
+            # ```sql
+            # select norm_venue, count(norm_venue) as count from menu
+            # where norm_venue like 'other%' group by norm_venue order by count desc;
+            # ```
+            'replace(/^other[^\\w]+([\\w\\s\\-;]+)[^\\w]*$/, "other - $1")',
+            'replace("other - soc", "soc")',
+            'replace("other - private party", "priv")',
+            'replace("other - private", "priv")',
+            'replace("other - privately hosted dinner party", "priv")',
+            'replace("other - private hosts", "priv")',
+            'replace("other - individual", "priv")',
+            'replace("other - group of citizens", "priv")',
+            'replace("other - group of friends", "priv")',
+            'replace(/other - .*privat.+/, "priv")',
+            'replace("other - personal", "priv")',
+            'replace("other - residence", "priv")',
+            'replace("other - theater", "mus")',
+            'replace("other - hospital", "med")',
+            'replace(/other - sport.*/, "sport")',
+            'replace(/other - .*royal.*/, "royal")',
+            'replace(/other - .*club.*/, "club")',  # should this be soc?
+            'replace(/other - .*trade.*/, "com")',
+            'replace("other - private club", "club")',
             'replace("(?)", " ")',
             'replace("?", " ")',
 
@@ -152,5 +176,4 @@ class MenuImportOperation(OpenRefineOperation):
         project.cluster_column('name')
         project.cluster_column('sponsor')
 
-
-        project.export_rows(dest_filename)
+        self.export(project)
