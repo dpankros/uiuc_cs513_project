@@ -1,6 +1,10 @@
+from importer2.openrefine.config import Config
+
 class BaseTask:
+  name = "BaseTask"
+
   def __init__(self, operation_config: dict = {}):
-    self.config = operation_config
+    self.config = Config(operation_config)
 
   def run(self):
     raise NotImplementedError()

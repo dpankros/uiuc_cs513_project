@@ -2,6 +2,8 @@ from .cs513_import_task import CS513ImportTask
 
 
 class DishImportTask(CS513ImportTask):
+  name = "Dish Import"
+
   def run(self):
     super().run()
     source_filename = self.config['source_filename']

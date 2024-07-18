@@ -3,7 +3,7 @@ from importer2.openrefine.operations import TextTransformOp, OnErrorTypes
 
 
 class MenuItemImportTask(CS513ImportTask):
-
+  name = "MenuItem Import"
   def run(self):
     super().run()
 

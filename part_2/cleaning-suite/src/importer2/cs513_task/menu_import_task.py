@@ -4,6 +4,8 @@ from .cs513_import_task import CS513ImportTask
 
 
 class MenuImportTask(CS513ImportTask):
+  name = "Menu Import"
+
   def run(self):
     super().run()
 

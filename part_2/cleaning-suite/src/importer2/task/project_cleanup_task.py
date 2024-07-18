@@ -2,6 +2,7 @@ from .open_refine_task import OpenRefineTask
 
 
 class ProjectCleanupTask(OpenRefineTask):
+  name = "OpenRefine Project Cleanup"
   @staticmethod
   def delete_all_projects(server):
     for p in server.get_all_projects():

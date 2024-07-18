@@ -3,6 +3,8 @@ from importer2.openrefine.operations import ColumnAdditionOp, TextTransformOp, O
 
 
 class MenuPageImportTask(CS513ImportTask):
+  name = "MenuPage Import"
+
   def run(self):
     super().run()
 

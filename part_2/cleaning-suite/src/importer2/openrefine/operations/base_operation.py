@@ -1,15 +1,12 @@
 from enum import Enum
 
+from importer2.openrefine.config import Config
+
 
 class OnErrorTypes(Enum):
   KEEP_ORIGINAL = "keep-original"
   STORE_ERROR = "store-error"
   SET_TO_BLANK = "set-to-blank"
-
-
-class Config(dict):
-  def __getattr__(self, item):
-    return self[item]
 
 
 class BaseOperation:
