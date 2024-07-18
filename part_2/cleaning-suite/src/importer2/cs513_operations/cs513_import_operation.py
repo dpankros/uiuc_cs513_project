@@ -20,3 +20,16 @@ class CS513ImportOperation(OpenRefineOperation):
   NO_MULTI_COMMAS = 'replace(/,+/,",")'
   NO_QUESTION_MARKS = 'replace("?", " ")'
   NO_PAREN_QUESTION_PAREN = 'replace("(?)", " ")'
+
+  def run(self):
+    super().run()
+    self.source_filename = self.config['source_filename']
+    self.dest_filename = self.config['dest_filename']
+    self.server_url = self.config['server_url']
+    self.sql_engine = self.config['sql_engine']
+
+    assert self.source_filename, "source_filename is required"
+    assert self.dest_filename is not None or self.sql_engine is not None, "dest_filename or a sql_engine is required"
+
+    return self
+

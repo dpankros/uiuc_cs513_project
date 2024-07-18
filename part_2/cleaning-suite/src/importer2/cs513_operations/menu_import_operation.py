@@ -1,19 +1,13 @@
-from importer2.cs513_import_operation import CS513ImportOperation
 from importer2.openrefine.operations import ColumnAdditionOp, ColumnRemovalOp
+
+from .cs513_import_operation import CS513ImportOperation
 
 
 class MenuImportOperation(CS513ImportOperation):
   def run(self):
     super().run()
-    source_filename = self.config['source_filename']
-    dest_filename = self.config['dest_filename']
-    server_url = self.config['server_url']
-    sql_engine = self.config['sql_engine']
 
-    assert source_filename, "source_filename is required"
-    assert dest_filename is not None or sql_engine is not None, "dest_filename or a sql_engine is required"
-
-    project = self.server.create_project_from_file(source_filename, 'Menu')
+    project = self.server.create_project_from_file(self.source_filename, 'Menu')
 
     venue_expression = '.'.join([
       'value',

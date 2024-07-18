@@ -1,4 +1,4 @@
-from importer2.cs513_import_operation import CS513ImportOperation
+from .cs513_import_operation import CS513ImportOperation
 
 
 class DishImportOperation(CS513ImportOperation):
