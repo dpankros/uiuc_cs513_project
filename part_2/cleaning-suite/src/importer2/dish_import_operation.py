@@ -1,8 +1,8 @@
-from importer2.operation import OpenRefineOperation
+from importer2.cs513_import_operation import CS513ImportOperation
 from importer2.openrefine import Server, Project
 
 
-class DishImportOperation(OpenRefineOperation):
+class DishImportOperation(CS513ImportOperation):
     def run(self):
         super().run()
         source_filename = self.config['source_filename']

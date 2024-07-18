@@ -1,4 +1,4 @@
-from importer2.operation import OpenRefineOperation
+from importer2.open_refine_operation import OpenRefineOperation
 from importer2.openrefine import Server, Project
 
 

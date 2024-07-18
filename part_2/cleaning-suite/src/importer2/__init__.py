@@ -1,5 +1,5 @@
 from importer2.openrefine import Server, Project
-from importer2.operation import OperationList
+from importer2.operation_list import OperationList
 from importer2.dish_import_operation import DishImportOperation
 from importer2.menu_import_operation import MenuImportOperation
 from importer2.project_cleanup_operation import ProjectCleanupOperation
