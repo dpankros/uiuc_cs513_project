@@ -1,4 +1,4 @@
-from importer2.cs513_task import DishImportTask, MenuImportTask, MenuItemImportTask, MenuPageImportTask, DishSqlTask
+from importer2.cs513_task import DishImportTask, MenuImportTask, MenuItemImportTask, MenuPageImportTask, DishSqlTask, MenuSqlTask
 from importer2.openrefine import Server, Project
 from importer2.task import TaskList, ProjectCleanupTask
 from sqlalchemy import create_engine
@@ -46,6 +46,10 @@ def main():
     DishSqlTask({
       **base_config,
       'view_name': '_dish'
+    }),
+    MenuSqlTask({
+      **base_config,
+      'view_name': '_menu'
     }),
     #
     # and then probable

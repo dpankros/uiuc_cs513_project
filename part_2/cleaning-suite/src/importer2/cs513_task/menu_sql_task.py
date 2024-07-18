@@ -3,8 +3,8 @@ from sqlalchemy import text
 from .cs513_sql_task import CS513SqlTask
 
 
-class DishSqlTask(CS513SqlTask):
-  name = "Create Dish View"
+class MenuSqlTask(CS513SqlTask):
+  name = "Create Menu View"
 
   def run(self):
     super().run()
@@ -23,21 +23,27 @@ class DishSqlTask(CS513SqlTask):
 
     view_select = """    
 select
-    d.id as id,
-    d.norm_name as name,
-    d.description as description,
-    count(m.id) as menus_appeared,
-    count(mp.id) as times_appeared,
-    min(CAST(substr(date, 0, 5) as INTEGER)) as first_appeared,
-    max(CAST(substr(date, 0, 5) as INTEGER)) as last_appeared,
-    min(mi.price) as lowest_price, 
-    max(mi.price) as highest_price
-from dish d
-left join menu_item mi on d.id = mi.dish_id
-left join main.menu_page mp on mi.menu_page_id = mp.id
-left join main.menu m on mp.menu_id = m.id
-group by d.id
-order by d.id asc
+    m.id,
+    m.norm_name as name,
+    m.norm_sponsor as sponsor,
+    m.norm_event as event,
+    m.norm_venue as venue,
+    m.norm_place as place,
+    m.norm_physical_description as physical_description,
+    m.norm_occasion as occasion,
+    m.norm_notes as notes,
+    m.call_number as call_number,
+    m.date as date,
+    m.norm_location as location,
+    m.currency as currency,
+    m.currency_symbol as currency_symbol,
+    m.status as status,
+    count(mp.id) as page_count, 
+    count(mi.dish_id) as dish_count 
+from menu m
+left join main.menu_page mp on m.id = mp.menu_id
+left join main.menu_item mi on mp.id = mi.menu_page_id
+group by m.id
     """
     try:
       txn = self.connection.begin()
