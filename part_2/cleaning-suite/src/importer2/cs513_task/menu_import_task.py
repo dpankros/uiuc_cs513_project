@@ -1,9 +1,9 @@
 from importer2.openrefine.operations import ColumnAdditionOp, ColumnRemovalOp
 
-from .cs513_import_operation import CS513ImportOperation
+from .cs513_import_task import CS513ImportTask
 
 
-class MenuImportOperation(CS513ImportOperation):
+class MenuImportTask(CS513ImportTask):
   def run(self):
     super().run()
 

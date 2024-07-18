@@ -39,3 +39,7 @@ Because this script crunches through a lot of data, it takes a while to run!
 ### The checker
 
 After all values have been imported into SQLite, the checker does more advanced cleaning on the data, including referential integrity checks and so on.
+
+
+### Development Tips
+Some of the files are big and openrefine can take a long time if you use all the data.  For quicker development, you can truncate the files into smaller versions by using a command like: `cat MenuItem.csv| head -n 1000 > MenuItem_sm.csv && tail -n 1000 MenuItem.csv >> MenuItem_sm.csv`.  This would create a 2000 like file (1000 from the beginning and 1000 from the end) named `MenuItem_sm.csv`.

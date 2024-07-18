@@ -1,7 +1,7 @@
-from importer2.open_refine_operation import OpenRefineOperation
+from .open_refine_task import OpenRefineTask
 
 
-class ProjectCleanupOperation(OpenRefineOperation):
+class ProjectCleanupTask(OpenRefineTask):
   @staticmethod
   def delete_all_projects(server):
     for p in server.get_all_projects():

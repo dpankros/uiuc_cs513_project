@@ -1,7 +1,7 @@
-from .cs513_import_operation import CS513ImportOperation
+from .cs513_import_task import CS513ImportTask
 
 
-class DishImportOperation(CS513ImportOperation):
+class DishImportTask(CS513ImportTask):
   def run(self):
     super().run()
     source_filename = self.config['source_filename']

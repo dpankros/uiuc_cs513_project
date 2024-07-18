@@ -1,10 +1,12 @@
-from importer2.open_refine_operation import OpenRefineOperation
+from importer2.task import OpenRefineTask
 
 
-class CS513ImportOperation(OpenRefineOperation):
+class CS513ImportTask(OpenRefineTask):
   #
   # Common grel expressions for all CS513 import operations
   #
+  TO_ISO8601_EXTDATE='replace(/(\\d{2,4})-(\\d{1,2})-(\\d{1,2})\\s+(\\d{1,2}):(\\d{1,2}):(\\d{1,2})\\s+UTC/, "$1-$2-$3T$4:$5:$6Z")'
+  TO_ISO8601_DATE='replace(/(\\d{2,4})-(\\d{1,2})-(\\d{1,2})\\s+(\\d{1,2}):(\\d{1,2}):(\\d{1,2})\\s+UTC/, "$1$2$3T$4$5$6Z")'
   USE_SEMI_DELIMITERS = 'replace(",", ";")'
   NO_HANGING_DELIMITER = 'replace(/;\\s*$/, "")'
   NO_DOUBLE_SPACES = 'replace(/\\s+/, " ")'

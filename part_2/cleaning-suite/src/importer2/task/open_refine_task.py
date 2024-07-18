@@ -1,9 +1,9 @@
 from openrefine import Server
 
-from .operation import BaseOperation
+from .task import BaseTask
 
 
-class OpenRefineOperation(BaseOperation):
+class OpenRefineTask(BaseTask):
   def __init__(self, operation_config: dict = {}):
     super().__init__(operation_config)
     self.server_url = operation_config['server_url']
