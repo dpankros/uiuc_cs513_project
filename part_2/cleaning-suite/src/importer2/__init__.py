@@ -11,34 +11,34 @@ def main():
   }
 
   TaskList([
-    # DishImportTask({
-    #   **base_config,
-    #   'source_filename': '../../../../data/Dish.csv',
-    #   'dest_filename': '../../../../Dish_conv.csv',
-    #   'sql_table': 'dish',
-    #   'sql_if_exists': 'replace'
-    # }),
-    # MenuImportTask({
-    #   **base_config,
-    #   'source_filename': '../../../../data/Menu.csv',
-    #   'dest_filename': '../../../../Menu_conv.csv',
-    #   'sql_table': 'menu',
-    #   'sql_if_exists': 'replace'
-    # }),
-    # MenuItemImportTask({
-    #   **base_config,
-    #   'source_filename': '../../../../data/MenuItem.csv',
-    #   'dest_filename': '../../../../MenuItem_conv.csv',
-    #   'sql_table': 'menu_item',
-    #   'sql_if_exists': 'replace'
-    # }),
-    # MenuPageImportTask({
-    #   **base_config,
-    #   'source_filename': '../../../../data/MenuPage.csv',
-    #   'dest_filename': '../../../../MenuPage_conv.csv',
-    #   'sql_table': 'menu_page',
-    #   'sql_if_exists': 'replace'
-    # }),
+    DishImportTask({
+      **base_config,
+      'source_filename': '../../../../data/Dish.csv',
+      'dest_filename': '../../../../Dish_conv.csv',
+      'sql_table': 'dish',
+      'sql_if_exists': 'replace'
+    }),
+    MenuImportTask({
+      **base_config,
+      'source_filename': '../../../../data/Menu.csv',
+      'dest_filename': '../../../../Menu_conv.csv',
+      'sql_table': 'menu',
+      'sql_if_exists': 'replace'
+    }),
+    MenuItemImportTask({
+      **base_config,
+      'source_filename': '../../../../data/MenuItem.csv',
+      'dest_filename': '../../../../MenuItem_conv.csv',
+      'sql_table': 'menu_item',
+      'sql_if_exists': 'replace'
+    }),
+    MenuPageImportTask({
+      **base_config,
+      'source_filename': '../../../../data/MenuPage.csv',
+      'dest_filename': '../../../../MenuPage_conv.csv',
+      'sql_table': 'menu_page',
+      'sql_if_exists': 'replace'
+    }),
     # keep after all the Import tasks as it deletes all the projects from openrefine
     # ProjectCleanupTask(base_config),
 
