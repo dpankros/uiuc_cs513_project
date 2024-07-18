@@ -1,11 +1,6 @@
-from importer2.openrefine import Server
-
-
 class BaseOperation:
-    def __init__(self, operation_config: dict = {}):
-        self.config = operation_config
+  def __init__(self, operation_config: dict = {}):
+    self.config = operation_config
 
-    def run(self):
-        raise NotImplementedError()
-
-
+  def run(self):
+    raise NotImplementedError()

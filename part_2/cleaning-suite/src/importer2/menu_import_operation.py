@@ -1,6 +1,5 @@
 from importer2.cs513_import_operation import CS513ImportOperation
-from importer2.openrefine import Server, Project
-from importer2.openrefine.operations import ColumnAdditionOp, ColumnRemovalOp, OnErrorTypes, TextTransformOp
+from importer2.openrefine.operations import ColumnAdditionOp, ColumnRemovalOp
 
 
 class MenuImportOperation(CS513ImportOperation):
