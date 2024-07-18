@@ -1,11 +1,12 @@
-from openrefine import Server, Project
-from operation import OperationList
-from dish_import_operation import DishImportOperation
-from menu_import_operation import MenuImportOperation
-from project_cleanup_operation import ProjectCleanupOperation
+from importer2.openrefine import Server, Project
+from importer2.operation import OperationList
+from importer2.dish_import_operation import DishImportOperation
+from importer2.menu_import_operation import MenuImportOperation
+from importer2.project_cleanup_operation import ProjectCleanupOperation
 from sqlalchemy import create_engine
 
-if __name__ == '__main__':
+
+def main():
     base_config = {
         'server_url': "http://localhost:3333",
         'sql_engine': create_engine('sqlite:///../../../../export.db')
@@ -31,3 +32,6 @@ if __name__ == '__main__':
         ProjectCleanupOperation(base_config)
     ]).run_all()
 
+
+if __name__ == '__main__':
+    main()

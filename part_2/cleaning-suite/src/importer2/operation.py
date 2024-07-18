@@ -1,4 +1,4 @@
-from openrefine import Server
+from importer2.openrefine import Server
 
 
 class BaseOperation:

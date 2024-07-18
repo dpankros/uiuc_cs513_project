@@ -1,5 +1,5 @@
-from operation import OpenRefineOperation
-from openrefine import Server, Project
+from importer2.operation import OpenRefineOperation
+from importer2.openrefine import Server, Project
 
 
 class DishImportOperation(OpenRefineOperation):

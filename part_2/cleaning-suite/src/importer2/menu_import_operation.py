@@ -1,6 +1,6 @@
-from operation import OpenRefineOperation
-from openrefine import Server, Project
-from openrefine.operations import ColumnAdditionOp, ColumnRemovalOp, OnErrorTypes, TextTransformOp
+from importer2.operation import OpenRefineOperation
+from importer2.openrefine import Server, Project
+from importer2.openrefine.operations import ColumnAdditionOp, ColumnRemovalOp, OnErrorTypes, TextTransformOp
 
 
 class MenuImportOperation(OpenRefineOperation):
