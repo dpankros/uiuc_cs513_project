@@ -3,7 +3,7 @@ from sqlalchemy import text
 from .cs513_sql_task import CS513SqlTask
 
 
-class MenuSqlTask(CS513SqlTask):
+class CreateMenuViewSqlTask(CS513SqlTask):
   name = "Create Menu View"
 
   def run(self):

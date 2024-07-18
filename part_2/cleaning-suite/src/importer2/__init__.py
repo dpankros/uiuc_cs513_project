@@ -1,4 +1,4 @@
-from importer2.cs513_task import DishImportTask, MenuImportTask, MenuItemImportTask, MenuPageImportTask, DishSqlTask, MenuSqlTask
+from importer2.cs513_task import DishImportTask, MenuImportTask, MenuItemImportTask, MenuPageImportTask, CreateDishViewSqlTask, CreateMenuViewSqlTask
 from importer2.openrefine import Server, Project
 from importer2.task import TaskList, ProjectCleanupTask
 from sqlalchemy import create_engine
@@ -42,12 +42,11 @@ def main():
     # keep after all the Import tasks as it deletes all the projects from openrefine
     # ProjectCleanupTask(base_config),
 
-    # I expect we will do something like this:
-    DishSqlTask({
+    CreateDishViewSqlTask({
       **base_config,
       'view_name': '_dish'
     }),
-    MenuSqlTask({
+    CreateMenuViewSqlTask({
       **base_config,
       'view_name': '_menu'
     }),

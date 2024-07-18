@@ -3,7 +3,7 @@ from sqlalchemy import text
 from .cs513_sql_task import CS513SqlTask
 
 
-class DishSqlTask(CS513SqlTask):
+class CreateDishViewSqlTask(CS513SqlTask):
   name = "Create Dish View"
 
   def run(self):
