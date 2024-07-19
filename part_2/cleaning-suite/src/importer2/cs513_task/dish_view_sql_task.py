@@ -41,8 +41,9 @@ order by d.id asc
     """
     try:
       txn = self.connection.begin()
-      self.connection.execute(text(f"DROP VIEW IF EXISTS {view_name};"))
-      self.connection.execute(text(f"CREATE VIEW {view_name} AS {view_select};"))
-      txn.commit()
+      with txn.connection as conn:
+        conn.execute(text(f"DROP VIEW IF EXISTS {view_name};"))
+        conn.execute(text(f"CREATE VIEW {view_name} AS {view_select};"))
+        txn.commit()
     finally:
       self.connection.close()

@@ -26,9 +26,9 @@ class CS513ImportTask(OpenRefineTask):
   def run(self):
     super().run()
     self.source_filename = self.config['source_filename']
-    self.dest_filename = self.config['dest_filename']
+    self.dest_filename = self.config['dest_filename'] if 'dest_filename' in self.config else None
     self.server_url = self.config['server_url']
-    self.sql_engine = self.config['sql_engine']
+    self.sql_engine = self.config['sql_engine'] if 'sql_engine' in self.config else None
 
     assert self.source_filename, "source_filename is required"
     assert self.dest_filename is not None or self.sql_engine is not None, "dest_filename or a sql_engine is required"
