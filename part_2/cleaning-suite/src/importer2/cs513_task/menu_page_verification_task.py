@@ -17,5 +17,3 @@ class MenuPageVerificationTask(CS513VerificationTask, CS513SqlTask):
   }
   base_table = "menu_page"
   verification_table = "menu_page"
-
-

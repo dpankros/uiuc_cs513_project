@@ -3,7 +3,6 @@ from .cs513_verification_task import CS513VerificationTask
 
 
 class MenuItemVerificationTask(CS513VerificationTask, CS513SqlTask):
-
   name = "Menu Item Verification"
   column_mapping = {
     # base_col: view_col

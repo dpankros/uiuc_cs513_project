@@ -44,7 +44,8 @@ class CS513VerificationTask(SqlTask):
             b_col = b_cols[col_num]
             v_col = v_cols[col_num]
             if b_row[col_num] != v_row[col_num]:
-              deltas.append(f"{self.base_table}.{b_col} ({b_row[col_num]}) != {self.verification_table}.{v_col} ({v_row[col_num]})")
+              deltas.append(
+                f"{self.base_table}.{b_col} ({b_row[col_num]}) != {self.verification_table}.{v_col} ({v_row[col_num]})")
 
           if len(deltas) > 0:
             error_count += 1

@@ -1,5 +1,3 @@
-
-
 from .cs513_sql_task import CS513SqlTask
 from .cs513_verification_task import CS513VerificationTask
 
@@ -20,4 +18,3 @@ class DishVerificationTask(CS513VerificationTask, CS513SqlTask):
   }
   base_table = "dish"
   verification_table = "_dish"
-

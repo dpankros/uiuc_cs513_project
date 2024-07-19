@@ -2,7 +2,8 @@ from sqlalchemy import create_engine
 
 from importer2.cs513_task import DishImportTask, MenuImportTask, MenuItemImportTask, MenuPageImportTask, \
   CreateDishViewSqlTask, CreateMenuViewSqlTask, DishVerificationTask, MenuVerificationTask, MenuPageVerificationTask, \
-  MenuItemVerificationTask, VerbatimImportTask
+  MenuItemVerificationTask, VerbatimImportTask, MenuItemReportTask, MenuPageReportTask, MenuItemIcCleanupTask, \
+  MenuPageIcCleanupTask
 from importer2.openrefine import Server, Project
 from importer2.task import TaskList, ProjectCleanupTask
 
@@ -43,11 +44,11 @@ def main():
     #   'sql_table': 'menu_page_orig',
     #   'sql_if_exists': 'replace'
     # }),
-
     #
-    # Cleaned imports - These read the CSV and clean the data prior to import
+    # #
+    # # Cleaned imports - These read the CSV and clean the data prior to import
+    # #
     #
-
     # DishImportTask({
     #   **base_config,
     #   'source_filename': '../../../../data/Dish.csv',
@@ -76,7 +77,7 @@ def main():
     #   'sql_table': 'menu_page',
     #   'sql_if_exists': 'replace'
     # }),
-    # keep after all the Import tasks as it deletes all the projects from openrefine
+    # # keep after all the Import tasks as it deletes all the projects from openrefine
     # ProjectCleanupTask(base_config),
 
     #
@@ -91,15 +92,29 @@ def main():
     #   **base_config,
     #   'view_name': '_menu'
     # }),
-
+    # MenuItemIcCleanupTask({
+    #   **base_config,
+    #   'table': 'menu_item',
+    # }),
+    # MenuPageIcCleanupTask({
+    #   **base_config,
+    #   'table': 'menu_page',
+    # }),
     #
     # Verification tasks - these judge whether the data is "correct"
     #
-    DishVerificationTask(base_config),
-    MenuVerificationTask(base_config),
-    MenuPageVerificationTask(base_config),
-    MenuItemVerificationTask(base_config),
+    # DishVerificationTask(base_config),
+    # MenuVerificationTask(base_config),
+    # MenuPageVerificationTask(base_config),
+    # MenuItemVerificationTask(base_config),
 
+    #
+    # Reporting tasks - these provide data outputs
+    #
+    MenuItemReportTask({**base_config, 'table': 'menu_item_orig', 'name': 'Original Menu Item IC Violations Task'}),
+    MenuItemReportTask({**base_config, 'table': 'menu_item', 'name': 'Updated Menu Item IC Violations Task'}),
+    MenuPageReportTask({**base_config, 'table': 'menu_page_orig', 'name': 'Original Menu Page IC Violations Task'}),
+    MenuPageReportTask({**base_config, 'table': 'menu_page', 'name': 'Update Menu Item IC Violations Task'}),
 
   ]).run()
 

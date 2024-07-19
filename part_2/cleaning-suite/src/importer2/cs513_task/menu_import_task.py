@@ -74,8 +74,8 @@ class MenuImportTask(CS513ImportTask):
       'replace(" and ", "; ")',  # change all foo & bar to foo; bar 14159
       'replace(" and/or ", "; ")',  # change all foo and/or bar to foo; bar 13553
       'replace("/", "; ")',  # change all breakfast/supper/lunch to breakfast; supper; lunch
-      'replace("(?)", "")',  # remove (?) 14076, 14078
-      'replace(/;$/, "")',  # remove extra hanging delimiters
+      self.NO_PAREN_QUESTION_PAREN,  # remove (?) 14076, 14078
+      self.NO_HANGING_DELIMITER,
       'replace(/\\(\\?(.+)\\?\\)/,"$1")',  # change (something) to something
       'replace(/\\[\\(\\](.+)[\\]\\)]\\)/," $1 ")',  # change ^(something)$ OR ^[something]$ to something
       'replace(/([0-9]?[0-9]);([0-9][0-9])/, "$1:$2")',  # change 3;00 to 3:00 (normalize times)

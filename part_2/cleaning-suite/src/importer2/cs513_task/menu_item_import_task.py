@@ -1,9 +1,10 @@
-from .cs513_import_task import CS513ImportTask
 from importer2.openrefine.operations import TextTransformOp, OnErrorTypes
+from .cs513_import_task import CS513ImportTask
 
 
 class MenuItemImportTask(CS513ImportTask):
   name = "MenuItem Import"
+
   def run(self):
     super().run()
 
@@ -29,9 +30,10 @@ class MenuItemImportTask(CS513ImportTask):
     # [x] ypos - DNC
 
     project.apply_operations([
-      TextTransformOp(column_name='updated_at', expression=updated_at_expression, on_error=OnErrorTypes.STORE_ERROR).value(),
-      TextTransformOp(column_name='created_at', expression=created_at_expression, on_error=OnErrorTypes.STORE_ERROR).value(),
-
+      TextTransformOp(column_name='updated_at', expression=updated_at_expression,
+                      on_error=OnErrorTypes.STORE_ERROR).value(),
+      TextTransformOp(column_name='created_at', expression=created_at_expression,
+                      on_error=OnErrorTypes.STORE_ERROR).value(),
     ])
 
     self.export(project)

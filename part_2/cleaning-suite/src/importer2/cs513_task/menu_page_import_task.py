@@ -1,5 +1,4 @@
 from .cs513_import_task import CS513ImportTask
-from importer2.openrefine.operations import ColumnAdditionOp, TextTransformOp, OnErrorTypes
 
 
 class MenuPageImportTask(CS513ImportTask):
