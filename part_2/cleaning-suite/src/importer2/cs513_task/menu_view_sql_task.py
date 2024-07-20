@@ -23,27 +23,43 @@ class CreateMenuViewSqlTask(CS513SqlTask):
 
     view_select = """    
 select
-    m.id,
-    m.norm_name as name,
-    m.norm_sponsor as sponsor,
-    m.norm_event as event,
-    m.norm_venue as venue,
-    m.norm_place as place,
-    m.norm_physical_description as physical_description,
-    m.norm_occasion as occasion,
-    m.norm_notes as notes,
-    m.call_number as call_number,
-    m.date as date,
-    m.norm_location as location,
-    m.currency as currency,
-    m.currency_symbol as currency_symbol,
-    m.status as status,
-    count(mp.id) as page_count, 
-    count(mi.dish_id) as dish_count 
-from menu m
-left join main.menu_page mp on m.id = mp.menu_id
-left join main.menu_item mi on mp.id = mi.menu_page_id
-group by m.id
+    name,
+    sponsor,
+    event,
+    venue,
+    place,
+    physical_description,
+    occasion,
+    notes,
+    call_number,
+    "date",
+    location,
+    currency,
+    currency_symbol,
+    status,
+    max(page_count, 1) as page_count,
+    max(dish_count, 1) as dis_count
+from (select m.id,
+             m.norm_name                 as name,
+             m.norm_sponsor              as sponsor,
+             m.norm_event                as event,
+             m.norm_venue                as venue,
+             m.norm_place                as place,
+             m.norm_physical_description as physical_description,
+             m.norm_occasion             as occasion,
+             m.norm_notes                as notes,
+             m.call_number               as call_number,
+             m.date                      as date,
+             m.norm_location             as location,
+             m.currency                  as currency,
+             m.currency_symbol           as currency_symbol,
+             m.status                    as status,
+             count(mp.id)                as page_count,
+             count(mi.dish_id)           as dish_count
+      from menu m
+               left join main.menu_page mp on m.id = mp.menu_id
+               left join main.menu_item mi on mp.id = mi.menu_page_id
+      group by m.id)
     """
     try:
       txn = self.connection.begin()
