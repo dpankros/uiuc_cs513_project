@@ -108,6 +108,12 @@ As indicated previously, our Python application contains a wide range of IC chec
 
 ### A visual representation of your overall (or “outer”) workflow W1, e.g., using a tool such as YesWorkflow. At a minimum, you should identify key inputs, outputs, and steps of the workflow, along with dependencies between these. Key phases and steps of your data cleaning project may include, e.g., data profiling, data loading, data cleaning, IC violation checks, etc. Explain the design of W1 and why you’ve chosen the tools that you have in your overall workflow.
 
+A visual representation of our outer workflow is shown as follows:
+
+![outer workflow](../diagrams/OuterWorkflow.svg)
+
+>This file can be seen enlarged at [github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg)
+
 ### A detailed (possibly visual) representation of your “inner” data cleaning workflow W2 (e.g., if you’ve used OpenRefine, you can use the OR2YW tool).
 
 ## 4. Conclusions & Summary
