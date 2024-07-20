@@ -31,6 +31,7 @@ For context, use case `U1` is summarized as using standard data cleaning techniq
 We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and explain the rationale for each step.
 
 #### Raw CSV manipulation
+
 This step is primarily loading CSV data into memory, for the purpose of subsequently loading it into OpenRefine. We do no data cleaning in this step, but it is necessary to support all the subsequent steps.
 
 #### Loading CSV data into OpenRefine
@@ -39,7 +40,20 @@ Similarly to the previous step, we do not perform any data cleaning in this step
 
 #### Manipulating data in OpenRefine
 
+After data are loaded into OpenRefine, we do many data cleaning steps that do not involve foreign key or other relational integrity constraint (IC) violations. All transforms are done with OpenRefine's [GREL language](https://openrefine.org/docs/manual/grelfunctions).
+
+These steps include but are not limited to the following in applicable columns:
+
+- Removing whitespace as necessary,
+- Standardizing and/or removing delimiters,
+- Removing or standardizing punctuation as necessary.
+- Standardizing date formats
+
+>The exhaustive list of these transforms can be seen in our repository at [github.com/dpakros/uiuc_cs513_project](https://github.com/dpankros/uiuc_cs513_project).
+
 #### Loading partially-cleaned data into the SQL database
+
+After we finish running all the GREL/OpenRefine-based transforms, we consider our data partially cleaned, since we have not addressed relational IC violations like foreign key constraints. Since SQL excels at analyzing, reporting on, and fixing these relational IC violations, our next step is to load all our partially-cleaned data from OpenRefine into a SQLite database.
 
 #### Constructing specific views of data in SQL
 
