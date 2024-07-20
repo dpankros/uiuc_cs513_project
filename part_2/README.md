@@ -51,16 +51,34 @@ These steps include but are not limited to the following in applicable columns:
 
 >The exhaustive list of these transforms can be seen in our repository at [github.com/dpakros/uiuc_cs513_project](https://github.com/dpankros/uiuc_cs513_project).
 
+These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They also better prepare the data to be analyzed and manipulated further, another `U1` goal.
+
 #### Loading partially-cleaned data into the SQL database
 
 After we finish running all the GREL/OpenRefine-based transforms, we consider our data partially cleaned, since we have not addressed relational IC violations like foreign key constraints. Since SQL excels at analyzing, reporting on, and fixing these relational IC violations, our next step is to load all our partially-cleaned data from OpenRefine into a SQLite database.
 
+We do no cleaning in this step, but it's necessary for our subsequent foreign key IC violations cleaning work.
+
 #### Constructing specific views of data in SQL
+
+After loading our partially-cleaned data into the SQL database, we construct specific views of the data that allow us to analyze and report on the data in ways that are possible in neither OpenRefine, nor the raw `Menu`, `Dish`, `MenuItem`, nor `MenuPage` tables individually. Most of these views are constructed by joining at two or more of these tables together to examine one or more specific foreign key relationships.
+
+Using these views, we're able to easily identify and fix all rows that violate a specific foreign key IC violation. We do no actual data cleaning in this step, but like the previous step, this step is required for subsequent foreign key IC violations cleaning work.
 
 #### Manipulating data in SQL
 
+Armed with partially-cleaned data in our "base" `Menu`, `Dish`, `MenuItem`, and `MenuPage` tables and our constructed views, we can now fix foreign key IC violations based on some policy. Policies vary, but in general, we want to ensure that all foreign key relationships are valid, so if we find an invalid foreign key, we simply set that value to `NULL`.
+
+This work is necessary for use case `U1` because it ensures there are no invalid foreign key relationships in the dataset, a feature especially valuable for the user-facing applications described in `U1` or any other application that queries or analyzes these data based on relationships between tables.
+
 #### Exporting cleaned data from SQL to final, cleaned data in CSV format
 
+This final step is relatively simple, but critical to transform our cleaned dataset to the same format in which we got it. At this point, we have a cleaned dataset in SQL tables and in this step, we export these tables to individual CSV files. The mapping from SQL table to exported CSV files is as follows:
+
+- `menu` -> `Menu.export.csv`
+- `dish` -> `Dish.export.csv`
+- `menu_item` -> `MenuItem.export.csv`
+- `menu_page` -> `MenuPage.export.csv`
 
 ## 2. Document data quality changes
 
@@ -78,7 +96,24 @@ After we finish running all the GREL/OpenRefine-based transforms, we consider ou
 
 ### Please provide a concise summary and conclusions of your project, including lessons learned.
 
+In this project, we've primarily learned that the functionality offered by the suite of data cleaning tools introduced in this class are lacking in some areas. 
+
+For example, OpenRefine is excellent at cleaning data, but it's not great at enforcing relational ICs. SQL is excellent at enforcing relational ICs, but it's not designed for data cleaning tasks. While combining OpenRefine and SQL together is powerful, it still lacks the power needed to process even modestly-sized datasets like the NYPL restaurants dataset we used. For that, we estimate that a distributed data cleaning tool like Apache Spark or similar would be necessary.
+
+Nevertheless, we believe we were successful in cleaning this restaurants dataset according to use case `U1` described in our part 1 submission, and as such it could be used to power non-mission-critical, data mining, and unsupervised learning applications. Also, further analysis could be done to identify superior-quality subsets of these data for use in other, more mission-critical applications.
+
+We were also able to create a Python application that allows us to perform cleaning on _any_ similar dataset with the same format. As described previously, this application is easily run with a single command and allows us to reliably and deterministically reproduce our data cleaning runs. We believe this method is significantly more efficient and robust than running the workflow manually, step-by-step, in OpenRefine and SQL.
+
 ### Reflect on how work was completed. You should summarize the contributions of each team member here (for teams with >= 2 members).
+
+Aaron Schlesinger and David Pankros worked together on this project. The work was completed as follows:
+
+- Aaron: evaluation library and integrity checking
+- Aaron: Python CLI application infrastructure
+- Aaron and Dave: writeup and documentation
+- Dave: OpenRefine API client and single-column IC violation checks
+- Dave: SQL views and Foreign Key IC violation checks
+- Dave: cleaning framework and infrastructure
 
 ## 5. Submission of supplementary materials in a single ZIP file
 
