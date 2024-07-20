@@ -51,7 +51,11 @@ These steps include but are not limited to the following in applicable columns:
 
 >The exhaustive list of these transforms can be seen in our repository at [github.com/dpakros/uiuc_cs513_project](https://github.com/dpankros/uiuc_cs513_project).
 
-These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They also better prepare the data to be analyzed and manipulated further, another `U1` goal.
+These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They also better prepare the data to be analyzed and manipulated further, another `U1` goal. 
+
+The transforms we do in this step correspond to some, but not all of the IC violations in the [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) file in the repository, so we make progress toward completing our IC violations checks in this step.
+
+In this step, we also perform crucial data cleaning that is unrelated to our IC violations checks, but does enable us to complete additional IC violations checks in subsequent steps. For example, one of the non-IC cleaning steps we take herein establishes a common vocabulary for the `Menu.venue` column and transforms all uncleaned values in that column to that common vocabulary. This step allows us to group by values in this column much more effectively in subsequent steps.
 
 #### Loading partially-cleaned data into the SQL database
 
