@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from importer2.cs513_task import DishImportTask, MenuImportTask, MenuItemImportTask, MenuPageImportTask, \
   CreateDishViewSqlTask, CreateMenuViewSqlTask, DishVerificationTask, MenuVerificationTask, MenuPageVerificationTask, \
   MenuItemVerificationTask, VerbatimImportTask, MenuItemReportTask, MenuPageReportTask, MenuItemIcCleanupTask, \
-  MenuPageIcCleanupTask
+  MenuPageIcCleanupTask, MenuItemIcTask
 from importer2.openrefine import Server, Project
 from importer2.task import TaskList, ProjectCleanupTask
 
@@ -87,7 +87,18 @@ def main():
     #
     # SQL modification - these create SQL views and modify data in SQL
     #
-
+    MenuItemIcTask({
+      **base_config,
+      'table': 'menu_item',
+      'correct_errors': True,
+      'name': 'MenuItem Initial Stats',
+    }),
+    MenuItemIcTask({
+      **base_config,
+      'table': 'menu_item',
+      'correct_errors': False,
+      'name': 'MenuItem Cleaned Stats',
+    }),
     # CreateDishViewSqlTask({
     #   **base_config,
     #   'view_name': '_dish'
@@ -115,10 +126,10 @@ def main():
     #
     # Reporting tasks - these provide data outputs
     #
-    MenuItemReportTask({**base_config, 'table': 'menu_item_orig', 'name': 'Original Menu Item IC Violations Task'}),
-    MenuItemReportTask({**base_config, 'table': 'menu_item', 'name': 'Updated Menu Item IC Violations Task'}),
-    MenuPageReportTask({**base_config, 'table': 'menu_page_orig', 'name': 'Original Menu Page IC Violations Task'}),
-    MenuPageReportTask({**base_config, 'table': 'menu_page', 'name': 'Update Menu Item IC Violations Task'}),
+    # MenuItemReportTask({**base_config, 'table': 'menu_item_orig', 'name': 'Original Menu Item IC Violations Task'}),
+    # MenuItemReportTask({**base_config, 'table': 'menu_item', 'name': 'Updated Menu Item IC Violations Task'}),
+    # MenuPageReportTask({**base_config, 'table': 'menu_page_orig', 'name': 'Original Menu Page IC Violations Task'}),
+    # MenuPageReportTask({**base_config, 'table': 'menu_page', 'name': 'Update Menu Item IC Violations Task'}),
 
   ]).run()
 

@@ -13,3 +13,5 @@ from .menu_view_sql_task import CreateMenuViewSqlTask
 from .verbatim_import_task import VerbatimImportTask
 from .menu_item_ic_cleanup_task import MenuItemIcCleanupTask
 from .menu_page_ic_cleanup_task import MenuPageIcCleanupTask
+from .cs513_ic_task import CS513IcTask
+from .menu_item_ic_task import MenuItemIcTask
