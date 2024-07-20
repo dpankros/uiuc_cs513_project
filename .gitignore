@@ -5,3 +5,4 @@ mermaid-filter.err
 data-import.*.sqlite
 *_conv.csv
 export.db
+/data/*.export.csv

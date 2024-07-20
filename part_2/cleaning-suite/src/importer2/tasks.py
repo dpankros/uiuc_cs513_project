@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Sequence
+from importer2.cs513_task.cs513_export_task import CS513ExportTask
 from importer2.cs513_task.dish_verification_task import DishVerificationTask
 from importer2.cs513_task.menu_item_report_task import MenuItemReportTask
 from importer2.cs513_task.menu_item_verification_task import MenuItemVerificationTask
@@ -95,3 +96,17 @@ def get_report_tasks(base_config: BaseConfig, run_reports: bool) -> Sequence[Bas
         MenuPageReportTask({**base_config.as_dict(), 'table': 'menu_page_orig', 'name': 'Original Menu Page IC Violations Task'}),
         MenuPageReportTask({**base_config.as_dict(), 'table': 'menu_page', 'name': 'Update Menu Item IC Violations Task'}),
     ] if run_reports else []
+
+def get_export_tasks(base_config: BaseConfig, run_exports: bool) -> Sequence[BaseTask]:
+    def new_task(table: str, path: str) -> CS513ExportTask:
+        return CS513ExportTask(
+            config={**base_config.as_dict(), "name": f"Export {table} table"},
+            table_name=table,
+            export_path=path
+        )
+    return [
+        new_task("dish", "../../data/Dish.export.csv"),
+        new_task("menu", "../../data/Menu.export.csv"),
+        new_task("menu_item", "../../data/MenuItem.export.csv"),
+        new_task("menu_page", "../../data/MenuPage.export.csv"),
+    ] if run_exports else []

@@ -1,5 +1,5 @@
 import click
-from importer2.tasks import BaseConfig, get_importer_tasks, get_report_tasks, get_verification_tasks
+from importer2.tasks import BaseConfig, get_export_tasks, get_importer_tasks, get_report_tasks, get_verification_tasks
 from sqlalchemy import create_engine
 
 from importer2.cs513_task import (
@@ -45,10 +45,11 @@ def main(
     print(f"running imports: {run_imports}")
     print(f"running verifications: {run_verifications}")
     print(f"running reports: {run_reports}")
-    print(f"running exports (TODO): {run_exports}")
+    print(f"running exports: {run_exports}")
     imports = get_importer_tasks(base_config, run_imports)
     verifications = get_verification_tasks(base_config, run_verifications)
     reports = get_report_tasks(base_config, run_reports)
+    exports = get_export_tasks(base_config, run_exports)
 
     TaskList([
         *imports,
@@ -123,6 +124,7 @@ def main(
 
         *verifications,
         *reports,
+        *exports,
     ]).run()
 
 
