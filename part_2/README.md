@@ -112,7 +112,7 @@ A visual representation of our outer workflow is shown as follows:
 
 ![outer workflow](../diagrams/OuterWorkflow.svg)
 
->This file can be seen enlarged at [github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg)
+>This file can be seen enlarged at [diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg) in SVG format, or [diagrams/OuterWorklow.png](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.png) in PNG format.
 
 ### A detailed (possibly visual) representation of your “inner” data cleaning workflow W2 (e.g., if you’ve used OpenRefine, you can use the OR2YW tool).
 
