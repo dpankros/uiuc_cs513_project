@@ -30,15 +30,15 @@ For context, use case `U1` is summarized as using standard data cleaning techniq
 
 We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and explain the rationale for each step.
 
-#### Raw CSV manipulation
+#### Step 1: Raw CSV manipulation
 
 This step is primarily loading CSV data into memory, for the purpose of subsequently loading it into OpenRefine. We do no data cleaning in this step, but it is necessary to support all the subsequent steps.
 
-#### Loading CSV data into OpenRefine
+#### Step 2: Loading CSV data into OpenRefine
 
 Similarly to the previous step, we do not perform any data cleaning in this step. Loading data into OpenRefine is necessary to support all OpenRefine-based and subsequent cleaning steps.
 
-#### Manipulating data in OpenRefine
+#### Step 3: Manipulating data in OpenRefine
 
 After data are loaded into OpenRefine, we do many data cleaning steps that do not involve foreign key or other relational integrity constraint (IC) violations. All transforms are done with OpenRefine's [GREL language](https://openrefine.org/docs/manual/grelfunctions).
 
@@ -103,25 +103,25 @@ We also perform crucial data cleaning that is unrelated to our IC violations che
 - xpos
 - ypos
 
-#### Loading partially-cleaned data into the SQL database
+#### Step 4: Loading partially-cleaned data into the SQL database
 
 After we finish running all the GREL/OpenRefine-based transforms, we consider our data partially cleaned, since we have not addressed relational IC violations like foreign key constraints. Since SQL excels at analyzing, reporting on, and fixing these relational IC violations, our next step is to load all our partially-cleaned data from OpenRefine into a SQLite database.
 
 We do no cleaning in this step, but it's necessary for our subsequent foreign key IC violations cleaning work.
 
-#### Constructing specific views of data in SQL
+#### Step 5: Constructing specific views of data in SQL
 
 After loading our partially-cleaned data into the SQL database, we construct specific views of the data that allow us to analyze and report on the data in ways that are possible in neither OpenRefine, nor the raw `Menu`, `Dish`, `MenuItem`, nor `MenuPage` tables individually. Most of these views are constructed by joining at two or more of these tables together to examine one or more specific foreign key relationships.
 
 Using these views, we're able to easily identify and fix all rows that violate a specific foreign key IC violation. We do no actual data cleaning in this step, but like the previous step, this step is required for subsequent foreign key IC violations cleaning work.
 
-#### Manipulating data in SQL
+#### Step 6: Manipulating data in SQL
 
 Armed with partially-cleaned data in our "base" `Menu`, `Dish`, `MenuItem`, and `MenuPage` tables and our constructed views, we can now fix foreign key IC violations based on some policy. Policies vary, but in general, we want to ensure that all foreign key relationships are valid, so if we find an invalid foreign key, we simply set that value to `NULL`.
 
 This work is necessary for use case `U1` because it ensures there are no invalid foreign key relationships in the dataset, a feature especially valuable for the user-facing applications described in `U1` or any other application that queries or analyzes these data based on relationships between tables.
 
-#### Exporting cleaned data from SQL to final, cleaned data in CSV format
+#### Step 7: Exporting cleaned data from SQL to final, cleaned data in CSV format
 
 This final step is relatively simple, but critical to transform our cleaned dataset to the same format in which we got it. At this point, we have a cleaned dataset in SQL tables and in this step, we export these tables to individual CSV files. The mapping from SQL table to exported CSV files is as follows:
 
