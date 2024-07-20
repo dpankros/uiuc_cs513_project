@@ -23,10 +23,12 @@ Finally, whenever you want to run your code, run:
 #
 # NOTE: this takes multiple minutes to run to completion, thanks to Python's
 # single-threaded nature.
-$ rye run importer 
+$ rye run importer2
 # to validate the data in the sqlite database
 $ rye run checker
 ```
+
+>Note: there are several flags to pass to the `rye run importer2` command. See [`src/importer2/__init__.py](./src/importer2/__init__.py) for more information.
 
 ### The importer
 
