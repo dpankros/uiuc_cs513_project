@@ -140,9 +140,9 @@ The below table contains a summary of the changes our cleaning software made to 
 YYYY-MM-DD.HH-MM-SSZUTC.csv
 ```
 
-TODO: This table needs to be double-checked for completeness and accuracy
+>**TODO: This table needs to be double-checked for completeness and accuracy**
 
-| Data entity | # IC violations before cleaning | # IC violations after cleaning | Columns with IC violations |
+| Data entity | # IC violations before cleaning | # IC violations after cleaning | Columns changed |
 | -- | -- | -- | -- |
 | `MenuItem` | 370 | 0 | `price`, `dish_id` |
 | `MenuPage` | 5803 | 0 | `menu_id` |
