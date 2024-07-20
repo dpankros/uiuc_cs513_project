@@ -3,3 +3,5 @@ build/*.pdf
 mermaid-filter.err
 .ruff_cache
 data-import.*.sqlite
+*_conv.csv
+export.db
