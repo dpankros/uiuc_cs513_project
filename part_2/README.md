@@ -42,20 +42,66 @@ Similarly to the previous step, we do not perform any data cleaning in this step
 
 After data are loaded into OpenRefine, we do many data cleaning steps that do not involve foreign key or other relational integrity constraint (IC) violations. All transforms are done with OpenRefine's [GREL language](https://openrefine.org/docs/manual/grelfunctions).
 
-These steps include but are not limited to the following in applicable columns:
+These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They also better prepare the data to be analyzed and manipulated further, another `U1` goal. The transforms we do in this step correspond to some, but not all of the IC violations in the [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) file in the repository, so we make progress toward completing our IC violations checks in this step.
 
-- Removing whitespace as necessary,
-- Standardizing and/or removing delimiters,
-- Removing or standardizing punctuation as necessary.
-- Standardizing date formats
+We also perform crucial data cleaning that is unrelated to our IC violations checks, but does enable us to complete additional IC violations checks in subsequent steps. For example, one of the non-IC cleaning steps we take herein establishes a common vocabulary for the `Menu.venue` column and transforms all uncleaned values in that column to that common vocabulary. This step allows us to group by values in this column much more effectively in subsequent steps.
 
->The exhaustive list of these transforms can be seen in our repository at [github.com/dpakros/uiuc_cs513_project](https://github.com/dpankros/uiuc_cs513_project).
+##### List of IC violations checks
 
-These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They also better prepare the data to be analyzed and manipulated further, another `U1` goal. 
+###### `Dish`
 
-The transforms we do in this step correspond to some, but not all of the IC violations in the [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) file in the repository, so we make progress toward completing our IC violations checks in this step.
+- id must be populated and unique
+- name must be populated
+- menus_appeared should be greater than 0
+- times_appeared should be greater than 0
+- first appeared should be between (?? and NOW)
+- last appeared should be between (?? and NOW)
+- lowest_price should be > 0
+- highest_price should not be null and should be > lowest_price
 
-In this step, we also perform crucial data cleaning that is unrelated to our IC violations checks, but does enable us to complete additional IC violations checks in subsequent steps. For example, one of the non-IC cleaning steps we take herein establishes a common vocabulary for the `Menu.venue` column and transforms all uncleaned values in that column to that common vocabulary. This step allows us to group by values in this column much more effectively in subsequent steps.
+###### `Menu`
+
+- id must be populated and unique
+- name must be populated
+- sponsor
+- event
+- venue
+- place
+- physical_description must be a list of string demlimited by semicolons
+- occasion
+- notes
+- call_number
+- keywords
+- language
+- date must be in iso8601 format
+- location
+- location_type
+- currency
+- currency_symbol
+- status must be one of the two values
+- page_count > 0
+- dish_count > 0
+
+###### `MenuPage`
+- id must be populated and unique
+- menu_id must be defined and menu.id must exist
+- page_number
+- image_id
+- full_height Must be > 0
+- full_width Must be > 0
+- uuid
+
+###### `MenuItem`
+
+- id must be populated and unique
+- menu_page_id must be defined and menu_page.id must exist
+- price > 0 or null
+- high_price
+- dish_id must exist
+- created_at should be in iso8601 format.  Must be defined.  Must be <= NOW
+- updated_at should be in iso8601 format Must be <= NOW
+- xpos
+- ypos
 
 #### Loading partially-cleaned data into the SQL database
 
