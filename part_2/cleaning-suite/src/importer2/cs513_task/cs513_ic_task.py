@@ -4,29 +4,19 @@ from importer2.task import SqlTask
 from sqlalchemy.engine import Connection, Engine
 
 
-class CS513ReportTask(SqlTask):
-  column_mapping = {
-    # base_col: view_col
-    "id": "id",
-  }
-  base_table = None
-  comparison_table = None
-  base_table_pk = "id"
-  comparison_table_pk = "id"
-
-  # column: [ constraint, constraint...] OR
-  # column: constraint
+class CS513IcTask(SqlTask):
+  # column: (constraint, correction_fn)
   integrity_constraints = {}
-  # the foreign keys from the base table.
-  # key: foreign_table
-  foreign_keys = {}
+
+  correct_errors=False
+  recheck=False
+  primary_key='id'
 
   def __init__(self, operation_config: dict = {}):
     super().__init__(operation_config)
-    self.max_count: Engine = operation_config.get('max_count', 10)
     self.table = operation_config.get('table', None)
-    if 'name' in operation_config:  # ONLY set if if is defined in the config
-      self.name = operation_config.get('name')
+    self.correct_errors = operation_config.get('correct_errors', self.correct_errors) # by default it just reports
+
 
   def run(self):
     self.connection: Connection = self.sql_engine.connect()
@@ -40,26 +30,40 @@ class CS513ReportTask(SqlTask):
         for index, row in data.iterrows():
           for col_index, col in enumerate(data.columns):
             constraint = self.integrity_constraints[col]
-            violations = constraint.check(
+            correction_fn = None
+            if isinstance(constraint, (tuple, list)):
+              constraint, correction_fn = constraint
+
+            constraint_args = [
               col,  # column name
               getattr(row, col),  # colum value
               {  # context object
                 "row": row,
                 "table_name": self.table,
-                "connection": conn,
-                "data": data,
-                "foreign_table": self.foreign_keys.get(col, None)
+                "connection": conn, #sqlalchemy connection
+                "data": data, #pd datafram
+                "primary_key_col": self.primary_key,  # usually 'id'
+                "primary_key": int(row.get(self.primary_key)) # the id value
               }
-            )
+            ]
+            violations = constraint.check(*constraint_args)
             if violations is not None:
               all_violations[index] = violations
               violation_cols[col] = violation_cols.get(col, 0) + 1
 
+              if self.correct_errors and correction_fn:
+                # CORRECT PROBLEMS
+                correction_fn(*constraint_args)
+
       print(f"  {len(all_violations.keys())} Rows with IC violations")
+
       if len(all_violations.keys()) > 0:
         cols_strs = []
         for key, count in violation_cols.items():
           cols_strs.append(f"{key} ({count})")
         print(f"  Errors were detected in the following columns: {', '.join(cols_strs)}")
+
+      if self.correct_errors:
+        print(f"  Corrections run")
     finally:
       self.connection.close()

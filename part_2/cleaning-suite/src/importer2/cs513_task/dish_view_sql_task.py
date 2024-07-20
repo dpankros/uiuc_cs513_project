@@ -23,21 +23,31 @@ class CreateDishViewSqlTask(CS513SqlTask):
 
     view_select = """    
 select
-    d.id as id,
-    d.norm_name as name,
-    d.description as description,
-    count(m.id) as menus_appeared,
-    count(mp.id) as times_appeared,
-    min(CAST(substr(date, 0, 5) as INTEGER)) as first_appeared,
-    max(CAST(substr(date, 0, 5) as INTEGER)) as last_appeared,
-    min(mi.price) as lowest_price, 
-    max(mi.price) as highest_price
-from dish d
-left join menu_item mi on d.id = mi.dish_id
-left join main.menu_page mp on mi.menu_page_id = mp.id
-left join main.menu m on mp.menu_id = m.id
-group by d.id
-order by d.id asc
+    id as id,
+    name as name,
+    description as description,
+    max(menus_appeared, 1) as menus_appeared,
+    max(times_appeared, 1) as times_appeared,
+    max(1852, first_appeared) as first_appeared,
+    min(last_appeared, 2024) as last_appeared,
+    lowest_price as lowest_price,
+    highest_price as highest_price
+from (select d.id                                     as id,
+             d.norm_name                              as name,
+             d.description                            as description,
+             max(count(m.id), 1)                      as menus_appeared,
+             max(count(mp.id), 1)                     as times_appeared,
+             min(CAST(substr(date, 0, 5) as INTEGER)) as first_appeared,
+             max(CAST(substr(date, 0, 5) as INTEGER)) as last_appeared,
+             min(mi.price)                            as lowest_price,
+             max(mi.price)                            as highest_price
+      from dish d
+               left join menu_item mi on d.id = mi.dish_id
+               left join main.menu_page mp on mi.menu_page_id = mp.id
+               left join main.menu m on mp.menu_id = m.id
+      group by d.id
+      order by d.id asc)
+
     """
     try:
       txn = self.connection.begin()
