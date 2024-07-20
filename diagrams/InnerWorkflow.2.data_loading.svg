@@ -1,0 +1,21 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810.5 116" width="1621" height="232">
+  <!-- svg-source:excalidraw -->
+  
+  <defs>
+    <style class="style-fonts">
+      @font-face {
+        font-family: "Virgil";
+        src: url("https://excalidraw.com/Virgil.woff2");
+      }
+      @font-face {
+        font-family: "Cascadia";
+        src: url("https://excalidraw.com/Cascadia.woff2");
+      }
+      @font-face {
+        font-family: "Assistant";
+        src: url("https://excalidraw.com/Assistant-Regular.woff2");
+      }
+    </style>
+    
+  </defs>
+  <rect x="0" y="0" width="810.5" height="116" fill="#ffffff"></rect><g stroke-linecap="round" transform="translate(10 10) rotate(0 138 48)"><path d="M24 0 C94.58 0, 165.17 0, 252 0 M24 0 C78.79 0, 133.58 0, 252 0 M252 0 C268 0, 276 8, 276 24 M252 0 C268 0, 276 8, 276 24 M276 24 C276 37.68, 276 51.36, 276 72 M276 24 C276 35.52, 276 47.03, 276 72 M276 72 C276 88, 268 96, 252 96 M276 72 C276 88, 268 96, 252 96 M252 96 C169.03 96, 86.06 96, 24 96 M252 96 C191.52 96, 131.05 96, 24 96 M24 96 C8 96, 0 88, 0 72 M24 96 C8 96, 0 88, 0 72 M0 72 C0 55.3, 0 38.6, 0 24 M0 72 C0 60.25, 0 48.51, 0 24 M0 24 C0 8, 8 0, 24 0 M0 24 C0 8, 8 0, 24 0" stroke="#1e1e1e" stroke-width="2" fill="none"></path></g><g transform="translate(30.8125 34) rotate(0 117.1875 24)"><text x="117.1875" y="19.3125" font-family="Cascadia, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Load CSV files into </text><text x="117.1875" y="43.3125" font-family="Cascadia, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">memory</text></g><g stroke-linecap="round" transform="translate(416.5 11.5) rotate(0 192 46)"><path d="M23 0 C108.38 0, 193.77 0, 361 0 M23 0 C149.39 0, 275.78 0, 361 0 M361 0 C376.33 0, 384 7.67, 384 23 M361 0 C376.33 0, 384 7.67, 384 23 M384 23 C384 35.74, 384 48.48, 384 69 M384 23 C384 40.45, 384 57.9, 384 69 M384 69 C384 84.33, 376.33 92, 361 92 M384 69 C384 84.33, 376.33 92, 361 92 M361 92 C271.3 92, 181.6 92, 23 92 M361 92 C269.92 92, 178.84 92, 23 92 M23 92 C7.67 92, 0 84.33, 0 69 M23 92 C7.67 92, 0 84.33, 0 69 M0 69 C0 53.5, 0 38, 0 23 M0 69 C0 52.27, 0 35.53, 0 23 M0 23 C0 7.67, 7.67 0, 23 0 M0 23 C0 7.67, 7.67 0, 23 0" stroke="#1e1e1e" stroke-width="2" fill="none"></path></g><g transform="translate(444.4375 33.5) rotate(0 164.0625 24)"><text x="164.0625" y="19.3125" font-family="Cascadia, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Export memory-based CSV </text><text x="164.0625" y="43.3125" font-family="Cascadia, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">representation to OpenRefine</text></g><g stroke-linecap="round"><g transform="translate(295 47.28052205606576) rotate(0 52.5 0.10695840163749892)"><path d="M0 0 C17.5 0.04, 87.5 0.18, 105 0.21 M0 0 C17.5 0.04, 87.5 0.18, 105 0.21" stroke="#1e1e1e" stroke-width="2" fill="none"></path></g><g transform="translate(295 47.28052205606576) rotate(0 52.5 0.10695840163749892)"><path d="M81.49 8.72 C87.65 6.49, 93.82 4.26, 105 0.21 M81.49 8.72 C86.57 6.88, 91.65 5.04, 105 0.21" stroke="#1e1e1e" stroke-width="2" fill="none"></path></g><g transform="translate(295 47.28052205606576) rotate(0 52.5 0.10695840163749892)"><path d="M81.53 -8.38 C87.68 -6.13, 93.84 -3.88, 105 0.21 M81.53 -8.38 C86.6 -6.53, 91.67 -4.67, 105 0.21" stroke="#1e1e1e" stroke-width="2" fill="none"></path></g></g><mask></mask></svg>

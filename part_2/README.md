@@ -174,7 +174,7 @@ Since our entire outer workflow is written in Python, the inner workflow is prec
 
 #### Data Loading (1)
 
-![inner workflow 2](../diagrams/InnerWorkflow.2.data_loading_1.svg)
+![inner workflow 2](../diagrams/InnerWorkflow.2.data_loading.svg)
 
 #### Single-value IC violation checks
 
