@@ -84,9 +84,13 @@ This final step is relatively simple, but critical to transform our cleaned data
 
 ### Quantify the results of your efforts, e.g., by providing a summary table of changes: Which columns changed? How many cells (per column) have changed, etc.?
 
-The below table contains a summary of the changes our cleaning software made to the dataset.
+The below table contains a summary of the changes our cleaning software made to the dataset. Full output from these runs can be found in the [`runs/`](https://github.com/dpankros/uiuc_cs513_project/tree/main/runs) directory in the repository. One individual run is stored in each file therein, and file names indicate the date and time the run was completed. The structure of a filename is as follows:
 
-TODO: This needs to be double-checked for completeness and accuracy
+```text
+YYYY-MM-DD.HH-MM-SSZUTC.csv
+```
+
+TODO: This table needs to be double-checked for completeness and accuracy
 
 | Data entity | # IC violations before cleaning | # IC violations after cleaning | Columns with IC violations |
 | -- | -- | -- | -- |
