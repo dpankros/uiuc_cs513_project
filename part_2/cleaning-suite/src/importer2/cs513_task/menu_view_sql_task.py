@@ -23,6 +23,7 @@ class CreateMenuViewSqlTask(CS513SqlTask):
 
     view_select = """    
 select
+    id as id,
     name,
     sponsor,
     event,

@@ -2,4 +2,4 @@ import sys
 
 import importer2
 
-sys.exit(importer2.run())
+sys.exit(importer2.main())
