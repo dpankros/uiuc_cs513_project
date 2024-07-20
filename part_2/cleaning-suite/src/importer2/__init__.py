@@ -11,7 +11,7 @@ from importer2.task import TaskList, ProjectCleanupTask
 def main():
   base_config = {
     'server_url': "http://localhost:3333",
-    'sql_engine': create_engine('sqlite:///../../../../export.db'),
+    'sql_engine': create_engine('sqlite:///../../export.db'),
     "max_count": 10,
   }
 
@@ -22,27 +22,31 @@ def main():
 
     # VerbatimImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/Dish.csv',
+    #   'source_filename': '../../data/Dish.csv',
     #   'sql_table': 'dish_orig',
-    #   'sql_if_exists': 'replace'
+    #   'sql_if_exists': 'replace',
+    #   'name': 'Import dish_orig unmodified data',
     # }),
     # VerbatimImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/Menu.csv',
+    #   'source_filename': '../../data/Menu.csv',
     #   'sql_table': 'menu_orig',
-    #   'sql_if_exists': 'replace'
+    #   'sql_if_exists': 'replace',
+    #   'name': 'Import menu_orig unmodified data',
     # }),
     # VerbatimImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/MenuItem.csv',
+    #   'source_filename': '../../data/MenuItem.csv',
     #   'sql_table': 'menu_item_orig',
-    #   'sql_if_exists': 'replace'
+    #   'sql_if_exists': 'replace',
+    #   'name': 'Import menu_item_orig unmodified data',
     # }),
     # VerbatimImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/MenuPage.csv',
+    #   'source_filename': '../../data/MenuPage.csv',
     #   'sql_table': 'menu_page_orig',
-    #   'sql_if_exists': 'replace'
+    #   'sql_if_exists': 'replace',
+    #   'name': 'Import menu_page_orig unmodified data',
     # }),
     #
     # #
@@ -51,29 +55,29 @@ def main():
     #
     # DishImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/Dish.csv',
-    #   'dest_filename': '../../../../Dish_conv.csv',
+    #   'source_filename': '../../data/Dish.csv',
+    #   'dest_filename': '../../Dish_conv.csv',
     #   'sql_table': 'dish',
     #   'sql_if_exists': 'replace'
     # }),
     # MenuImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/Menu.csv',
-    #   'dest_filename': '../../../../Menu_conv.csv',
+    #   'source_filename': '../../data/Menu.csv',
+    #   'dest_filename': '../../Menu_conv.csv',
     #   'sql_table': 'menu',
     #   'sql_if_exists': 'replace'
     # }),
     # MenuItemImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/MenuItem.csv',
-    #   'dest_filename': '../../../../MenuItem_conv.csv',
+    #   'source_filename': '../../data/MenuItem.csv',
+    #   'dest_filename': '../../MenuItem_conv.csv',
     #   'sql_table': 'menu_item',
     #   'sql_if_exists': 'replace'
     # }),
     # MenuPageImportTask({
     #   **base_config,
-    #   'source_filename': '../../../../data/MenuPage.csv',
-    #   'dest_filename': '../../../../MenuPage_conv.csv',
+    #   'source_filename': '../../data/MenuPage.csv',
+    #   'dest_filename': '../../MenuPage_conv.csv',
     #   'sql_table': 'menu_page',
     #   'sql_if_exists': 'replace'
     # }),
