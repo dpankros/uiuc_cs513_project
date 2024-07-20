@@ -84,7 +84,21 @@ This final step is relatively simple, but critical to transform our cleaned data
 
 ### Quantify the results of your efforts, e.g., by providing a summary table of changes: Which columns changed? How many cells (per column) have changed, etc.?
 
+The below table contains a summary of the changes our cleaning software made to the dataset.
+
+TODO: This needs to be double-checked for completeness and accuracy
+
+| Data entity | # IC violations before cleaning | # IC violations after cleaning | Columns with IC violations |
+| -- | -- | -- | -- |
+| `MenuItem` | 370 | 0 | `price`, `dish_id` |
+| `MenuPage` | 5803 | 0 | `menu_id` |
+| `Dish` | 67668 | 0 | `first_appeared`, `last_appeared`, `times_appeared` |
+| `Menu` | 17541 | 0 | `menu_id`, `full_height`, `full_width`, `page_count` |
+
+
 ### Demonstrate that data quality has been improved, e.g., by devising IC-violation reports (answers to denial constraints) and showing the difference between number of IC violations reported before and after cleaning.
+
+As indicated previously, our Python application contains a wide range of IC checks and thus generates IC violation reports for all checks. The list of IC checks can be found at [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) in the project repository. The table in the previous section shows the number of IC violations before and after cleaning and thus quantitatively demonstrates that data quality is improved.
 
 ## 3. Create a workflow model
 

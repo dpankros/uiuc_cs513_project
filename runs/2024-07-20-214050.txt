@@ -1,0 +1,125 @@
+rye run importer2 --run-imports=true --run-verifications=true --run-reports=true --run-exports=true
+running imports: True
+running verifications: True
+running reports: True
+running exports: True
+Executing 27 sequential tasks.
+- Starting Import dish_orig unmodified data
+  Import dish_orig unmodified data (1/27) complete. Task executed in 16.0 seconds.
+
+- Starting Import menu_orig unmodified data
+  Import menu_orig unmodified data (2/27) complete. Task executed in 1.7 seconds.
+
+- Starting Import menu_item_orig unmodified data
+  Import menu_item_orig unmodified data (3/27) complete. Task executed in 82.6 seconds.
+
+- Starting Import menu_page_orig unmodified data
+  Import menu_page_orig unmodified data (4/27) complete. Task executed in 2.4 seconds.
+
+- Starting Dish Import
+  Dish Import (5/27) complete. Task executed in 51.3 seconds.
+
+- Starting Menu Import
+  Menu Import (6/27) complete. Task executed in 6.3 seconds.
+
+- Starting MenuItem Import
+  MenuItem Import (7/27) complete. Task executed in 250.1 seconds.
+
+- Starting MenuPage Import
+  MenuPage Import (8/27) complete. Task executed in 4.3 seconds.
+
+- Starting OpenRefine Project Cleanup
+  OpenRefine Project Cleanup (9/27) complete. Task executed in 0.2 seconds.
+
+- Starting Create Dish View
+  Create Dish View (10/27) complete. Task executed in 0.0 seconds.
+
+- Starting Create Menu View
+  Create Menu View (11/27) complete. Task executed in 0.0 seconds.
+
+- Starting MenuItem Initial Stats
+  370 Rows with IC violations
+  Errors were detected in the following columns: price (367), dish_id (3)
+  Corrections run
+  MenuItem Initial Stats (12/27) complete. Task executed in 68.4 seconds.
+
+- Starting MenuPage Initial Stats
+  5803 Rows with IC violations
+  Errors were detected in the following columns: menu_id (5803)
+  Corrections run
+  MenuPage Initial Stats (13/27) complete. Task executed in 26.4 seconds.
+
+- Starting MenuItem Cleaned Stats
+  0 Rows with IC violations
+  MenuItem Cleaned Stats (14/27) complete. Task executed in 34.4 seconds.
+
+- Starting MenuPage Cleaned Stats
+  0 Rows with IC violations
+  MenuPage Cleaned Stats (15/27) complete. Task executed in 1.6 seconds.
+
+- Starting Dish Verification
+  - id == 7) dish.first_appeared (1854) != _dish.first_appeared (1852); dish.last_appeared (2928) != _dish.last_appeared (2024)
+  - id == 15) dish.first_appeared (1) != _dish.first_appeared (1852); dish.last_appeared (2928) != _dish.last_appeared (2024)
+  - id == 17) dish.times_appeared (534) != _dish.times_appeared (535); dish.first_appeared (1880) != _dish.first_appeared (1852)
+  - id == 18) dish.last_appeared (2928) != _dish.last_appeared (2024)
+  - id == 21) dish.first_appeared (1851) != _dish.first_appeared (1852)
+  - id == 26) dish.first_appeared (1881) != _dish.first_appeared (1859)
+  - id == 27) dish.times_appeared (292) != _dish.times_appeared (293); dish.first_appeared (1862) != _dish.first_appeared (1859)
+  - id == 31) dish.last_appeared (1987) != _dish.last_appeared (2024)
+  - id == 33) dish.last_appeared (2928) != _dish.last_appeared (2024)
+  Dish Verification failed with 67668 errors.
+  Dish Verification (16/27) complete. Task executed in 7.9 seconds.
+
+- Starting Menu Verification
+  - id == 12463) menu.page_count (2) != _menu.page_count (68)
+  - id == 12464) menu.page_count (2) != _menu.page_count (35)
+  - id == 12465) menu.page_count (2) != _menu.page_count (85)
+  - id == 12466) menu.page_count (2) != _menu.page_count (64)
+  - id == 12467) menu.page_count (4) != _menu.page_count (35)
+  - id == 12468) menu.page_count (2) != _menu.page_count (38)
+  - id == 12469) menu.page_count (2) != _menu.page_count (145)
+  - id == 12470) menu.page_count (2) != _menu.page_count (81)
+  - id == 12471) menu.page_count (2) != _menu.page_count (68)
+  Menu Verification failed with 17541 errors.
+  Menu Verification (17/27) complete. Task executed in 3.6 seconds.
+
+- Starting Menu Page Verification
+  Menu Page Verification succeeded.
+  Menu Page Verification (18/27) complete. Task executed in 0.3 seconds.
+
+- Starting Menu Item Verification
+  Menu Item Verification succeeded.
+  Menu Item Verification (19/27) complete. Task executed in 6.2 seconds.
+
+- Starting Original Menu Item IC Violations Task
+  370 Rows with IC violations
+  Errors were detected in the following columns: price (367), dish_id (3)
+  Original Menu Item IC Violations Task (20/27) complete. Task executed in 27.6 seconds.
+
+- Starting Updated Menu Item IC Violations Task
+  0 Rows with IC violations
+  Updated Menu Item IC Violations Task (21/27) complete. Task executed in 27.5 seconds.
+
+- Starting Original Menu Page IC Violations Task
+  5803 Rows with IC violations
+  Errors were detected in the following columns: menu_id (5803), full_height (329), full_width (329)
+  Original Menu Page IC Violations Task (22/27) complete. Task executed in 1.2 seconds.
+
+- Starting Update Menu Item IC Violations Task
+  329 Rows with IC violations
+  Errors were detected in the following columns: full_height (329), full_width (329)
+  Update Menu Item IC Violations Task (23/27) complete. Task executed in 1.2 seconds.
+
+- Starting Export dish table
+  Export dish table (24/27) complete. Task executed in 1.9 seconds.
+
+- Starting Export menu table
+  Export menu table (25/27) complete. Task executed in 0.2 seconds.
+
+- Starting Export menu_item table
+  Export menu_item table (26/27) complete. Task executed in 6.4 seconds.
+
+- Starting Export menu_page table
+  Export menu_page table (27/27) complete. Task executed in 0.2 seconds.
+
+All tasks complete. Task list executed in 629.8 seconds.
