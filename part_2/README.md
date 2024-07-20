@@ -12,7 +12,41 @@ Aaron Schlesinger and David Pankros
 
 ### Identify and describe all (high-level) data cleaning steps you have performed.
 
+We've used OpenRefine and a SQL database together to achieve data cleaning outcomes that are more complex than OpenRefine would easily allow us to do on its own. We've also managed to build a Python client for OpenRefine's API. Instead of using the OpenRefine dashboard to perform data cleaning steps visually with the point-and-click user interface, we're able to integrate all our data cleaning steps, listed below, into a single Python program that can be run from the command line.
+
+- Raw CSV manipulation
+- Loading CSV data into OpenRefine
+- Manipulating data in OpenRefine
+- Loading partially-cleaned data into the SQL database
+- Constructing specific views of data in SQL
+- Manipulating data in SQL
+- Exporting cleaned data from SQL to final, cleaned data in CSV format
+
+The result of the single, unified Python program is that we have the ability to run our entire workflow, including all outer and inner workflow steps, with a single command. This ability to run the entire workflow with a single command is a significant advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us the ability to easily reproduce our results.
+
 ### For each high-level data cleaning step you have performed, explain its rationale. Was the step really required to support use case U1? Explain. If not, explain why those steps were still useful.
+
+For context, use case `U1` is summarized as using standard data cleaning techniques to produce data to be used for non-production-critical applications, data mining, unsupervised learning, or possibly further analysis and manipulation to use cleaner subsets of the entire dataset for additional purposes.
+
+We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and explain the rationale for each step.
+
+#### Raw CSV manipulation
+This step is primarily loading CSV data into memory, for the purpose of subsequently loading it into OpenRefine. We do no data cleaning in this step, but it is necessary to support all the subsequent steps.
+
+#### Loading CSV data into OpenRefine
+
+Similarly to the previous step, we do not perform any data cleaning in this step. Loading data into OpenRefine is necessary to support all OpenRefine-based and subsequent cleaning steps.
+
+#### Manipulating data in OpenRefine
+
+#### Loading partially-cleaned data into the SQL database
+
+#### Constructing specific views of data in SQL
+
+#### Manipulating data in SQL
+
+#### Exporting cleaned data from SQL to final, cleaned data in CSV format
+
 
 ## 2. Document data quality changes
 
