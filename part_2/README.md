@@ -166,6 +166,32 @@ A visual representation of our outer workflow is shown as follows:
 
 ### A detailed (possibly visual) representation of your “inner” data cleaning workflow W2 (e.g., if you’ve used OpenRefine, you can use the OR2YW tool).
 
+Since our entire outer workflow is written in Python, the inner workflow is precisely and entirely captured with code and can be seen in the [`part_2/cleaning-suite` directory](https://github.com/dpankros/uiuc_cs513_project/tree/main/part_2/cleaning-suite) in the repository. To summarize what's going on with our Python code, we have provided inner workflow diagrams below for each outer workflow stage.
+
+#### Manual Data Inspection
+
+![inner workflow 1](../diagrams/InnerWorkflow.1.manual_data_inspection.svg)
+
+#### Data Loading (1)
+
+![inner workflow 2](../diagrams/InnerWorkflow.2.data_loading_1.svg)
+
+#### Single-value IC violation checks
+
+![inner workflow 3](../diagrams/InnerWorkflow.3.single_value_ic_checks.svg)
+
+#### Data loading (2)
+
+![inner workflow 4](../diagrams/InnerWorkflow.4.data_loading_2.svg)
+
+#### Foreign-key IC violation checking
+
+![inner workflow 5](../diagrams/InnerWorkflow.5.foreign_key_ic_checks.svg)
+
+#### Data exporting
+
+![inner workflow 6](../diagrams/InnerWorkflow.6.data_exporting.svg)
+
 ## 4. Conclusions & Summary
 
 ### Please provide a concise summary and conclusions of your project, including lessons learned.
