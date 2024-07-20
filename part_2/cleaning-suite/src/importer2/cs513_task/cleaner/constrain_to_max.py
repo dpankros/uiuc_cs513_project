@@ -4,7 +4,7 @@ from sqlalchemy.engine import Connection
 
 def constrain_to_max(max_value):
     # curried to provide necessary functionality
-    def constrain_to_max_inner(col_name: str, col_value, ctx: dict):
+    def constrain_to_max_inner(col_name: str, col_value: str, ctx: dict[str, str | Connection]):
         table_name = ctx.get('table_name')
         pk = ctx.get('primary_key')
         pk_col = ctx.get('primary_key_col', 'id')
@@ -15,4 +15,4 @@ def constrain_to_max(max_value):
             conn.execute(text(update_sql))
             conn.commit()
 
-    return set_to_between_inner
+    return constrain_to_max_inner
