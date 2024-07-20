@@ -38,7 +38,7 @@ select
     currency_symbol,
     status,
     max(page_count, 1) as page_count,
-    max(dish_count, 1) as dis_count
+    max(dish_count, 1) as dish_count
 from (select m.id,
              m.norm_name                 as name,
              m.norm_sponsor              as sponsor,
