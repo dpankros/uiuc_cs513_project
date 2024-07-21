@@ -378,7 +378,9 @@ Since our entire outer workflow is written in Python, the inner workflow is prec
 
 In this project, we've primarily learned that the functionality offered by the suite of data cleaning tools introduced in this class are lacking in some areas. 
 
-For example, OpenRefine is excellent at cleaning data, but it's not great at enforcing relational ICs. SQL is excellent at enforcing relational ICs, but it's not designed for data cleaning tasks. While combining OpenRefine and SQL together is powerful, it still lacks the power needed to process even modestly-sized datasets like the NYPL restaurants dataset we used. For that, we estimate that a distributed data cleaning tool like Apache Spark or similar would be necessary.
+For example, OpenRefine is excellent at finding and fixing single-field IC violations, but not at doing the same with relational ICs. SQL is excellent at enforcing relational ICs, but it's not designed for data cleaning tasks. Using Python as we did to combine OpenRefine and SQL together to fill the gaps between each tools' weaknesses was powerful but not perfect. The result of this method is a system that can process the entire NYPL restaurants dataset, but does so relatively slowly and inefficiently.
+
+While using distributed data processing systems like Apache Spark, Google Cloud's BigQuery, and others are out of scope of this project, we believe such systems would allow us to process this dataset much more quickly and efficiently, and allow us to scale our processing to much larger datasets.
 
 Nevertheless, we believe we were successful in cleaning this restaurants dataset according to use case `U1` described in our part 1 submission, and as such it could be used to power non-mission-critical, data mining, and unsupervised learning applications. Also, further analysis could be done to identify superior-quality subsets of these data for use in other, more mission-critical applications.
 
