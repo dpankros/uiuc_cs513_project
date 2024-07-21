@@ -134,13 +134,19 @@ This final step is relatively simple, but critical to transform our cleaned data
 
 ### Quantify the results of your efforts, e.g., by providing a summary table of changes: Which columns changed? How many cells (per column) have changed, etc.?
 
-The below table contains a summary of the changes our cleaning software made to the dataset. Full output from these runs can be found in the [`runs/`](https://github.com/dpankros/uiuc_cs513_project/tree/main/runs) directory in the repository. One individual run is stored in each file therein, and file names indicate the date and time the run was completed. The structure of a filename is as follows:
+There are several measures we use to quantify the results of our efforts, described in the sections herein.
+
+#### Aside: Full run histories
+
+We have performed several data cleaning runs on the NYPL restaurants dataset with our software as it has evolved. Full output from these runs can be found in the [`runs/`](https://github.com/dpankros/uiuc_cs513_project/tree/main/runs) directory in the repository. Each individual run is stored in each file therein, and file names indicate the date and time the run was completed. Runs prior to the latest one may have different output if they were done with prior versions of the software. The structure of each filename is as follows:
 
 ```text
 YYYY-MM-DD.HH-MM-SSZUTC.csv
 ```
 
->**TODO: This table needs to be double-checked for completeness and accuracy**
+#### IC Violations
+
+As may be obvious, it's important that our cleaning is able to ameliorate at least most of the IC violations in the dataset. We have a wide range of IC checks in our Python application, and we have run these checks before and after cleaning to ensure that we have removed most or all IC violations. The below table contains a very high-level summary of IC violations before and after cleaning. As can be seen below, the IC violations measured by the table have been removed.
 
 | Data entity | # IC violations before cleaning | # IC violations after cleaning | Columns changed |
 | -- | -- | -- | -- |
@@ -149,6 +155,14 @@ YYYY-MM-DD.HH-MM-SSZUTC.csv
 | `Dish` | 67668 | 0 | `first_appeared`, `last_appeared`, `times_appeared` |
 | `Menu` | 17541 | 0 | `menu_id`, `full_height`, `full_width`, `page_count` |
 
+
+#### Distinct values
+
+Since the original dataset had many columns with malformed, or inconsistently formatted values, we have spent significant effort standardizing these values. Thus, an important measure to determine whether this dimension of our cleaning has been successful is how much we've reduced the number of distinct values in each column after cleaning. The sections herein show that we have been successful in reducing the number of distinct values in many columns.
+
+##### `Dish`
+
+TODO
 
 ### Demonstrate that data quality has been improved, e.g., by devising IC-violation reports (answers to denial constraints) and showing the difference between number of IC violations reported before and after cleaning.
 
