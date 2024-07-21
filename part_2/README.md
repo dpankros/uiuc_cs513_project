@@ -232,25 +232,124 @@ Since our entire outer workflow is written in Python, the inner workflow is prec
 
 ![inner workflow 1](../diagrams/InnerWorkflow.1.manual_data_inspection.svg)
 
+##### Workflow description
+
+- Use Python CSV libraries to load the raw CSV data into memory
+- Create representative tables in SQLite
+- Load in-memory CSV representations into SQLite tables
+- Use graphical SQLite tools (i.e. [DB Browser for SQLite](https://sqlitebrowser.org)) to:
+  - Inspect and understand the structure of data
+  - Look for ICs and obvious IC violations
+
+###### Tools used
+
+- Python and its CSV libraries
+- Text editors
+- SQLite
+- Graphical SQLite tools
+
+
 #### Data Loading (1)
 
 ![inner workflow 2](../diagrams/InnerWorkflow.2.data_loading.svg)
+
+##### Workflow description
+
+- Load raw CSV files into memory using Python CSV libraries
+- Use OpenRefine's API and our home-grown Python client to load in-memory CSV representations into OpenRefine
+
+###### Tools used
+
+- Python and its CSV libraries
+- OpenRefine server, API and client
 
 #### Single-value IC violation checks
 
 ![inner workflow 3](../diagrams/InnerWorkflow.3.single_value_ic_checks.svg)
 
+##### Workflow description
+
+- Run our suite of GREL queries to find single-value (i.e. not foreign-key or other relational) IC violations
+- Use our Python code and home-grown OpenRefine client library to:
+  - Encode single-value IC violation update policy on a per-column basis
+  - Apply single-value IC violations for all fields with IC violations, according to the policy for the field's columnIC violations according to policy
+
+###### Tools used
+
+- Python
+- OpenRefine server, API and client
+
 #### Data loading (2)
 
 ![inner workflow 4](../diagrams/InnerWorkflow.4.data_loading_2.svg)
+
+##### Workflow description
+
+- Using our home-grown OpenRefine Python client, export partially-cleaned data from OpenRefine back into memory
+- Create representative SQLite tables for partially-cleaned data
+- Load exported, in-memory data into SQLite tables
+
+##### Tools used
+
+- Python
+- OpenRefine client, API and server
+- SQLite
 
 #### Foreign-key IC violation checking
 
 ![inner workflow 5](../diagrams/InnerWorkflow.5.foreign_key_ic_checks.svg)
 
+##### Workflow description
+
+- Identify foreign-key IC violations in the dataset loaded in the previous "Data loading (2)" section
+- From the loaded data, create representative SQLite views for major foreign key (FK) relationships in the dataset
+- Define policy in Python code for fixing relational IC violations on a per-FK basis
+- Fix relational IC violations according to policy
+- Write results into cleaned entity tables (e.g. 'menu_orig' -> 'menu')
+
+##### Tools used
+
+- Python
+- Pandas
+- Home-grown OpenRefine client
+- OpenRefine server
+- SQLite
+
+
+#### Data reporting
+
+![inner workflow 6](../diagrams/InnerWorkflow.6.data_reporting.svg)
+
+##### Workflow description
+
+- From raw tables and views created in the previous "Data loading (2)" and "Foreign-key IC violation checking" sections (respectively), create SQLite views to analyze FK relationships and statistics on individual column data
+- Execute queries to compute dataset statistics including:
+  - Number of IC violations per column before and after cleaning
+  - Cardinality of (i.e. distinct values in) each column before and after cleaning
+  - Number of invalid FKs on applicable columns before and after cleaning
+- Report computed statistics
+
+##### Tools used
+
+- Python
+- Pandas
+- SQLite
+
 #### Data exporting
 
-![inner workflow 6](../diagrams/InnerWorkflow.6.data_exporting.svg)
+![inner workflow 7](../diagrams/InnerWorkflow.7.data_exporting.svg)
+
+##### Workflow description
+
+- Query all rows in all cleaned tables (i.e. 'menu', `dish`, etc...)
+- Read query results into Pandas DataFrames
+- Output each table's DataFrame contents into its own CSV file (i.e. Menu.export.csv)
+
+##### Tools used
+
+- Python
+- SQLite
+- Pandas
 
 ## 4. Conclusions & Summary
 
