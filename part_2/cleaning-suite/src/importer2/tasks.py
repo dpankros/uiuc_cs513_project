@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 from typing import Sequence
 
+from importer2.cs513_task.dish_import_task import DishImportTask
+from importer2.cs513_task.menu_import_task import MenuImportTask
+from importer2.cs513_task.menu_item_import_task import MenuItemImportTask
+from importer2.cs513_task.menu_page_import_task import MenuPageImportTask
+from importer2.task.project_cleanup_task import ProjectCleanupTask
 from sqlalchemy import Engine
 
 from importer2.cs513_task.cs513_export_task import CS513ExportTask
