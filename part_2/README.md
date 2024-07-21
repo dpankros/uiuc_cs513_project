@@ -192,6 +192,23 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 | currency_symbol      | 34.0            | 34.0        | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
 | status               | 2.0             | 2.0         | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
 
+##### `MenuItem`
+
+| Column      | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
+|-------------|-----------------|-------------|------------|---------------|-----------|----------|---------------|-----------|----------|---------------|-----------|----------|
+| price       | 886810.0        | 886443.0    | 0.0%       | 0.0           | 0.0       | nan%     | 180000.0      | 180000.0  | nan%     | 12.8          | 12.8      | nan%     |
+| high_price  | 91905.0         | 91905.0     | 0.0%       | 0.0           | 0.0       | nan%     | 7800.0        | 7800.0    | nan%     | 8.1           | 8.1       | nan%     |
+| xpos        | 1332726.0       | 1332726.0   | 0.0%       | 0.0           | 0.0       | nan%     | 1.0           | 1.0       | nan%     | 0.4           | 0.4       | nan%     |
+| ypos        | 1332726.0       | 1332726.0   | 0.0%       | 0.0           | 0.0       | nan%     | 1.0           | 1.0       | nan%     | 0.5           | 0.5       | nan%     |
+
+##### `MenuPage`
+
+| Column       | Count Beforeeee | Count After | Count Impr | Min Beforeeee | Min After | Min Impr | Max Beforeeee | Max After | Max Impr | Avg Beforeeee | Avg After | Avg Impr |
+|--------------|-----------------|-------------|------------|---------------|-----------|----------|---------------|-----------|----------|---------------|-----------|----------|
+| page_number  | 65735.0         | 65735.0     | 0.0%       | 1.0           | 1.0       | nan%     | 74.0          | 74.0      | nan%     | 3.8           | 3.8       | nan%     |
+| full_height  | 66608.0         | 66608.0     | 0.0%       | 616.0         | 616.0     | nan%     | 12044.0       | 12044.0   | nan%     | 3859.1        | 3859.1    | nan%     |
+| full_width   | 66608.0         | 66608.0     | 0.0%       | 558.0         | 558.0     | nan%     | 9175.0        | 9175.0    | nan%     | 2778.6        | 2778.6    | nan%     |
+
 
 ### Demonstrate that data quality has been improved, e.g., by devising IC-violation reports (answers to denial constraints) and showing the difference between number of IC violations reported before and after cleaning.
 
