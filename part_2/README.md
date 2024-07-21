@@ -344,7 +344,7 @@ Since our entire outer workflow is written in Python, the inner workflow is prec
 
 ##### Workflow description
 
-- From raw tables and views created in the previous "Data loading (2)" and "Foreign-key IC violation checking" sections (respectively), create SQLite views to analyze FK relationships and statistics on individual column data
+- From raw tables and views created in the previous "Data loading (2)" and "Foreign-key IC violation checking" sections (respectively), analyze FK relationships and statistics on individual column data
 - Execute queries to compute dataset statistics including:
   - Number of IC violations per column before and after cleaning
   - Cardinality of (i.e. distinct values in) each column before and after cleaning
