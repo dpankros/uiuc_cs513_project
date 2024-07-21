@@ -218,11 +218,13 @@ As indicated previously, our Python application contains a wide range of IC chec
 
 ### A visual representation of your overall (or “outer”) workflow W1, e.g., using a tool such as YesWorkflow. At a minimum, you should identify key inputs, outputs, and steps of the workflow, along with dependencies between these. Key phases and steps of your data cleaning project may include, e.g., data profiling, data loading, data cleaning, IC violation checks, etc. Explain the design of W1 and why you’ve chosen the tools that you have in your overall workflow.
 
-A visual representation of our outer workflow, along with a table with summaries, inputs and outputs of each step in the workflow, is shown as below.
+A visual representation of our outer workflow, is shown below.
 
 ![outer workflow](../diagrams/OuterWorkflow.svg)
 
 >This file can be seen enlarged at [diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg) in SVG format, or [diagrams/OuterWorklow.png](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.png) in PNG format.
+
+#### Outer workflow steps, their inputs, and their outputs
 
 | Workflow step | Brief description | Inputs | Outputs |
 | -- | -- | -- | -- |
@@ -233,6 +235,8 @@ A visual representation of our outer workflow, along with a table with summaries
 | Foreign-key IC violation checking | Use SQLite to check for and clean IC violations | SQLite tables with partially-cleaned data | SQLite tables with fully cleaned data |
 | Data reporting | Create and output SQLite views to report on data quality | SQLite tables with fully cleaned data | Comprehensive data quality reports |
 | Data exporting | Export fully cleaned data from SQLite to CSV | SQLite tables with fully cleaned data | CSV files with cleaned data, in the same format as the original raw dataset |
+
+#### Outer workflow design
 
 As we've implied above, we've chosen to design this workflow in a way we believe is optimal for automation. All but the first step -- which we've done to become familiar with the structure and content of the data -- are automated with Python and run with a single command. Elsewhere in this document, we describe why we believe this design is advantageous.
 
