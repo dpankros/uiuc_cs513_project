@@ -191,7 +191,7 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 
 ##### `MenuPage`
 
-| Column       | Count Beforeeee | Count After | Count Impr | Min Beforeeee | Min After | Min Impr | Max Beforeeee | Max After | Max Impr | Avg Beforeeee | Avg After | Avg Impr |
+| Column       | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
 |--------------|-----------------|-------------|------------|---------------|-----------|----------|---------------|-----------|----------|---------------|-----------|----------|
 | `page_number`  | 65735.0         | 65735.0     | 0.0%       | 1.0           | 1.0       | nan%     | 74.0          | 74.0      | nan%     | 3.8           | 3.8       | nan%     |
 | `full_height`  | 66608.0         | 66608.0     | 0.0%       | 616.0         | 616.0     | nan%     | 12044.0       | 12044.0   | nan%     | 3859.1        | 3859.1    | nan%     |
