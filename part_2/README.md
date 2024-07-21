@@ -255,11 +255,7 @@ A visual representation of our outer workflow, is shown below.
 
 As we've implied above, we've chosen to design this workflow in a way we believe is optimal for automation. All but the first step -- which we've done to become familiar with the structure and content of the data -- are automated with Python and run with a single command. Elsewhere in this document, we describe why we believe this design is advantageous.
 
-Further, we've broken our data cleaning into two stages: single-value IC violation checks and relational IC violation checks. This separation allows us to choose the best tools for each. OpenRefine has proven to be excellent at finding and fixing single-value IC violation checks, while SQL is excellent at the same for relational IC violation checks. We believe that using either of these tools to do the other's task would lead to more a less-clean dataset.
-
-
-
-
+Further, we've broken our data cleaning into two stages: single-value IC violation checks and relational IC violation checks. This separation allows us to choose the best tools for each. OpenRefine has proven to be excellent at finding and fixing single-value IC violation checks, while SQL is excellent at the same for relational IC violation checks. We believe that using either of these tools to do the other's task would lead to a "dirtier" final dataset.
 
 ### A detailed (possibly visual) representation of your “inner” data cleaning workflow W2 (e.g., if you’ve used OpenRefine, you can use the OR2YW tool).
 
