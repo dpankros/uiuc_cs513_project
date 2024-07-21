@@ -14,8 +14,8 @@ class MenuPageReportTask(CS513ReportTask):
         "id": All(Unique(), GreaterThan(0)),
         "menu_id": Any(IsUndefined(), IsValidForeignKey('menu')),
         "page_number": Any(IsUndefined(), GreaterThan(0)),
-        "full_height": GreaterThan(0),
-        "full_width": GreaterThan(0),
+        "full_height": Any(IsUndefined(), GreaterThan(0)),
+        "full_width": Any(IsUndefined(), GreaterThan(0)),
     }
 
     column_mapping = {
