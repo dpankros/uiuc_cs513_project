@@ -40,4 +40,7 @@ class MenuItemReportTask(CS513ReportTask):
         "high_price": {"type": "numeric_stats"},
         "xpos": {"type": "numeric_stats"},
         "ypos": {"type": "numeric_stats"},
+        "menu_page_id": {"type": "fk_stats"},
+        "dish_id": {"type": "fk_stats"},
+        
     }

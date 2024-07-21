@@ -32,4 +32,5 @@ class MenuPageReportTask(CS513ReportTask):
         "page_number": { "type": "numeric_stats" },
         "full_height": { "type": "numeric_stats" },
         "full_width": { "type": "numeric_stats" },
+        "menu_id": {"type": "fk_stats"},
     }

@@ -153,6 +153,27 @@ ORDER BY count desc;
         )
         return stats
 
+    def fk_stats(self, before_col_name, after_col_name):
+        # for each FK column, we expect to have more NULL values in 
+        # self.comparison_table than in self.base_table
+        comparison_query = f"select count(*) from {self.comparison_table} as m where m.{after_col_name} is NULL"
+        base_query = f"select count(*) from {self.base_table} as m where m.{after_col_name} is NULL"
+        with self.sql_engine.connect() as conn:
+            after_count = conn.execute(text(comparison_query)).fetchone()[0]
+            before_count = conn.execute(text(base_query)).fetchone()[0]
+            before_count = max(1, before_count)
+            stats = StatsObject(
+                count=BeforeAndAfter(
+                    before=float(before_count),
+                    after=float(after_count),
+                    improvement=(float(after_count) / float(before_count)) * 100
+                ),
+                min=nullResult,
+                max=nullResult,
+                avg=nullResult,
+            )
+            return stats
+
     def run(self):
         self.connection: Connection = self.sql_engine.connect()
 

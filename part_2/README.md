@@ -209,6 +209,21 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 | `full_height`  | 66608.0         | 66608.0     | 0.0%       | 616.0         | 616.0     | nan%     | 12044.0       | 12044.0   | nan%     | 3859.1        | 3859.1    | nan%     |
 | `full_width`   | 66608.0         | 66608.0     | 0.0%       | 558.0         | 558.0     | nan%     | 9175.0        | 9175.0    | nan%     | 2778.6        | 2778.6    | nan%     |
 
+#### FK relationships
+
+Prior to cleaning, we know that the dataset contains many invalid foreign keys. In other words, there are columns in one CSV file with IDs that are intended to point to rows in another CSV file, but those IDs are invalid and break referential integrity.
+
+In these cases, we've chosen to set these invalid IDs to `NULL`. In some cases, there are no `NULL` values in FK columns before cleaning, so we choose to measure how many `NULL` values we've added rather than computing a ratio or percentage improvement (since we'd frequently be dividing by `0`).
+
+Since we know that all columns had invalid FKs in the original raw dataset, we know we've succeeded on this metric if we have added `NULL` values to those columns. The below table shows how many `NULL`s we've added.
+
+| Table | Foreign-key column | `NULL` values before cleaning | `NULL` values after cleaning | Number added |
+| -- | -- | -- | -- | -- |
+| `menu_page` | `menu_id` | 0 | 5803 | 5803 |
+| `menu_item` | `menu_page_id` | 0 | 0 | 0 |
+| `menu_item` | `dish_id` | 241 | 244 | 4 |
+
+The above table shows that we've have improved referential integrity by fixing relational IC violations on 2 of the 3 foreign key columns in the dataset.
 
 ### Demonstrate that data quality has been improved, e.g., by devising IC-violation reports (answers to denial constraints) and showing the difference between number of IC violations reported before and after cleaning.
 
