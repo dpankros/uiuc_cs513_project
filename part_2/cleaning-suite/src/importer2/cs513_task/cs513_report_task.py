@@ -169,7 +169,7 @@ ORDER BY count desc;
                             constraint = self.integrity_constraints[col]
                             violations = constraint.check(
                                 col,  # column name
-                                getattr(row, col),  # colum value
+                                getattr(row, col),  # column value
                                 {  # context object
                                     "row": row,
                                     "table_name": self.comparison_table,
@@ -184,7 +184,7 @@ ORDER BY count desc;
 
                 GROUPS = ['count', 'min', 'max', 'avg']
                 print(f"  Column Stats for {self.comparison_table} compared to {self.base_table}")
-                group_headers = ''.join([f"{g.title():>5} Before {g.title():>5} After  {g.title():>5} Impr" for g in GROUPS])
+                group_headers = ''.join([f"{g.title():>5} Beforeeee {g.title():>5} After  {g.title():>5} Impr" for g in GROUPS])
                 print(f"                  Column {group_headers}")
 
                 for before_col, stat_obj in self.stat_columns.items():
