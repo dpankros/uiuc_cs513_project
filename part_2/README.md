@@ -150,35 +150,35 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 
 ##### `Dish`
 
-| Column           | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
-|------------------|-----------------|-------------|------------|---------------|-----------|----------|---------------|-----------|----------|---------------|-----------|----------|
-| `name`             | 418542.0        | 343370.0    | 18.0%      | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `description`      | 1.0             | 0.0         | 100.0%     | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `menus_appeared`   | 423397.0        | 423397.0    | 0.0%       | 0.0           | 1.0       | nan%     | 7740.0        | 8459.0    | nan%     | 3.1           | 3.2       | nan%     |
-| `times_appeared`   | 423397.0        | 423397.0    | 0.0%       | -6.0          | 1.0       | nan%     | 8484.0        | 8484.0    | nan%     | 3.1           | 3.2       | nan%     |
-| `first_appeared`   | 423397.0        | 378448.0    | 10.6%      | 0.0           | 1852.0    | nan%     | 2928.0        | 2928.0    | nan%     | 1675.5        | 1927.8    | nan%     |
-| `last_appeared`    | 423397.0        | 378448.0    | 10.6%      | 0.0           | 1.0       | nan%     | 2928.0        | 2024.0    | nan%     | 1679.3        | 1930.7    | nan%     |
-| `lowest_price`     | 394297.0        | 285647.0    | 27.6%      | 0.0           | 0.0       | nan%     | 1035.0        | 180000.0  | nan%     | 1.0           | 29.5      | nan%     |
-| `highest_price`    | 394297.0        | 285647.0    | 27.6%      | 0.0           | 0.0       | nan%     | 3050.0        | 180000.0  | nan%     | 1.6           | 36.6      | nan%     |
+| Column           | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
+|------------------|--------------|-------------|------------|------------|-----------|------------|-----------|------------|-----------|
+| `name`           | 418542.0     | 343370.0    | 18.0%      | nan        | nan       | nan        | nan       | nan        | nan       |
+| `description`    | 1.0          | 0.0         | 100.0%     | nan        | nan       | nan        | nan       | nan        | nan       |
+| `menus_appeared` | 423397.0     | 423397.0    | 0.0%       | 0.0        | 1.0       | 7740.0     | 8459.0    | 3.1        | 3.2       |
+| `times_appeared` | 423397.0     | 423397.0    | 0.0%       | -6.0       | 1.0       | 8484.0     | 8484.0    | 3.1        | 3.2       |
+| `first_appeared` | 423397.0     | 378448.0    | 10.6%      | 0.0        | 1852.0    | 2928.0     | 2928.0    | 1675.5     | 1927.8    |
+| `last_appeared`  | 423397.0     | 378448.0    | 10.6%      | 0.0        | 1.0       | 2928.0     | 2024.0    | 1679.3     | 1930.7    |
+| `lowest_price`   | 394297.0     | 285647.0    | 27.6%      | 0.0        | 0.0       | 1035.0     | 180000.0  | 1.0        | 29.5      |
+| `highest_price`  | 394297.0     | 285647.0    | 27.6%      | 0.0        | 0.0       | 3050.0     | 180000.0  | 1.6        | 36.6      |
 
 ##### `Menu`
 
-| Column               | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
-|----------------------|-----------------|-------------|------------|---------------|-----------|----------|---------------|-----------|----------|---------------|-----------|----------|
-| `name`                 | 793.0           | 752.0       | 5.2%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `sponsor`              | 6366.0          | 5929.0      | 6.9%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `event`                | 1769.0          | 1670.0      | 5.6%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `venue`                | 233.0           | 148.0       | 36.5%      | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `place`                | 3743.0          | 3344.0      | 10.7%      | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `physical_description` | 4507.0          | 4163.0      | 7.6%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `occasion`             | 381.0           | 286.0       | 24.9%      | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `notes`                | 9380.0          | 9362.0      | 0.2%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `call_number`          | 15936.0         | 15936.0     | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `date`                 | 6599.0          | 6599.0      | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `location`             | 6279.0          | 6227.0      | 0.8%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `currency`             | 42.0            | 42.0        | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `currency_symbol`      | 34.0            | 34.0        | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
-| `status`               | 2.0             | 2.0         | 0.0%       | nan           | nan       | nan%     | nan           | nan       | nan%     | nan           | nan       | nan%     |
+| Column               | Count Before | Count After | Count Impr |
+|----------------------|--------------|-------------|------------|
+| `name`               | 793.0        | 752.0       | 5.2%       |
+| `sponsor`            | 6366.0       | 5929.0      | 6.9%       |
+| `event`              | 1769.0       | 1670.0      | 5.6%       |
+| `venue`              | 233.0        | 148.0       | 36.5%      |
+| `place`              | 3743.0       | 3344.0      | 10.7%      |
+| `physical_description`| 4507.0      | 4163.0      | 7.6%       |
+| `occasion`           | 381.0        | 286.0       | 24.9%      |
+| `notes`              | 9380.0       | 9362.0      | 0.2%       |
+| `call_number`        | 15936.0      | 15936.0     | 0.0%       |
+| `date`               | 6599.0       | 6599.0      | 0.0%       |
+| `location`           | 6279.0       | 6227.0      | 0.8%       |
+| `currency`           | 42.0         | 42.0        | 0.0%       |
+| `currency_symbol`    | 34.0         | 34.0        | 0.0%       |
+| `status`             | 2.0          | 2.0         | 0.0%       |
 
 ##### `MenuItem`
 
@@ -191,11 +191,11 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 
 ##### `MenuPage`
 
-| Column       | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
-|--------------|-----------------|-------------|------------|---------------|-----------|----------|---------------|-----------|----------|---------------|-----------|----------|
-| `page_number`  | 65735.0         | 65735.0     | 0.0%       | 1.0           | 1.0       | nan%     | 74.0          | 74.0      | nan%     | 3.8           | 3.8       | nan%     |
-| `full_height`  | 66608.0         | 66608.0     | 0.0%       | 616.0         | 616.0     | nan%     | 12044.0       | 12044.0   | nan%     | 3859.1        | 3859.1    | nan%     |
-| `full_width`   | 66608.0         | 66608.0     | 0.0%       | 558.0         | 558.0     | nan%     | 9175.0        | 9175.0    | nan%     | 2778.6        | 2778.6    | nan%     |
+| Column       | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
+|--------------|--------------|-------------|------------|------------|-----------|------------|-----------|------------|-----------|
+| `page_number`| 65735.0      | 65735.0     | 0.0%       | 1.0        | 1.0       | 74.0       | 74.0      | 3.8        | 3.8       |
+| `full_height`| 66608.0      | 66608.0     | 0.0%       | 616.0      | 616.0     | 12044.0    | 12044.0   | 3859.1     | 3859.1    |
+| `full_width` | 66608.0      | 66608.0     | 0.0%       | 558.0      | 558.0     | 9175.0     | 9175.0    | 2778.6     | 2778.6    |
 
 #### FK relationships
 
