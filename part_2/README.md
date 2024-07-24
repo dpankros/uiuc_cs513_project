@@ -161,6 +161,12 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 | `lowest_price`   | 394297.0     | 285647.0    | 27.6%      | 0.0        | 0.0       | 1035.0     | 180000.0  | 1.0        | 29.5      |
 | `highest_price`  | 394297.0     | 285647.0    | 27.6%      | 0.0        | 0.0       | 3050.0     | 180000.0  | 1.6        | 36.6      |
 
+- `name` has had similar names normalized and clustered resulting in an 18% decrease in unique values.
+- `description` wasn't changed
+- `menus_appeared` and `times_appeared` were re-caclulated based on the menus/menu_items/menu_pages actually in the data.  Thus, zero is no longer a viable result and neither are negative numbers.  Truthfully, the semantic difference between these two columns is unclear.
+- `first_appeared` and `last_appeared` similarly were drawn from actual data from menus/menu_items/menu_pages but it was clear that not all the values contained there are accurate.  The data was examined and the true range of values _appeared to be_ between 1852 and 2024.  These values were, thus, constrained to be in this range.
+- `lowest_price` and `highest_price` were re-caclulated based on the menus/menu_items/menu_pages.  While the statistics above a truncated to one decimal point.  The actual values are greater than zero, albeit small -- 0.01 and 0.005, respectively.
+
 ##### `Menu`
 
 | Column               | Count Before | Count After | Count Impr |
@@ -180,6 +186,21 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 | `currency_symbol`    | 34.0         | 34.0        | 0.0%       |
 | `status`             | 2.0          | 2.0         | 0.0%       |
 
+- `name` had its values normalized and clustered to find duplicate values'
+- `sponsor` was minimally modified to merge values that differed in case.
+- `event` is a multi-valued tag-like list of values.  These values were normalized and marged to attempt to reduce the cardinality of possible values presented.               
+- `venue` were categorical values with many slight differences.  These were merged as much as could reasonably be performed.               
+- `place` - TBD               
+- `physical_description` - TBD
+- `occasion` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the cardinality of possible values presented.
+- `notes` are, if they can believed to be notes, freeform values that are not meant to be generalized.  Thus notes had their delimiters normalized for later formatting, but had very little other changes performed.               
+- `call_number` is suspected to be a library call number and, because the acceptable formats of this value are unclear, was left unchanged.         
+- `date` was left unchanged.                
+- `location` was normalized to make its format consistent.            
+- `currency` appeared consistent and was left unchanged.            
+- `currency_symbol` appeared consistent and was left unchanged.
+- `status` was already two distinct values and was left unchanged.
+
 ##### `MenuItem`
 
 | Column      | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
@@ -189,6 +210,12 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 | `xpos`        | 1332726.0       | 1332726.0   | 0.0%       | 0.0           | 0.0       | nan%     | 1.0           | 1.0       | nan%     | 0.4           | 0.4       | nan%     |
 | `ypos`        | 1332726.0       | 1332726.0   | 0.0%       | 0.0           | 0.0       | nan%     | 1.0           | 1.0       | nan%     | 0.5           | 0.5       | nan%     |
 
+- `price`     
+- `high_price`
+- `xpos`      
+- `ypos`
+- TBD MISSING COLUMNS FOR ALL THE TABLES
+
 ##### `MenuPage`
 
 | Column       | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
@@ -196,6 +223,10 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 | `page_number`| 65735.0      | 65735.0     | 0.0%       | 1.0        | 1.0       | 74.0       | 74.0      | 3.8        | 3.8       |
 | `full_height`| 66608.0      | 66608.0     | 0.0%       | 616.0      | 616.0     | 12044.0    | 12044.0   | 3859.1     | 3859.1    |
 | `full_width` | 66608.0      | 66608.0     | 0.0%       | 558.0      | 558.0     | 9175.0     | 9175.0    | 2778.6     | 2778.6    |
+
+- `page_number` was left unchanged.
+- `full_height` was left unchanged as it likely refers to external data that we do cannot access to verify.
+- `full_width` was left unchanged as it likely refers to external data that we do cannot access to verify.
 
 #### FK relationships
 

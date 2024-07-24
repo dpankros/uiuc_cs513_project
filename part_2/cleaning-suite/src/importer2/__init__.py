@@ -1,5 +1,4 @@
 import click
-from importer2.tasks import BaseConfig, get_export_tasks, get_importer_tasks, get_report_tasks, get_verification_tasks
 from sqlalchemy import create_engine
 
 from importer2.cs513_task import (
@@ -7,6 +6,7 @@ from importer2.cs513_task import (
     CreateDishViewSqlTask, CreateMenuViewSqlTask, MenuItemIcTask, MenuPageIcTask
 )
 from importer2.task import TaskList, ProjectCleanupTask
+from importer2.tasks import BaseConfig, get_export_tasks, get_importer_tasks, get_report_tasks, get_verification_tasks
 
 
 @click.command()
@@ -55,7 +55,6 @@ def main(
         *imports,
         # Cleaned imports - These read the CSV and clean the data prior to import
 
-
         # SQL modification - these create SQL views and modify data in SQL
         CreateDishViewSqlTask({
             **base_config.as_dict(),
@@ -97,7 +96,6 @@ def main(
         *reports,
         *exports,
     ]).run()
-
 
 
 if __name__ == '__main__':

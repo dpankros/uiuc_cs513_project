@@ -28,8 +28,8 @@ select
     description as description,
     max(menus_appeared, 1) as menus_appeared,
     max(times_appeared, 1) as times_appeared,
-    max(1852, first_appeared) as first_appeared,
-    min(last_appeared, 2024) as last_appeared,
+    max(1852, min(first_appeared, 2024)) as first_appeared,
+    max(1852, min(last_appeared, 2024)) as last_appeared,
     lowest_price as lowest_price,
     highest_price as highest_price
 from (select d.id                                     as id,

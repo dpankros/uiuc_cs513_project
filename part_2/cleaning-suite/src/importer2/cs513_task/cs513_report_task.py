@@ -126,6 +126,8 @@ ORDER BY count desc;
             before_min, before_max, before_avg, before_count = conn.execute(text(sql_query(before_col_name, self.base_table))).fetchone()
             after_min, after_max, after_avg, after_count = conn.execute(text(sql_query(after_col_name, self.comparison_table))).fetchone()
 
+            # print(before_col_name, before_min, before_max, before_count)
+            # print(after_col_name, after_min, after_max, after_count)
         # before, after, % improvement
 
         before_count = max(1, before_count)
@@ -154,7 +156,7 @@ ORDER BY count desc;
         return stats
 
     def fk_stats(self, before_col_name, after_col_name):
-        # for each FK column, we expect to have more NULL values in 
+        # for each FK column, we expect to have more NULL values in
         # self.comparison_table than in self.base_table
         comparison_query = f"select count(*) from {self.comparison_table} as m where m.{after_col_name} is NULL"
         base_query = f"select count(*) from {self.base_table} as m where m.{after_col_name} is NULL"

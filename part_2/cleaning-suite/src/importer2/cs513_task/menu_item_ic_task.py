@@ -17,6 +17,10 @@ class MenuItemIcTask(CS513IcTask):
             Any(IsUndefined(), GreaterThan(0)),
             set_to_null
         ),
+        "high_price": (
+            Any(IsUndefined(), GreaterThan(0)),
+            set_to_null
+        ),
         "dish_id": (
             Any(IsUndefined(), IsValidForeignKey('dish')),
             set_to_null
