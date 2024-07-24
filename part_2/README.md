@@ -196,16 +196,15 @@ sections herein show that we have been successful in reducing the number of dist
 
 ##### `Dish`
 
-| Column           | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
-|------------------|--------------|-------------|------------|------------|-----------|------------|-----------|------------|-----------|
-| `name`           | 418542.0     | 343370.0    | 18.0%      | nan        | nan       | nan        | nan       | nan        | nan       |
-| `description`    | 1.0          | 0.0         | 100.0%     | nan        | nan       | nan        | nan       | nan        | nan       |
-| `menus_appeared` | 423397.0     | 423397.0    | 0.0%       | 0.0        | 1.0       | 7740.0     | 8459.0    | 3.1        | 3.2       |
-| `times_appeared` | 423397.0     | 423397.0    | 0.0%       | -6.0       | 1.0       | 8484.0     | 8484.0    | 3.1        | 3.2       |
-| `first_appeared` | 423397.0     | 378448.0    | 10.6%      | 0.0        | 1852.0    | 2928.0     | 2928.0    | 1675.5     | 1927.8    |
-| `last_appeared`  | 423397.0     | 378448.0    | 10.6%      | 0.0        | 1.0       | 2928.0     | 2024.0    | 1679.3     | 1930.7    |
-| `lowest_price`   | 394297.0     | 285647.0    | 27.6%      | 0.0        | 0.0       | 1035.0     | 180000.0  | 1.0        | 29.5      |
-| `highest_price`  | 394297.0     | 285647.0    | 27.6%      | 0.0        | 0.0       | 3050.0     | 180000.0  | 1.6        | 36.6      |
+| Column         | Count Before | Count After | Count Impr | Min Before | Min After  | Max Before | Max After  | Avg Before | Avg After |
+|----------------|--------------|-------------|------------|------------|------------|------------|------------|------------|-----------|
+| name           | 418542       | 343370      | 18.0%      |            |            |            |            |            |           |
+| menus_appeared | 423397       | 423397      | 0.0%       | 0.0        | **1.0**    | 7740.0     | 8459.0     | 3.1        | 3.2       |
+| times_appeared | 423397       | 423397      | 0.0%       | -6.0       | **1.0**    | 8484.0     | 8484.0     | 3.1        | 3.2       |
+| first_appeared | 423397       | 378448      | 10.6%      | **0.0**    | **1852.0** | **2928.0** | **2024.0** | 1675.5     | 1927.7    |
+| last_appeared  | 423397       | 378448      | 10.6%      | **0.0**    | **1852.0** | **2928.0** | **2024.0** | 1679.3     | 1930.8    |
+| lowest_price   | 394297       | 285647      | 27.6%      | 0.0        | 0.0        | 1035.0     | 180000.0   | 1.0        | 29.5      |
+| highest_price  | 394297       | 285647      | 27.6%      | 0.0        | 0.0        | 3050.0     | 180000.0   | 1.6        | 36.6      |
 
 - `name` has had similar names normalized and clustered resulting in an 18% decrease in unique values.
 - `description` wasn't changed
@@ -221,22 +220,22 @@ sections herein show that we have been successful in reducing the number of dist
 
 ##### `Menu`
 
-| Column                 | Count Before | Count After | Count Impr |
-|------------------------|--------------|-------------|------------|
-| `name`                 | 793.0        | 752.0       | 5.2%       |
-| `sponsor`              | 6366.0       | 5929.0      | 6.9%       |
-| `event`                | 1769.0       | 1670.0      | 5.6%       |
-| `venue`                | 233.0        | 148.0       | 36.5%      |
-| `place`                | 3743.0       | 3344.0      | 10.7%      |
-| `physical_description` | 4507.0       | 4163.0      | 7.6%       |
-| `occasion`             | 381.0        | 286.0       | 24.9%      |
-| `notes`                | 9380.0       | 9362.0      | 0.2%       |
-| `call_number`          | 15936.0      | 15936.0     | 0.0%       |
-| `date`                 | 6599.0       | 6599.0      | 0.0%       |
-| `location`             | 6279.0       | 6227.0      | 0.8%       |
-| `currency`             | 42.0         | 42.0        | 0.0%       |
-| `currency_symbol`      | 34.0         | 34.0        | 0.0%       |
-| `status`               | 2.0          | 2.0         | 0.0%       |
+| Column               | Count Before | Count After | Count Impr |
+|----------------------|--------------|-------------|------------|
+| name                 | 793          | 752         | 5.2%       |
+| sponsor              | 6366         | 5929        | 6.9%       |
+| event                | 1769         | 1670        | 5.6%       |
+| venue                | 233          | 148         | 36.5%      |
+| place                | 3743         | 3344        | 10.7%      |
+| physical_description | 4507         | 4163        | 7.6%       |
+| occasion             | 381          | 286         | 24.9%      |
+| notes                | 9380         | 9362        | 0.2%       |
+| call_number          | 15936        | 15936       | 0.0%       |
+| date                 | 6599         | 6599        | 0.0%       |
+| location             | 6279         | 6227        | 0.8%       |
+| currency             | 42           | 42          | 0.0%       |
+| currency_symbol      | 34           | 34          | 0.0%       |
+| status               | 2            | 2           | 0.0%       |
 
 - `name` had its values normalized and clustered to find duplicate values'
 - `sponsor` was minimally modified to merge values that differed in case.
@@ -265,12 +264,12 @@ sections herein show that we have been successful in reducing the number of dist
 
 ##### `MenuItem`
 
-| Column       | Count Before | Count After | Count Impr | Min Before | Min After | Min Impr | Max Before | Max After | Max Impr | Avg Before | Avg After | Avg Impr |
-|--------------|--------------|-------------|------------|------------|-----------|----------|------------|-----------|----------|------------|-----------|----------|
-| `price`      | 886810.0     | 886443.0    | 0.0%       | 0.0        | 0.0       | nan%     | 180000.0   | 180000.0  | nan%     | 12.8       | 12.8      | nan%     |
-| `high_price` | 91905.0      | 91905.0     | 0.0%       | 0.0        | 0.0       | nan%     | 7800.0     | 7800.0    | nan%     | 8.1        | 8.1       | nan%     |
-| `xpos`       | 1332726.0    | 1332726.0   | 0.0%       | 0.0        | 0.0       | nan%     | 1.0        | 1.0       | nan%     | 0.4        | 0.4       | nan%     |
-| `ypos`       | 1332726.0    | 1332726.0   | 0.0%       | 0.0        | 0.0       | nan%     | 1.0        | 1.0       | nan%     | 0.5        | 0.5       | nan%     |
+| Column     | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
+|------------|--------------|-------------|------------|------------|-----------|------------|-----------|------------|-----------|
+| price      | 886810       | 886443      | 0.0%       | 0.0        | 0.0       | 180000.0   | 180000.0  | 12.8       | 12.8      |
+| high_price | 91905        | 91897       | 0.0%       | 0.0        | 0.0       | 7800.0     | 7800.0    | 8.1        | 8.1       |
+| xpos       | 1332726      | 1332726     | 0.0%       | 0.0        | 0.0       | 1.0        | 1.0       | 0.4        | 0.4       |
+| ypos       | 1332726      | 1332726     | 0.0%       | 0.0        | 0.0       | 1.0        | 1.0       | 0.5        | 0.5       |
 
 - `price`
 - `high_price`
@@ -279,11 +278,11 @@ sections herein show that we have been successful in reducing the number of dist
 
 ##### `MenuPage`
 
-| Column        | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
-|---------------|--------------|-------------|------------|------------|-----------|------------|-----------|------------|-----------|
-| `page_number` | 65735.0      | 65735.0     | 0.0%       | 1.0        | 1.0       | 74.0       | 74.0      | 3.8        | 3.8       |
-| `full_height` | 66608.0      | 66608.0     | 0.0%       | 616.0      | 616.0     | 12044.0    | 12044.0   | 3859.1     | 3859.1    |
-| `full_width`  | 66608.0      | 66608.0     | 0.0%       | 558.0      | 558.0     | 9175.0     | 9175.0    | 2778.6     | 2778.6    |
+| Column      | Count Before | Count After | Count Impr | Min Before | Min After | Max Before | Max After | Avg Before | Avg After |
+|-------------|--------------|-------------|------------|------------|-----------|------------|-----------|------------|-----------|
+| page_number | 65735        | 65735       | 0.0%       | 1.0        | 1.0       | 74.0       | 74.0      | 3.8        | 3.8       |
+| full_height | 66608        | 66608       | 0.0%       | 616.0      | 616.0     | 12044.0    | 12044.0   | 3859.1     | 3859.1    |
+| full_width  | 66608        | 66608       | 0.0%       | 558.0      | 558.0     | 9175.0     | 9175.0    | 2778.6     | 2778.6    |
 
 - `page_number` was left unchanged.
 - `image_id` was left unchanged.
@@ -330,7 +329,8 @@ A visual representation of our outer workflow, is shown below.
 ![outer workflow](../diagrams/OuterWorkflow.svg)
 
 > This file can be seen enlarged
-> at [diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg) in
+> at [diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg)
+> in
 > SVG format,
 > or [diagrams/OuterWorklow.png](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.png) in
 > PNG format.
