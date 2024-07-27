@@ -12,11 +12,9 @@ Aaron Schlesinger and David Pankros
 
 ### Identify and describe all (high-level) data cleaning steps you have performed.
 
-We've used OpenRefine and a SQL database together to achieve data cleaning outcomes that are more complex than
-OpenRefine would easily allow us to do on its own. We've also managed to build a Python client for OpenRefine's API.
-Instead of using the OpenRefine dashboard to perform data cleaning steps visually with the point-and-click user
-interface, we're able to integrate all our data cleaning steps, listed below, into a single Python program that can be
-run from the command line.
+We've used OpenRefine and a SQL database together to achieve data cleaning outcomes that are more complex than OpenRefine would easily allow us to do on its own. We've also managed to build a Python client for OpenRefine's API.
+
+Instead of using the OpenRefine dashboard to perform data cleaning steps visually with the point-and-click user interface, we're able to integrate all our data cleaning steps, listed below, into a single Python program that can be run from the command line.
 
 - Raw CSV manipulation
 - Loading CSV data into OpenRefine
@@ -26,19 +24,13 @@ run from the command line.
 - Manipulating data in SQL
 - Exporting cleaned data from SQL to final, cleaned data in CSV format
 
-The result of the single, unified Python program is that we have the ability to run our entire workflow, including all
-outer and inner workflow steps, with a single command. This ability to run the entire workflow with a single command is
-a significant advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us the ability
-to easily reproduce our results.
+The result of the single, unified Python program is that we have the ability to run our entire workflow, including all outer and inner workflow steps, with a single command. This ability to run the entire workflow with a single command is a significant advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us the ability to easily and efficiently reproduce our results, iterate, and improve our data cleaning process.
 
 ### For each high-level data cleaning step you have performed, explain its rationale. Was the step really required to support use case U1? Explain. If not, explain why those steps were still useful.
 
-For context, use case `U1` is summarized as using standard data cleaning techniques to produce data to be used for
-non-production-critical applications, data mining, unsupervised learning, or possibly further analysis and manipulation
-to use cleaner subsets of the entire dataset for additional purposes.
+For context, use case `U1` is summarized as using standard data cleaning techniques to produce data to be used for non-production-critical applications, data mining, unsupervised learning, or possibly further analysis and manipulation to use cleaner subsets of the entire dataset for additional purposes.
 
-We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and
-explain the rationale for each step.
+We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and explain the rationale for each step.
 
 #### Step 1: Raw CSV manipulation
 
@@ -189,10 +181,7 @@ removed.
 
 #### Distinct values
 
-Since the original dataset had many columns with malformed, or inconsistently formatted values, we have spent
-significant effort standardizing these values. Thus, an important measure to determine whether this dimension of our
-cleaning has been successful is how much we've reduced the number of distinct values in each column after cleaning. The
-sections herein show that we have been successful in reducing the number of distinct values in many columns.
+Since the original dataset had many columns with malformed, or inconsistently formatted values, we have spent significant effort standardizing these values. Thus, an important measure to determine whether this dimension of our cleaning has been successful is how much we've reduced the number of distinct values in each column after cleaning. The sections herein show that we have been successful in reducing the number of distinct values in many columns.
 
 ##### `Dish`
 
@@ -208,15 +197,9 @@ sections herein show that we have been successful in reducing the number of dist
 
 - `name` has had similar names normalized and clustered resulting in an 18% decrease in unique values.
 - `description` wasn't changed
-- `menus_appeared` and `times_appeared` were re-caclulated based on the menus/menu_items/menu_pages actually in the
-  data. Thus, zero is no longer a viable result and neither are negative numbers. Truthfully, the semantic difference
-  between these two columns is unclear.
-- `first_appeared` and `last_appeared` similarly were drawn from actual data from menus/menu_items/menu_pages but it was
-  clear that not all the values contained there are accurate. The data was examined and the true range of values
-  _appeared to be_ between 1852 and 2024. These values were, thus, constrained to be in this range.
-- `lowest_price` and `highest_price` were re-caclulated based on the menus/menu_items/menu_pages. While the statistics
-  above a truncated to one decimal point. The actual values are greater than zero, albeit small -- 0.01 and 0.005,
-  respectively.
+- `menus_appeared` and `times_appeared` were re-caclulated based on the menus/menu_items/menu_pages actually in the data. Thus, zero is no longer a viable result and neither are negative numbers. The semantic difference between these two columns remains somewhat unclear.
+- `first_appeared` and `last_appeared` similarly were drawn from actual data from menus/menu_items/menu_pages but it was clear that not all the values contained there are accurate. The data were examined and the true range of values _appeared to be_ between 1852 and 2024. These values were, thus, constrained to be in this range.
+- `lowest_price` and `highest_price` were re-caclulated based on the menus/menu_items/menu_pages. While the statistics above a truncated to one decimal point. The actual values are greater than zero, albeit small -- 0.01 and 0.005,respectively.
 
 ##### `Menu`
 
@@ -241,10 +224,9 @@ sections herein show that we have been successful in reducing the number of dist
 - `sponsor` was minimally modified to merge values that differed in case.
 - `event` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the
   cardinality of possible values presented.
-- `venue` were categorical values with many slight differences. These were merged as much as could reasonably be
-  performed.
-- `place` - TBD
-- `physical_description` - TBD
+- `venue` were categorical values with many slight differences. These were merged as much as could reasonably be performed.
+- `place` had its values converted to standard casing, had various delimiters normalized or removed (i.e. `[PHILADELPHIA, PA.]` converted to `Philadelphia, Pa`), had minor punctuation removed where appropriate, and had other minor inconsistencies removed and standardized
+- `physical_description` - had delimiter formatting standardized to internal semicolon (`;`) separation, with no trailing semicolon character. All text in this column was also converted to lowercase
 - `occasion` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the
   cardinality of possible values presented.
 - `notes` are, if they can believed to be notes, freeform values that are not meant to be generalized. Thus notes had
