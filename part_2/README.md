@@ -24,7 +24,7 @@ Instead of using the OpenRefine dashboard to perform data cleaning steps visuall
 - Manipulating data in SQL
 - Exporting cleaned data from SQL to final, cleaned data in CSV format
 
-The result of the single, unified Python program is that we have the ability to run our entire workflow, including all outer and inner workflow steps, with a single command. This ability to run the entire workflow with a single command is a significant advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us the ability to easily and efficiently reproduce our results, iterate, and improve our data cleaning process.
+The result of this Python program is that we have the ability to run our entire workflow, including all outer and inner workflow steps, with a single command. This ability to run the entire workflow with a single command is a significant advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us the ability to easily and efficiently reproduce our results, iterate, and improve our data cleaning process.
 
 ### For each high-level data cleaning step you have performed, explain its rationale. Was the step really required to support use case U1? Explain. If not, explain why those steps were still useful.
 
@@ -34,31 +34,19 @@ We have listed the high-level data cleaning steps in the introduction to this se
 
 #### Step 1: Raw CSV manipulation
 
-This step is primarily loading CSV data into memory, for the purpose of subsequently loading it into OpenRefine. We do
-no data cleaning in this step, but it is necessary to support all the subsequent steps.
+This step is primarily loading CSV data into memory, for the purpose of subsequently loading it into OpenRefine. We do no data cleaning in this step, but it is necessary to support all the subsequent steps.
 
 #### Step 2: Loading CSV data into OpenRefine
 
-Similarly to the previous step, we do not perform any data cleaning in this step. Loading data into OpenRefine is
-necessary to support all OpenRefine-based and subsequent cleaning steps.
+Similarly to the previous step, we do not perform any data cleaning in this step. Loading data into OpenRefine is necessary to support all OpenRefine-based and subsequent cleaning steps.
 
 #### Step 3: Manipulating data in OpenRefine
 
-After data are loaded into OpenRefine, we do many data cleaning steps that do not involve foreign key or other
-relational integrity constraint (IC) violations. All transforms are done with
-OpenRefine's [GREL language](https://openrefine.org/docs/manual/grelfunctions).
+After data are loaded into OpenRefine, we do many data cleaning steps that do not involve foreign key or other relational integrity constraint (IC) violations. All transforms are done with OpenRefine's [GREL language](https://openrefine.org/docs/manual/grelfunctions).
 
-These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of
-individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They
-also better prepare the data to be analyzed and manipulated further, another `U1` goal. The transforms we do in this
-step correspond to some, but not all of the IC violations in
-the [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) file in the repository, so
-we make progress toward completing our IC violations checks in this step.
+These transforms are necessary for use case `U1` because they greatly improve the standardization and cleanliness of individual fields in the dataset, which is important for all `U1` applications, but especially user-facing ones. They also better prepare the data to be analyzed and manipulated further, another `U1` goal. The transforms we do in this step correspond to some, but not all of the IC violations in the [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) file in the repository, so we make progress toward completing our IC violations checks in this step.
 
-We also perform crucial data cleaning that is unrelated to our IC violations checks, but does enable us to complete
-additional IC violations checks in subsequent steps. For example, one of the non-IC cleaning steps we take herein
-establishes a common vocabulary for the `Menu.venue` column and transforms all uncleaned values in that column to that
-common vocabulary. This step allows us to group by values in this column much more effectively in subsequent steps.
+We also perform crucial data cleaning that is unrelated to our IC violations checks, but does enable us to complete additional IC violations checks in subsequent steps. For example, one of the non-IC cleaning steps we take herein establishes a common vocabulary for the `Menu.venue` column and transforms all uncleaned values in that column to that common vocabulary. This step allows us to group by values in this column much more effectively in subsequent steps.
 
 ##### List of IC violations checks
 
@@ -107,39 +95,25 @@ common vocabulary. This step allows us to group by values in this column much mo
 
 #### Step 4: Loading partially-cleaned data into the SQL database
 
-After we finish running all the GREL/OpenRefine-based transforms, we consider our data partially cleaned, since we have
-not addressed relational IC violations like foreign key constraints. Since SQL excels at analyzing, reporting on, and
-fixing these relational IC violations, our next step is to load all our partially-cleaned data from OpenRefine into a
-SQLite database.
+After we finish running all the GREL/OpenRefine-based transforms, we consider our data partially cleaned, since we have not addressed relational IC violations like foreign key constraints. Since SQL excels at analyzing, reporting on, and fixing these relational IC violations, our next step is to load all our partially-cleaned data from OpenRefine into a SQLite database.
 
 We do no cleaning in this step, but it's necessary for our subsequent foreign key IC violations cleaning work.
 
 #### Step 5: Constructing specific views of data in SQL
 
-After loading our partially-cleaned data into the SQL database, we construct specific views of the data that allow us to
-analyze and report on the data in ways that are possible in neither OpenRefine, nor the raw `Menu`, `Dish`, `MenuItem`,
-nor `MenuPage` tables individually. Most of these views are constructed by joining at two or more of these tables
-together to examine one or more specific foreign key relationships.
+After loading our partially-cleaned data into the SQL database, we construct specific views of the data that allow us to analyze and report on the data in ways that are possible in neither OpenRefine, nor the raw `Menu`, `Dish`, `MenuItem`, nor `MenuPage` tables individually. Most of these views are constructed by joining at two or more of these tables together to examine one or more specific foreign key relationships.
 
-Using these views, we're able to easily identify and fix all rows that violate a specific foreign key IC violation. We
-do no actual data cleaning in this step, but like the previous step, this step is required for subsequent foreign key IC
-violations cleaning work.
+Using these views, we're able to easily identify and fix all rows that violate a specific foreign key IC violation. We do no actual data cleaning in this step, but like the previous step, this step is required for subsequent foreign key IC violations cleaning work.
 
 #### Step 6: Manipulating data in SQL
 
-Armed with partially-cleaned data in our "base" `Menu`, `Dish`, `MenuItem`, and `MenuPage` tables and our constructed
-views, we can now fix foreign key IC violations based on some policy. Policies vary, but in general, we want to ensure
-that all foreign key relationships are valid, so if we find an invalid foreign key, we simply set that value to `NULL`.
+Armed with partially-cleaned data in our "base" `Menu`, `Dish`, `MenuItem`, and `MenuPage` tables and our constructed views, we can now fix foreign key IC violations based on some policy. Policies vary, but in general, we want to ensure that all foreign key relationships are valid, so if we find an invalid foreign key, we simply set that value to `NULL`.
 
-This work is necessary for use case `U1` because it ensures there are no invalid foreign key relationships in the
-dataset, a feature especially valuable for the user-facing applications described in `U1` or any other application that
-queries or analyzes these data based on relationships between tables.
+This work is necessary for use case `U1` because it ensures there are no invalid foreign key relationships in the dataset, a feature especially valuable for the user-facing applications described in `U1` or any other application that queries or analyzes these data based on relationships between tables.
 
 #### Step 7: Exporting cleaned data from SQL to final, cleaned data in CSV format
 
-This final step is relatively simple, but critical to transform our cleaned dataset to the same format in which we got
-it. At this point, we have a cleaned dataset in SQL tables and in this step, we export these tables to individual CSV
-files. The mapping from SQL table to exported CSV files is as follows:
+This final step is relatively simple, but critical to transform our cleaned dataset to the same format in which we got it. At this point, we have a cleaned dataset in SQL tables and in this step, we export these tables to individual CSV files. The mapping from SQL table to exported CSV files is as follows:
 
 - `menu` -> `Menu.export.csv`
 - `dish` -> `Dish.export.csv`
@@ -154,11 +128,7 @@ There are several measures we use to quantify the results of our efforts, descri
 
 #### Aside: Full run histories
 
-We have performed several data cleaning runs on the NYPL restaurants dataset with our software as it has evolved. Full
-output from these runs can be found in the [`runs/`](https://github.com/dpankros/uiuc_cs513_project/tree/main/runs)
-directory in the repository. Each individual run is stored in each file therein, and file names indicate the date and
-time the run was completed. Runs prior to the latest one may have different output if they were done with prior versions
-of the software. The structure of each filename is as follows:
+We have performed several data cleaning runs on the NYPL restaurants dataset with our software as it has evolved. Full output from these runs can be found in the [`runs/`](https://github.com/dpankros/uiuc_cs513_project/tree/main/runs) directory in the repository. Each individual run is stored in each file therein, and file names indicate the date and time the run was completed. Runs prior to the latest one may have different output if they were done with prior versions of the software. The structure of each filename is as follows:
 
 ```text
 YYYY-MM-DD.HH-MM-SSZUTC.csv
@@ -166,11 +136,7 @@ YYYY-MM-DD.HH-MM-SSZUTC.csv
 
 #### IC Violations
 
-As may be obvious, it's important that our cleaning is able to ameliorate at least most of the IC violations in the
-dataset. We have a wide range of IC checks in our Python application, and we have run these checks before and after
-cleaning to ensure that we have removed most or all IC violations. The below table contains a very high-level summary of
-IC violations before and after cleaning. As can be seen below, the IC violations measured by the table have been
-removed.
+As may be obvious, it's important that our cleaning is able to ameliorate at least most of the IC violations in the dataset. We have a wide range of IC checks in our Python application, and we have run these checks before and after cleaning to ensure that we have removed most or all IC violations. The below table contains a very high-level summary of IC violations before and after cleaning. As can be seen below, the IC violations measured by the table have been removed.
 
 | Data entity | # IC violations before cleaning | # IC violations after cleaning | Columns changed                                      |
 |-------------|---------------------------------|--------------------------------|------------------------------------------------------|
@@ -222,17 +188,13 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 
 - `name` had its values normalized and clustered to find duplicate values'
 - `sponsor` was minimally modified to merge values that differed in case.
-- `event` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the
-  cardinality of possible values presented.
+- `event` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the cardinality of possible values presented.
 - `venue` were categorical values with many slight differences. These were merged as much as could reasonably be performed.
 - `place` had its values converted to standard casing, had various delimiters normalized or removed (i.e. `[PHILADELPHIA, PA.]` converted to `Philadelphia, Pa`), had minor punctuation removed where appropriate, and had other minor inconsistencies removed and standardized
 - `physical_description` - had delimiter formatting standardized to internal semicolon (`;`) separation, with no trailing semicolon character. All text in this column was also converted to lowercase
-- `occasion` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the
-  cardinality of possible values presented.
-- `notes` are, if they can believed to be notes, freeform values that are not meant to be generalized. Thus notes had
-  their delimiters normalized for later formatting, but had very little other changes performed.
-- `call_number` is suspected to be a library call number and, because the acceptable formats of this value are unclear,
-  was left unchanged.
+- `occasion` is a multi-valued tag-like list of values. These values were normalized and marged to attempt to reduce the cardinality of possible values presented.
+- `notes` are, if they can believed to be notes, freeform values that are not meant to be generalized. Thus notes had their delimiters normalized for later formatting, but had very little other changes performed.
+- `call_number` is suspected to be a library call number and, because the acceptable formats of this value are unclear, was left unchanged.
 - `keywords` was removed as it was unused.
 - `language` was removed as it was unused.
 - `date` was left unchanged.
@@ -274,16 +236,11 @@ Since the original dataset had many columns with malformed, or inconsistently fo
 
 #### FK relationships
 
-Prior to cleaning, we know that the dataset contains many invalid foreign keys. In other words, there are columns in one
-CSV file with IDs that are intended to point to rows in another CSV file, but those IDs are invalid and break
-referential integrity.
+Prior to cleaning, we know that the dataset contains many invalid foreign keys. In other words, there are columns in one CSV file with IDs that are intended to point to rows in another CSV file, but those IDs are invalid and break referential integrity.
 
-In these cases, we've chosen to set these invalid IDs to `NULL`. In some cases, there are no `NULL` values in FK columns
-before cleaning, so we choose to measure how many `NULL` values we've added rather than computing a ratio or percentage
-improvement (since we'd frequently be dividing by `0`).
+In these cases, we've chosen to set these invalid IDs to `NULL`. In some cases, there are no `NULL` values in FK columns before cleaning, so we choose to measure how many `NULL` values we've added rather than computing a ratio or percentage improvement (since we'd frequently be dividing by `0`).
 
-Since we know that all columns had invalid FKs in the original raw dataset, we know we've succeeded on this metric if we
-have added `NULL` values to those columns. The below table shows how many `NULL`s we've added.
+Since we know that all columns had invalid FKs in the original raw dataset, we know we've succeeded on this metric if we have added `NULL` values to those columns. The below table shows how many `NULL`s we've added.
 
 | Table       | Foreign-key column | `NULL` values before cleaning | `NULL` values after cleaning | Number added |
 |-------------|--------------------|-------------------------------|------------------------------|--------------|
@@ -291,16 +248,11 @@ have added `NULL` values to those columns. The below table shows how many `NULL`
 | `menu_item` | `menu_page_id`     | 0                             | 0                            | 0            |
 | `menu_item` | `dish_id`          | 241                           | 244                          | 4            |
 
-The above table shows that we've have improved referential integrity by fixing relational IC violations on 2 of the 3
-foreign key columns in the dataset.
+The above table shows that we've have improved referential integrity by fixing relational IC violations on 2 of the 3 foreign key columns in the dataset.
 
 ### Demonstrate that data quality has been improved, e.g., by devising IC-violation reports (answers to denial constraints) and showing the difference between number of IC violations reported before and after cleaning.
 
-As indicated previously, our Python application contains a wide range of IC checks and thus generates IC violation
-reports for all checks. The list of IC checks can be found
-at [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) in the project repository.
-The table in the previous section shows the number of IC violations before and after cleaning and thus quantitatively
-demonstrates that data quality is improved.
+As indicated previously, our Python application contains a wide range of IC checks and thus generates IC violation reports for all checks. The list of IC checks can be found at [`part_2/ic.md`](https://github.com/dpankros/uiuc_cs513_project/blob/main/part_2/ic.md) in the project repository. The table in the previous section shows the number of IC violations before and after cleaning and thus quantitatively demonstrates that data quality is improved.
 
 ## 3. Create a workflow model
 
@@ -310,12 +262,7 @@ A visual representation of our outer workflow, is shown below.
 
 ![outer workflow](../diagrams/OuterWorkflow.svg)
 
-> This file can be seen enlarged
-> at [diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg)
-> in
-> SVG format,
-> or [diagrams/OuterWorklow.png](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.png) in
-> PNG format.
+> This file can be seen enlarged at [diagrams/OuterWorkflow.svg](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.svg) in SVG format, or [diagrams/OuterWorklow.png](https://github.com/dpankros/uiuc_cs513_project/blob/main/diagrams/OuterWorkflow.png) in PNG format.
 
 #### Outer workflow steps, their inputs, and their outputs
 
@@ -331,23 +278,14 @@ A visual representation of our outer workflow, is shown below.
 
 #### Outer workflow design
 
-As we've implied above, we've chosen to design this workflow in a way we believe is optimal for automation. All but the
-first step -- which we've done to become familiar with the structure and content of the data -- are automated with
-Python and run with a single command. Elsewhere in this document, we describe why we believe this design is
-advantageous.
+As we've implied above, we've chosen to design this workflow in a way we believe is optimal for automation. All but the first step -- which we've done to become familiar with the structure and content of the data -- are automated with Python and run with a single command. Elsewhere in this document, we describe why we believe this design is advantageous.
 
-Further, we've broken our data cleaning into two stages: single-value IC violation checks and relational IC violation
-checks. This separation allows us to choose the best tools for each. OpenRefine has proven to be excellent at finding
-and fixing single-value IC violation checks, while SQL is excellent at the same for relational IC violation checks. We
-believe that using either of these tools to do the other's task would lead to a "dirtier" final dataset.
+Further, we've broken our data cleaning into two stages: single-value IC violation checks and relational IC violation checks. This separation allows us to choose the best tools for each. OpenRefine has proven to be excellent at finding and fixing single-value IC violation checks, while SQL is excellent at the same for relational IC violation checks. We believe that using either of these tools to do the other's task would lead to a "dirtier" final dataset.
 
 ### A detailed (possibly visual) representation of your “inner” data cleaning workflow W2 (e.g., if you’ve used OpenRefine, you can use the OR2YW tool).
 
-Since our entire outer workflow is written in Python, the inner workflow is precisely and entirely captured with code
-and can be seen in
-the [`part_2/cleaning-suite` directory](https://github.com/dpankros/uiuc_cs513_project/tree/main/part_2/cleaning-suite)
-in the repository. To summarize what's going on with our Python code, we have provided inner workflow diagrams below for
-each outer workflow stage.
+Since our entire outer workflow is written in Python, the inner workflow is precisely and entirely captured with code and can be seen in
+the [`part_2/cleaning-suite` directory](https://github.com/dpankros/uiuc_cs513_project/tree/main/part_2/cleaning-suite) in the repository. To summarize what's going on with our Python code, we have provided inner workflow diagrams below for each outer workflow stage.
 
 #### Manual Data Inspection
 
@@ -392,8 +330,7 @@ each outer workflow stage.
 - Run our suite of GREL queries to find single-value (i.e. not foreign-key or other relational) IC violations
 - Use our Python code and home-grown OpenRefine client library to:
     - Encode single-value IC violation update policy on a per-column basis
-    - Apply single-value IC violations for all fields with IC violations, according to the policy for the field's
-      columnIC violations according to policy
+    - Apply single-value IC violations for all fields with IC violations, according to the policy for the field's column IC violations according to policy
 
 ###### Tools used
 
@@ -442,8 +379,7 @@ each outer workflow stage.
 
 ##### Workflow description
 
-- From raw tables and views created in the previous "Data loading (2)" and "Foreign-key IC violation checking"
-  sections (respectively), analyze FK relationships and statistics on individual column data
+- From raw tables and views created in the previous "Data loading (2)" and "Foreign-key IC violation checking" sections (respectively), analyze FK relationships and statistics on individual column data
 - Execute queries to compute dataset statistics including:
     - Number of IC violations per column before and after cleaning
     - Cardinality of (i.e. distinct values in) each column before and after cleaning
@@ -479,25 +415,13 @@ each outer workflow stage.
 In this project, we've primarily learned that the functionality offered by the suite of data cleaning tools introduced
 in this class are lacking in some areas.
 
-For example, OpenRefine is excellent at finding and fixing single-field IC violations, but not at doing the same with
-relational ICs. SQL is excellent at enforcing relational ICs, but it's not designed for data cleaning tasks. Using
-Python as we did to combine OpenRefine and SQL together to fill the gaps between each tools' weaknesses was powerful but
-not perfect. The result of this method is a system that can process the entire NYPL restaurants dataset, but does so
-relatively slowly and inefficiently.
+For example, OpenRefine is excellent at finding and fixing single-field IC violations, but not at doing the same with relational ICs. SQL is excellent at enforcing relational ICs, but it's not designed for data cleaning tasks. Using Python as we did to combine OpenRefine and SQL together to fill the gaps between each tools' weaknesses was powerful but not perfect. The result of this method is a system that can process the entire NYPL restaurants dataset, but executes relatively slowly and inefficiently.
 
-While using distributed data processing systems like Apache Spark, Google Cloud's BigQuery, and others are out of scope
-of this project, we believe such systems would allow us to process this dataset much more quickly and efficiently, and
-allow us to scale our processing to much larger datasets.
+While distributed data processing systems like Apache Spark, Google Cloud's BigQuery, and others are out of scope of this project, we recognize such systems would be critical for processing datasets much larger than the one we've used in this project. These systems would also have likely allowed us to process the NYPL restaurants dataset much more quickly and efficiently.
 
-Nevertheless, we believe we were successful in cleaning this restaurants dataset according to use case `U1` described in
-our part 1 submission, and as such it could be used to power non-mission-critical, data mining, and unsupervised
-learning applications. Also, further analysis could be done to identify superior-quality subsets of these data for use
-in other, more mission-critical applications.
+Nevertheless, we believe we were successful in cleaning this restaurants dataset according to use case `U1` described in our part 1 submission, and as such it could be used to power non-mission-critical, data mining, and unsupervised learning applications. Further analysis could also be done to identify superior-quality subsets of these data for use in other, more mission-critical applications.
 
-We were also able to create a Python application that allows us to perform cleaning on _any_ similar dataset with the
-same format. As described previously, this application is easily run with a single command and allows us to reliably and
-deterministically reproduce our data cleaning runs. We believe this method is significantly more efficient and robust
-than running the workflow manually, step-by-step, in OpenRefine and SQL.
+We were also able to create a Python application that allows us to perform cleaning on _any_ similar dataset with the same format. As described previously, this application is easily run with a single command and allows us to reliably and deterministically reproduce our data cleaning runs. We believe this method is significantly more efficient and robust than running the workflow manually, step-by-step, in OpenRefine and SQL.
 
 ### Reflect on how work was completed. You should summarize the contributions of each team member here (for teams with >= 2 members).
 
