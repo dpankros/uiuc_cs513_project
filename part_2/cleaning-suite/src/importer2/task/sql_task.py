@@ -3,7 +3,6 @@ from sqlalchemy.engine import Engine, Connection
 from .task import BaseTask
 
 
-# TODO: this is largely just a placeholder.  I took a stab at a basline task for sql operations but feel free to change
 class SqlTask(BaseTask):
   def __init__(self, operation_config: dict = {}):
     super().__init__(operation_config)

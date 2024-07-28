@@ -132,7 +132,6 @@ def get_report_tasks(base_config: BaseConfig, run_reports: bool) -> Sequence[Bas
     If run_reports==True, get a list of Tasks that report on data in the tables
     with "clean" data in SQLite. Otherwise, return an empty list
     """
-    # TODO: These should show the range of
     return [
         DishReportTask({**base_config.as_dict(), 'base_table': 'dish_orig', 'comparison_table': '_dish'}),
         MenuReportTask({**base_config.as_dict(), 'base_table': 'menu_orig', 'comparison_table': '_menu'}),

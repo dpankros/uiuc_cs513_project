@@ -18,9 +18,6 @@ class CreateDishViewSqlTask(CS513SqlTask):
     # [x] caclulate lowest_price
     # [x] calculate highest_price
 
-    # TODO: when there are zeros in mi.price the min calculation is thrown off (lowest price)
-    #  highest_price is off in some instances too
-
     view_select = """    
 select
     id as id,

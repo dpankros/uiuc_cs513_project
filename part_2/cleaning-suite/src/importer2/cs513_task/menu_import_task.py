@@ -32,8 +32,7 @@ class MenuImportTask(CS513ImportTask):
       'replace("restaurant", "rest")',
       'replace("foreign", "for")',
       'replace("steamship", "steam")',
-      # TODO : I've taken a stab at calssifying the straggler "other" types, but a few remain (11 rows in total)
-      # some could probable be converted into the above groups or made into their own
+      # some could probably be converted into the above groups or made into their own
       # e.g.
       # ```sql
       # select norm_venue, count(norm_venue) as count from menu
@@ -123,7 +122,7 @@ class MenuImportTask(CS513ImportTask):
       'trim()'
     ])
 
-    # TODO: There are a lot of special cases here.  Look at:
+    # There are a lot of special cases here.  Look at:
     # ```sql
     # select norm_occasion, count(norm_occasion) as count from menu group by norm_occasion order by norm_occasion asc;
     # ```
