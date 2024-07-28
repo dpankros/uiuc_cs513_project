@@ -3,8 +3,8 @@
 [part 1](./part_1.md)
 [part 2](./part_2)
 
-To generate PDF for part 2, run the following command:
+To generate PDF for part 2, run the following command from inside the `part_2` directory:
 
 ```bash
-markdown-pdf part_2/README.md
+markdown-pdf README.md
 ```
