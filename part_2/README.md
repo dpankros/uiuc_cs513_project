@@ -27,19 +27,19 @@ run from the command line.
 - Manipulating data in SQL
 - Exporting cleaned data from SQL to final, cleaned data in CSV format
 
-The result of this Python program is that we have the ability to run our entire workflow, including all outer and inner
-workflow steps, with a single command. This ability to run the entire workflow with a single command is a significant
-advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us the ability to easily and
-efficiently reproduce our results, iterate, and improve our data cleaning process.
+The result of this Python program is that we have the ability to run our entire workflow, including all outer and inner workflow steps, with a single command. This ability to run the entire workflow with a single command is a significant
+advantage over running the workflow manually, step-by-step, in OpenRefine and SQL and gives us several advantages as follows:
+
+- We're able to easily and (relatively) efficiently reproduce our results
+- We can quickly iterate and improve our data cleaning process
+- The codebase can serve as the single, central and de-facto standard source for workflow history, provenance and query list
+  - We do, however, also provide supplementary materials for some of this information
 
 ### For each high-level data cleaning step you have performed, explain its rationale. Was the step really required to support use case U1? Explain. If not, explain why those steps were still useful.
 
-For context, use case `U1` is summarized as using standard data cleaning techniques to produce data to be used for
-non-production-critical applications, data mining, unsupervised learning, or possibly further analysis and manipulation
-to use cleaner subsets of the entire dataset for additional purposes.
+For context, use case `U1` is summarized as using standard data cleaning techniques to produce data to be used for non-production-critical applications, data mining, unsupervised learning, or possibly further analysis and manipulation to use cleaner subsets of the entire dataset for additional purposes.
 
-We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and
-explain the rationale for each step.
+We have listed the high-level data cleaning steps in the introduction to this section. We will re-list them below and explain the rationale for each step.
 
 #### Step 1: Raw CSV manipulation
 
@@ -539,10 +539,13 @@ Aaron Schlesinger and David Pankros worked together on this project. The work wa
 
 ## 5. Submission of supplementary materials in a single ZIP file
 
-- Workflow model
-- Operation history
-    - OpenRefine recipe
-    - Other scripts, provenance files
-- Queries
-- Original ("dirty") and cleaned datasets
-    - Please provide an **accessible** Box folder link in a plain text file: `DataLinks.txt`
+We have attached herein the following supplementary materials:
+
+- This document
+- Source files for our outer and inner workflow diagrams, suitable for use at [excalidraw.com](https://excalidraw.com)
+- A complete copy of the source code used to analyze, clean and validate the dataset
+  - While we have provided other materials such as workflow diagrams, this source code serves as the canonical source of the following:
+    - Provenance / operation history
+    - Workflow model
+    - List of queries
+- A `DataLinks.txt` file with links to the original ("dirty") and cleaned datasets in a Box.com folder
