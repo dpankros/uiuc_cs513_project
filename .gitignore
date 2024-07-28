@@ -5,6 +5,5 @@ mermaid-filter.err
 data-import.*.sqlite
 *_conv.csv
 export.db
-/data/*.export.csv
 /part_2/Phase2*
 .DS_Store
